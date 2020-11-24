@@ -1,0 +1,188 @@
+{% extends 'base.html' %} 
+{% block title %} Checklist {% endblock title %} 
+{% block body %}
+
+<div class="progress progress-line-primary" style="width: 70px;height: 10px; border-radius: 30px;">
+    <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 30%;">
+        <span class="sr-only">60% Complete</span>
+    </div>
+    <div class="progress progress-line-primary">
+        <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 30%;">
+            <span class="sr-only">60% Complete</span>
+        </div>
+    </div>
+</div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<!-- ******************************************Heading Check List********************************************************************** -->
+
+<h2 style="background-color: burlywood;">New Door Appplication Check List
+    <button class="btn btn-rose btn-round float-right" type=Submit>
+    <i class="material-icons">near_me </i>  Submit
+    <div class="ripple-container"></div>
+</button>
+</h2>
+<hr><br>
+
+<!-- ******************************************DashBoard Check List********************************************************************** -->
+
+<div class="row">
+    <label class="col-sm-2 col-form-label" for="DashBoard" style="padding-left: 30px;padding-bottom: 0px;padding-top: 0px;margin-bottom: 0px;height: 20px;"><strong>1. DashBoard</strong></label>
+    <div class="col-sm-2" style="height: 20px;">
+        <div style="width: 90px;">
+            <input class="form-control" type="checkbox" id="DashBoard" name="DashBoard">
+        </div>
+    </div>
+    <label class="col-sm-2 col-form-label" for="DashBoardComment" style="height: 36px;">Comment (If any)</label>
+    <div class="col-sm-6" style="height: 30px;">
+        <div class="form-group bmd-form-group">
+            <input class="form-control" type="text" id="DashBoardComment" name="DashBoardComment">
+        </div>
+    </div>
+</div>
+<hr>
+<br>
+
+<!-- ****************************************Tenant DashBoard Check List**************************************************************** -->
+
+<div class="row">
+    <label class="col-sm-2 col-form-label" for="Tenant_DashBoard" style="padding-left: 30px;padding-bottom: 0px;padding-top: 0px;margin-bottom: 0px;height: 20px;"><strong>2. Tenant DashBoard</strong></label>
+    <div class="col-sm-2" style="height: 20px;">
+        <div style="width: 90px;">
+            <input class="form-control" type="checkbox" id="Tenant_DashBoard" name="Tenant_DashBoard">
+        </div>
+    </div>
+    <label class="col-sm-2 col-form-label" for="TDBComment" style="height: 36px;">Comment (If any)</label>
+    <div class="col-sm-6" style="height: 30px;">
+        <div class="form-group bmd-form-group">
+            <input class="form-control" type="text" id="TDBComment" name="TDBComment">
+        </div>
+    </div>
+</div>
+<hr>
+<br>
+<!-- ****************************************Entity  Check List************************************************************************* -->
+
+<div class="row">
+    <label class="col-sm-2 col-form-label" for="Entity" style="padding-left: 30px;padding-bottom: 0px;padding-top: 0px;margin-bottom: 0px;height: 20px;"><strong>3. Entity</strong></label>
+    <div class="col-sm-2" style="height: 20px;">
+        <div style="width: 90px;">
+            <input class="form-control" type="checkbox" id="Entity" name="Entity">
+        </div>
+    </div>
+    <div>
+        <label>View.py</label> <input type="checkbox" style="margin-right: 20px;">
+        <label>urls.py</label> <input type="checkbox" style="margin-right: 20px;">
+        <label>Models.py</label> <input type="checkbox" style="margin-right: 20px;">
+        <label>admin.py</label> <input type="checkbox" style="margin-right: 20px;">
+        <label>forms.py</label> <input type="checkbox" style="margin-right: 20px;">
+        <label>Migrations</label> <input type="checkbox" style="margin-right: 20px;">
+    </div>
+    <br>
+    <div style="margin-left: 354px; padding-left: 0px;">
+        <label>Add</label> <input type="checkbox" style="margin-right: 20px;">
+        <label>OverView</label> <input type="checkbox" style="margin-right: 20px;">
+        <label>View_Entity</label> <input type="checkbox" style="margin-right: 20px;">
+        <label>Edit</label> <input type="checkbox" style="margin-right: 20px;">
+        <label>Delete</label> <input type="checkbox" style="margin-right: 20px;">
+        <label>All Urls</label> <input type="checkbox" style="margin-right: 20px;">
+    </div>
+</div>
+<div class="row">
+    <label class="col-sm-2 col-form-label" for="EntityComment" style="height: 36px;">Comment (If any)</label>
+    <div class="col-sm-6" style="height: 30px;">
+        <div class="form-group bmd-form-group">
+            <input class="form-control" type="text" id="EntityComment" name="EntityComment">
+        </div>
+    </div>
+</div>
+
+<hr>
+<br>
+<br>
+<!-- ****************************************Property Check List************************************************************************* -->
+
+<div class="row">
+    <label class="col-sm-2 col-form-label" for="Property" style="padding-left: 30px;padding-bottom: 0px;padding-top: 0px;margin-bottom: 0px;height: 20px;"><strong>4. Property</strong></label>
+    <div class="col-sm-2" style="height: 20px;">
+        <div style="width: 90px;">
+            <input class="form-control" type="checkbox" id="Property" name="Property">
+        </div>
+    </div>
+    <div>
+        <label>View.py</label> <input type="checkbox" style="margin-right: 20px;">
+        <label>urls.py</label> <input type="checkbox" style="margin-right: 20px;">
+        <label>Models.py</label> <input type="checkbox" style="margin-right: 20px;">
+        <label>admin.py</label> <input type="checkbox" style="margin-right: 20px;">
+        <label>forms.py</label> <input type="checkbox" style="margin-right: 20px;">
+        <label>Migrations</label> <input type="checkbox" style="margin-right: 20px;">
+    </div>
+    <br>
+    <div style="margin-left: 354px; padding-left: 0px;">
+        <label>Add</label> <input type="checkbox" style="margin-right: 20px;">
+        <label>OverView</label> <input type="checkbox" style="margin-right: 20px;">
+        <label>View_Prop</label> <input type="checkbox" style="margin-right: 20px;">
+        <label>Edit</label> <input type="checkbox" style="margin-right: 20px;">
+        <label>Delete</label> <input type="checkbox" style="margin-right: 20px;">
+        <label>All Urls</label> <input type="checkbox" style="margin-right: 20px;">
+    </div>
+</div>
+<div class="row">
+    <label class="col-sm-2 col-form-label" for="PropertyComment" style="height: 36px;">Comment (If any)</label>
+    <div class="col-sm-6" style="height: 30px;">
+        <div class="form-group bmd-form-group">
+            <input class="form-control" type="text" id="PropertyComment" name="PropertyComment">
+        </div>
+    </div>
+</div>
+
+<hr>
+<br>
+<!-- ****************************************Unit Check List***************************************************************************** -->
+<div class="row">
+    <label class="col-sm-2 col-form-label" for="Unit" style="padding-left: 30px;padding-bottom: 0px;padding-top: 0px;margin-bottom: 0px;height: 20px;"><strong>5. Unit</strong></label>
+    <div class="col-sm-2" style="height: 20px;">
+        <div style="width: 90px;">
+            <input class="form-control" type="checkbox" id="Unit" name="Unit">
+        </div>
+    </div>
+    <div>
+        <label>View.py</label> <input type="checkbox" style="margin-right: 20px;">
+        <label>urls.py</label> <input type="checkbox" style="margin-right: 20px;">
+        <label>Models.py</label> <input type="checkbox" style="margin-right: 20px;">
+        <label>admin.py</label> <input type="checkbox" style="margin-right: 20px;">
+        <label>forms.py</label> <input type="checkbox" style="margin-right: 20px;">
+        <label>Migrations</label> <input type="checkbox" style="margin-right: 20px;">
+    </div>
+    <br>
+    <div style="margin-left: 354px; padding-left: 0px;">
+        <label>Add</label> <input type="checkbox" style="margin-right: 20px;">
+        <label>OverView</label> <input type="checkbox" style="margin-right: 20px;">
+        <label>View_Unit</label> <input type="checkbox" style="margin-right: 20px;">
+        <label>Edit</label> <input type="checkbox" style="margin-right: 20px;">
+        <label>Delete</label> <input type="checkbox" style="margin-right: 20px;">
+        <label>All Urls</label> <input type="checkbox" style="margin-right: 20px;">
+    </div>
+</div>
+<div class="row">
+    <label class="col-sm-2 col-form-label" for="UnitComment" style="height: 36px;">Comment (If any)</label>
+    <div class="col-sm-6" style="height: 30px;">
+        <div class="form-group bmd-form-group">
+            <input class="form-control" type="text" id="UnitComment" name="UnitComment">
+        </div>
+    </div>
+</div>
+
+<hr>
+<br>
+<!-- ****************************************Submit Button Check List******************************************************************** -->
+
+<button class="btn btn-rose btn-round" type=Submit>
+    <i class="material-icons">near_me </i>  Submit
+    <div class="ripple-container"></div>
+</button> {% endblock body %}

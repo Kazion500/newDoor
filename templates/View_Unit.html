@@ -1,0 +1,134 @@
+{% extends 'Main_NewDoor.html' %} {% block body %}
+<div class="col-md-12">
+    <form id="TypeValidation" class="form-horizontal" action=" " method="post" novalidate="novalidate" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="card "><br>
+            <div class="row">
+                <div class="col-sm-12 offset-0" >
+                    <h4 class="alert alert-info">View Unit</h4>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="card-body ">
+                            <br> 
+                            
+{% comment %} Row1 {% endcomment %}
+                <div class="row">
+                    <label class="col-sm-2 col-form-label" for="PropID">Property Name*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <select input class="form-control" value="{{pi.PropID}}" type="text" id="PropID" name="PropID" required="true" aria-required="true">
+                              <option selected>Select Property</option>
+                              {% for temp in ADPRPRTY  %}
+                                <option SELECTED readonly value= "{{temp.id}}" > {{temp.property_name}} </option>
+                              {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <label class="col-sm-2 col-form-label" for="PrtTypID">Property Type*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <select readonly input class="form-control" value="{{pi.PrtTypID}}" type="text" id="PrtTypID" name="PrtTypID" required="true" aria-required="true">
+                              <option selected>Select Property Type</option>
+                                {% for temp in PTAT  %}
+                                    <option SELECTED value= "{{temp.id}}" > {{temp.PrtType}} </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                {% comment %} Row2 {% endcomment %}
+                <div class="row">
+                    <label class="col-sm-2 col-form-label">Flat No.*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input readonly class="form-control" value="{{pi.flat}}" type="text" id="flat" name="flat" required="true" aria-required="true">
+                        </div>
+                    </div>
+                    <label class="col-sm-2 col-form-label" for="OwnerTypeID">Ownership Type*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <select readonly input class="form-control" value="{{pi.OwnerTypeID}}" type="text" id="OwnerTypeID" name="OwnerTypeID" required="true" aria-required="true">
+                              <option selected>Select Ownership Type</option>
+                              {% for temp in ADOWTP %}
+                                <option SELECTED value= "{{temp.id}}" > {{temp.OwnershipType}} </option>
+                              {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                {% comment %} Row3 {% endcomment %}
+                <div class="row">
+                    <label class="col-sm-2 col-form-label">Rental Amount*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input readonly class="form-control" value="{{pi.rent_amount}}" type="text" id="rent_amount" name="rent_amount" required="true" aria-required="true">
+                        </div>
+                    </div>
+                    <label class="col-sm-2 col-form-label">Size (SqFt)*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input readonly class="form-control" value="{{pi.size}}" type="text" id="size" name="size" required="true" aria-required="true">
+                        </div>
+                    </div>
+                </div>
+                {% comment %} Row4 {% endcomment %}
+                <div class="row">
+                    <label class="col-sm-2 col-form-label" for="OccupancyTypeID">Occupancy*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <select readonly input class="form-control" value="{{pi.OccupancyTypeID}}" type="text" id="OccupancyTypeID" name="OccupancyTypeID" required="true" aria-required="true">
+                              <option selected>Select Occupancy</option>
+                              {% for temp in OPTY %}
+                                <option value= "{{temp.id}}" > {{temp.OccupancyType}} </option>
+                              {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <label class="col-sm-2 col-form-label">No. of Bedrooms*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input readonly class="form-control" value="{{pi.bedrooms}}" type="number" id="bedrooms" name="bedrooms" required="true" aria-required="true">
+                        </div>
+                    </div>
+                </div>
+
+                {% comment %} Row5 {% endcomment %}
+                <div class="row">
+                    <label class="col-sm-2 col-form-label">No. of Bathrooms*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input readonly class="form-control" value="{{pi.bathrooms}}" type="number" id="bathrooms" name="bathrooms" required="true" aria-required="true">
+                        </div>
+                    </div>
+                    <label class="col-sm-2 col-form-label">Parking*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input readonly class="form-control" value="{{pi.parking}}" type="number" id="parking" name="parking" required="true" aria-required="true">
+                        </div>
+                    </div>
+                </div>
+
+                {% comment %} Row6 {% endcomment %}
+                <div class="row">
+                    <label class="col-sm-2 col-form-label">Description*</label>
+                    <div class="col-sm-10">
+                        <div class="form-group bmd-form-group">
+                            <input readonly class="form-control" value="{{pi.desc}}" type="text" id="desc" name="desc" required="true" aria-required="true">
+                        </div>
+                    </div>
+                </div>
+                <br>
+                        <br>
+                    <div class="modal-footer">
+                    <a href="{% url 'Unit_Overview'%}" class="btn btn-info btn-round float-right" style="margin-bottom: 20px; margin-top: 20px;"> Close </a>
+                    </div>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock body %}

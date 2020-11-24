@@ -1,0 +1,104 @@
+{% extends 'Main_NewDoor.html' %} {% block body %}
+<div class="col-md-12">
+    <form id="TypeValidation" class="form-horizontal" action=" " method="post" novalidate="novalidate" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="card "><br>
+            <div class="row">
+                <div class="col-sm-12 offset-0" >
+                    <h4 class="alert alert-info">View Entity</h4>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="card-body ">
+                            <br> 
+                            
+{% comment %} Row1 {% endcomment %}
+                <div class="row">
+                    <label class="col-sm-2 col-form-label">Entity Name*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input readonly class="form-control" value="{{pi.entity_name}}" type="text" id="entity_name" name="entity_name" required="true" aria-required="true">
+                        </div>
+                    </div>
+                    <label class="col-sm-2 col-form-label">Contact No.*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input readonly class="form-control" value="{{pi.contact_no}}" type="number" id="contact_no" name="contact_no" required="true" aria-required="true">
+                        </div>
+                    </div>
+                </div>
+
+{% comment %} Row2 {% endcomment %}
+                <div class="row">
+                    <label class="col-sm-2 col-form-label">Addres1*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input readonly class="form-control" value="{{pi.address1}}" type="text" id="address1" name="address1" required="true" aria-required="true">
+                        </div>
+                    </div>
+                    <label class="col-sm-2 col-form-label">Addres2*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input readonly class="form-control" value="{{pi.address2}}" type="text" id="address2" name="address2" required="true" aria-required="true">
+                        </div>
+                    </div>
+                </div>
+
+{% comment %} Row3 {% endcomment %}
+                <div class="row">
+                    <label class="col-sm-2 col-form-label">City*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input readonly class="form-control" value="{{pi.city}}" type="text" id="city" name="city" required="true" aria-required="true">
+                        </div>
+                    </div>
+                    <label class="col-sm-2 col-form-label">Zip or Postal*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input readonly class="form-control" value="{{pi.pobox}}" type="text" id="pobox" name="pobox" required="true" aria-required="true">
+                        </div>
+                    </div>
+                </div>
+{% comment %} Row4 {% endcomment %}
+                <div class="row">
+                    <label class="col-sm-2 col-form-label">State*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input readonly class="form-control" value="{{pi.state}}" type="text" id="state" name="state" required="true" aria-required="true">
+                        </div>
+                    </div>
+                    <label class="col-sm-2 col-form-label">Country*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input readonly class="form-control" value="{{pi.country}}" type="text" id="country" name="country" required="true" aria-required="true">
+                        </div>
+                    </div>
+                </div>
+
+{% comment %} Row5 {% endcomment %}
+                <div class="row">
+                    <label class="col-sm-2 col-form-label">Email*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input readonly class="form-control" value="{{pi.e_mail}}" type="text" id="e_mail" name="e_mail" email="true" required="true" aria-required="true">
+                        </div>
+                    </div>
+                    <label class="col-sm-2 col-form-label">Description</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input readonly class="form-control" value="{{pi.desc}}" type="text" id="desc" name="desc" required="true" aria-required="true">
+                        </div>
+                    </div>
+                </div>
+                        <br>
+                    <div class="modal-footer">
+                    
+                    <a href="{% url 'Entity_Overview'%}" class="btn btn-info btn-round float-right" style="margin-bottom: 20px; margin-top: 20px;"> Close </a>
+                    </div>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock body %}

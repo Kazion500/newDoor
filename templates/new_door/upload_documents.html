@@ -1,0 +1,202 @@
+{% extends 'base.html' %} {% block title %} Upload_Documents {% endblock title%}
+{% block body %} {% load static %}
+<div class="col-md-12">
+  <form
+    id="TypeValidation"
+    class="form-horizontal"
+    action="Upload_Documents"
+    method="post"
+    novalidate="novalidate"
+    enctype="multipart/form-data"
+  >
+    {% csrf_token %}
+    <div class="card">
+      <div
+        class="card-header card-header-rose card-header-text"
+        style="font-size: 20px"
+      >
+        <div class="card-text" style="padding-left: 1px">
+          <a href="" class="card-header card-header-rose card-header-text">
+            <i class="material-icons">cloud_upload</i> Upload Documents
+          </a>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <br />
+        <div class="row">
+          <button
+            class="btn btn-rose btn-round float-right"
+            type="Submit"
+            style="left: 1000px"
+          >
+            <i class="material-icons">near_me </i> Submit
+            <div class="ripple-container"></div>
+          </button>
+        </div>
+        <div class="row">
+          <label class="col-sm-2 col-form-label" for="PayType"
+            >Select Documents*</label
+          >
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">
+              <select
+                input
+                class="form-control"
+                type="text"
+                id="CatId"
+                name="CatId"
+                required="true"
+                aria-required="true"
+              >
+                <option selected>Select Documents Type</option>
+                {% for temp in temp %}
+                <option value="{{temp.id}}">{{temp.CatType}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <button
+            class="btn btn-rose btn-round float-right"
+            type="Submit"
+            style="
+              background-color: #9e9e9e;
+              border-color: #9e9e9e;
+              width: 115px;
+              padding-left: 10px;
+              height: 42px;
+            "
+          >
+            <i class="material-icons">open_in_browser </i> Browse File
+            <div class="ripple-container"></div>
+          </button>
+
+          <!-- <button class="btn btn-rose btn-round float-right" type="Submit" style="width: 115px; padding-left: 10px;
+                    height: 42px; left: 30px;">
+                    <i class="material-icons" style="right:5px;">cloud_upload </i>  Upload
+                    <div class="ripple-container"></div>
+                </button> -->
+        </div>
+        {% comment %} Row1 end here {% endcomment %}
+
+        <br />
+      </div>
+      {% comment %}
+      <hr
+        style="
+          width: 1000px;
+          border-left-width: 35‒;
+          height: 0px;
+          margin: 0px;
+          margin-right: -20px;
+          margin-left: 0px;
+          font-weight: bold;
+          margin-top: 1rem;
+          margin-bottom: 1rem;
+          border: 0;
+          border-top: 5px solid rgba(0, 0, 0, 0.1);
+        "
+      />
+      {% endcomment %} {% comment %} Main form send here {% endcomment %}
+      <hr
+        style="
+          width: 1150px;
+          border-left-width: 35‒;
+          height: 0px;
+          margin: 0px;
+          margin-right: -20px;
+          margin-left: 0px;
+          font-weight: bold;
+          margin-top: 1rem;
+          margin-bottom: 1rem;
+          border: 0;
+          border-top: 5px solid rgba(0, 0, 0, 0.1);
+        "
+      />
+      <div class="row">
+        <div class="col-md-12">
+          <!-- <div class="card"> -->
+          <!-- <div class="card-header card-header-primary card-header-icon">
+                        <h4 class="card-title">Payment Mode Type Overview</h4>
+                    </div> -->
+          <div class="card-body">
+            <!-- <div class="toolbar">
+                            Here you can write extra buttons/actions for the toolbar
+                        </div> -->
+            <div class="material-datatables">
+              <table
+                id="datatables"
+                class="table table-striped table-no-bordered table-hover"
+                cellspacing="0"
+                width="100%"
+                style="width: 100%"
+              >
+                <thead>
+                  <tr>
+                    <th>Document Type</th>
+                    <th>File Name</th>
+                    <th>Size</th>
+                    <th>File Progress</th>
+                    <th class="disabled-sorting text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if ADPMT %} {% for TRT in ADPMT %}
+                  <tr>
+                    <td scope="row">{{TRT.id}}</td>
+                    <td>{{TRT.PayType}}</td>
+                    <td>{{TRT.PayType}}</td>
+                    <td>{{TRT.PayType}}</td>
+                    <td>{{TRT.desc}}</td>
+                    <td class="text-right">
+                      <a href="" method="post " class="d-inline">
+                        {% csrf_token %}
+                        <i
+                          class="material-icons"
+                          style="
+                            margin-right: 5px;
+                            margin-top: 10px;
+                            margin-bottom: 20px;
+                            color: #f44336;
+                          "
+                          >delete</i
+                        >
+                        <div class="ripple-container"></div>
+                      </a>
+                    </td>
+                  </tr>
+                  {% endfor %} {% else %} NoData {% endif %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr
+        style="
+          width: 1150px;
+          border-left-width: 35‒;
+          height: 0px;
+          margin: 0px;
+          margin-right: -20px;
+          margin-left: 0px;
+          font-weight: bold;
+          margin-top: 1rem;
+          margin-bottom: 1rem;
+          border: 0;
+          border-top: 5px solid rgba(0, 0, 0, 0.1);
+        "
+      />
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card-header card-header-primary card-header-icon">
+            <h4 class="card-title">View Documents</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+{% endblock body %}

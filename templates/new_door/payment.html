@@ -1,0 +1,267 @@
+{% extends 'base.html' %} {% block title %} Payment {% endblock title %} 
+{% block body %}
+
+<div class="col-md-12">
+  <form
+    id="TypeValidation"
+    class="form-horizontal"
+    action="/Payment"
+    method="post"
+    novalidate="novalidate"
+  >
+    {% csrf_token %}
+    <div class="card">
+      <div
+        class="card-header card-header-rose card-header-text"
+        style="font-size: 20px"
+      >
+        <div class="card-text" style="padding-left: 1px">
+          <a
+            href=" {% url 'payment'%} "
+            class="card-header card-header-rose card-header-text"
+          >
+            <i class="material-icons">payment</i> Payment
+          </a>
+        </div>
+      </div>
+
+      <div class="card-body">
+        {% comment %} Row1 {% endcomment %}
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="card-title">Select a payment method</h4>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-3.5">
+                  <ul
+                    class="nav nav-pills nav-pills-rose flex-column"
+                    role="tablist"
+                    style="background-color: rgb(245, 245, 245)"
+                  >
+                    <li class="nav-item">
+                      <a
+                        class="nav-link active show"
+                        data-toggle="tab"
+                        href="#link4"
+                        role="tablist"
+                        style="
+                          border-radius: 0px;
+                          height: 60px;
+                          font-size: 15px;
+                          padding-top: 5.126;
+                          padding-top: 18px;
+                        "
+                      >
+                        CREDIT/ DEBIT CARDS
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a
+                        class="nav-link"
+                        data-toggle="tab"
+                        href="#link5"
+                        role="tablist"
+                        style="
+                          border-radius: 0px;
+                          height: 60px;
+                          font-size: 15px;
+                          padding-top: 5.126;
+                          padding-top: 18px;
+                        "
+                      >
+                        CASH
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a
+                        class="nav-link"
+                        data-toggle="tab"
+                        href="#link6"
+                        role="tablist"
+                        style="
+                          border-radius: 0px;
+                          height: 60px;
+                          font-size: 15px;
+                          padding-top: 5.126;
+                          padding-top: 18px;
+                        "
+                      >
+                        NET BANKING
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a
+                        class="nav-link"
+                        data-toggle="tab"
+                        href="#link6"
+                        role="tablist"
+                        style="
+                          border-radius: 0px;
+                          height: 60px;
+                          font-size: 15px;
+                          padding-top: 5.126;
+                          padding-top: 18px;
+                        "
+                      >
+                        PAYPAL/ PAYZAPP/ PAYTM
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-md-8">
+                  <div class="tab-content">
+                    <div class="tab-pane active show" id="link4">
+                      <h4>CREDIT/ DEBIT CARDS</h4>
+                      Card Number
+                      <div class="row">
+                        <!-- <label class="col-sm-2 col-form-label" for="OccupancyType">Card Number*</label> -->
+                        <div class="col-sm-5">
+                          <div class="form-group bmd-form-group">
+                            <input
+                              class="form-control"
+                              type="text"
+                              id="OccupancyType"
+                              name="OccupancyType"
+                              required="true"
+                              aria-required="true"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      Name on card*
+                      <div class="row">
+                        <!-- <label class="col-sm-2 col-form-label" for="OccupancyType">Card Number*</label> -->
+                        <div class="col-sm-5">
+                          <div class="form-group bmd-form-group">
+                            <input
+                              class="form-control"
+                              type="text"
+                              id="OccupancyType"
+                              name="OccupancyType"
+                              required="true"
+                              aria-required="true"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      Valid thru*
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <div class="form-group bmd-form-group">
+                            <select
+                              input
+                              class="form-control"
+                              type="text"
+                              id="month"
+                              name="month"
+                              required="true"
+                              aria-required="true"
+                            >
+                              <option selected>Select Month</option>
+                              <option>January</option>
+                              <option>February</option>
+                              <option>March</option>
+                              <option>April</option>
+                              <option>May</option>
+                              <option>June</option>
+                              <option>July</option>
+                              <option>August</option>
+                              <option>September</option>
+                              <option>October</option>
+                              <option>November</option>
+                              <option>December</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                          <div class="form-group bmd-form-group">
+                            <select
+                              input
+                              class="form-control"
+                              type="text"
+                              id="month"
+                              name="month"
+                              required="true"
+                              aria-required="true"
+                            >
+                              <option selected>Select Month</option>
+                              <option>2021</option>
+                              <option>2022</option>
+                              <option>2023</option>
+                              <option>2024</option>
+                              <option>2025</option>
+                              <option>2026</option>
+                              <option>2027</option>
+                              <option>2027</option>
+                              <option>2028</option>
+                              <option>2029</option>
+                              <option>2030</option>
+                              <option>2031</option>
+                              <option>2032</option>
+                              <option>2033</option>
+                              <option>2034</option>
+                              <option>2035</option>
+                              <option>2036</option>
+                              <option>2037</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+
+                      CVV*
+                      <div class="row">
+                        <!-- <label class="col-sm-2 col-form-label" for="OccupancyType">Card Number*</label> -->
+                        <div class="col-sm-2">
+                          <div class="form-group bmd-form-group">
+                            <input
+                              class="form-control"
+                              type="text"
+                              id="OccupancyType"
+                              name="OccupancyType"
+                              required="true"
+                              aria-required="true"
+                            />
+                          </div>
+                        </div>
+                        <i class="material-icons">help</i>
+                        <p>
+                          Last three digits printed on the back of the card.
+                        </p>
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="link5">
+                      Efficiently unleash cross-media information without
+                      cross-media value. Quickly maximize timely deliverables
+                      for real-time schemas.
+                      <br />
+                      <br />Dramatically maintain clicks-and-mortar solutions
+                      without functional solutions.
+                    </div>
+                    <div class="tab-pane" id="link6">
+                      Completely synergize resource taxing relationships via
+                      premier niche markets. Professionally cultivate one-to-one
+                      customer service with robust ideas.
+                      <br />
+                      <br />Dynamically innovate resource-leveling customer
+                      service for state of the art customer service.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% comment %} Row5 end {% endcomment %}
+        <br />
+        <button class="btn btn-rose btn-round float-right" type="Submit">
+          <i class="material-icons">near_me </i> Submit
+          <div class="ripple-container"></div>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock body %}

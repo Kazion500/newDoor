@@ -1,0 +1,174 @@
+{% extends 'Main_NewDoor.html' %} {% block title %} Add_User {% endblock title %} {% block body %} {% load static %}
+<div class="col-md-12">
+    <form id="TypeValidation" class="form-horizontal" action="/Add_User" method="post" novalidate="novalidate" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="card ">
+            <div class="card-header card-header-rose card-header-text">
+                <div class="card-text">
+                    <h4 class="card-title"><i class="material-icons">roofing</i>Add_User</h4>
+                </div>
+            </div>
+
+            <div class="card-body ">
+                <br> {% comment %} Row1 {% endcomment %}
+                <div class="row">
+                    <label class="col-sm-2 col-form-label">User ID</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input class="form-control" type="text" id="user_id" name="user_id" required="true" aria-required="true">
+                        </div>
+                    </div>
+                        
+                    <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                        <div class="fileinput-new thumbnail img-circle float-right" style="
+                                    width: 50px;
+                                    height: 50px;
+                                    margin-right: ;
+                                    {% comment %} margin-left: -20px; {% endcomment %}
+                                    font-weight: bold;
+                                    ">
+                            <img src="{% static '/img/placeholder.jpg' %}">
+                        </div>
+                        <div class="fileinput-preview fileinput-exists circle "></div>
+                        <div>
+                            <span class="btn btn-round btn-rose btn-file float-right">
+                            <span class="fileinput-new">Select profile image</span>
+                            <span class="fileinput-exists">Change</span>
+                            <input type="hidden"><input type="file" id="usrimg" name="usrimg">
+                            <div class="ripple-container"></div>
+                            </span>
+                            <br>
+                            <a href="#pablo" class="btn btn-danger btn-round fileinput-exists" data-dismiss="fileinput"><i class="fa fa-times"></i> Remove</a>
+                        </div>
+                    </div>
+                </div>
+                {% comment %} Row2 {% endcomment %}
+                <div class="row">
+                    <label class="col-sm-2 col-form-label">Password</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input class="form-control" type="text" id="user_password" name="user_password" required="true" aria-required="true">
+                        </div>
+                    </div>
+                    {% comment %} <label class="col-sm-2 col-form-label">Confirm Password</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input class="form-control" type="text" id="user_password" name="user_password" required="true" aria-required="true">
+                        </div>
+                    </div> {% endcomment %}
+                </div>
+                <hr style="
+                    width: 980px;
+                    border-left-width: 35‒;
+                    height: 0px;
+                    margin-right: -10px;
+                    margin-: 10px;
+                    margin-left: -20px;
+                    font-weight: bold;
+                    margin-top: 2rem;
+                    margin-bottom: 2rem;
+                    border: 0;
+                    border-top: 1.5px solid rgba(0, 0, 0, .1);
+                "> {% comment %} Row3 {% endcomment %}
+                <div class="row">
+                    <label class="col-sm-2 col-form-label">First Name*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input class="form-control" type="text" id="usr_f_name" name="usr_f_name" required="true" aria-required="true">
+                        </div>
+                    </div>
+                    <label class="col-sm-2 col-form-label">Middle Name</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input class="form-control" type="text" id="usr_m_name" name="usr_m_name" required="true" aria-required="true">
+                        </div>
+                    </div>
+                </div>
+                {% comment %} Row4 {% endcomment %}
+                <div class="row">
+                    <label class="col-sm-2 col-form-label">Last Name</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input class="form-control" type="text" id="usr_l_name" name="usr_l_name" required="true" aria-required="true">
+                        </div>
+                    </div>
+                    <label class="col-sm-2 col-form-label">E-mail*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input class="form-control" type="text" id="email" name="email" required="true" aria-required="true">
+                        </div>
+                    </div>
+                </div>
+                {% comment %} Row5 {% endcomment %}
+                <div class="row">
+                    <label class="col-sm-2 col-form-label">Primary Contact*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input class="form-control" type="text" id="pcontact" name="pcontact" required="true" aria-required="true">
+                        </div>
+                    </div>
+                    <label class="col-sm-2 col-form-label">Secondary Contact*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input class="form-control" type="text" id="scontact" name="scontact" required="true" aria-required="true">
+                        </div>
+                    </div>
+                </div>
+                {% comment %} Row6 {% endcomment %}
+                <div class="row">
+                    <label class="col-sm-2 col-form-label">Marital Status*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input class="form-control" type="text" id="marry_status" name="marry_status" required="true" aria-required="true">
+                        </div>
+                    </div>
+                    <label class="col-sm-2 col-form-label">Nationality*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input class="form-control" type="text" id="nationality" name="nationality" required="true" aria-required="true">
+                        </div>
+                    </div>
+                </div>
+                {% comment %} Row6 {% endcomment %}
+                <div class="row">
+                    <label class="col-sm-2 col-form-label">Roll ID*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input class="form-control" type="text" id="rollid" name="rollid" required="true" aria-required="true">
+                        </div>
+                    </div>
+                </div>
+                <br> {% comment %} *** Add image *** Start Here---20-10-2020 10.00pm- Faraz & Javed *** {% endcomment %}
+
+                <div class="row">
+                    <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                        {% comment %}
+                        <div class="fileinput-new thumbnail img-circle">
+                            <img src="{% static '/img/placeholder.jpg' %}">
+                        </div> {% endcomment %}
+                        <div class="fileinput-preview fileinput-exists thumbnail"></div>
+                        <div>
+                            <span class="btn btn-round btn-rose btn-file">
+                            <span class="fileinput-new">Add Files</span>
+                            <span class="fileinput-exists">Change</span>
+                            <input type="hidden"><input type="file" id="image" name="image">
+                            <div class="ripple-container"></div>
+                            </span>
+                            <br>
+                            <a href="#pablo" class="btn btn-danger btn-round fileinput-exists" data-dismiss="fileinput"><i class="fa fa-times"></i> Remove</a>
+                        </div>
+                    </div>
+                </div>
+                {% comment %} *** Add image *** End Here---21-10-2020 01.05pm- Javed *** {% endcomment %} {% comment %} Row6 end {% endcomment %}
+
+                <button class="btn btn-rose btn-round float-right" type=Submit>
+                       <i class="material-icons">near_me </i>  Submit
+                       <div class="ripple-container"></div>
+                </button>
+                <br>
+
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock body %}

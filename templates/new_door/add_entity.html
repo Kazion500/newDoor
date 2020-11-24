@@ -1,0 +1,92 @@
+{% extends 'base.html' %} {% block title %} Add Entity {% endblock title %}
+{%block body %}
+
+<div class="col-md-12">
+  <form
+    id="TypeValidation"
+    class="form-horizontal"
+    method="post"
+    novalidate="novalidate"
+  >
+    {% csrf_token %}
+    <div class="card">
+      <div class="card-header card-header-rose card-header-text">
+        <div class="card-text">
+          <h4 class="card-title">
+            <i class="material-icons">person</i>Add Entity
+          </h4>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <br />
+        <div class="row">
+          <label class="col-sm-2 col-form-label">Entity Name*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.entity_name }}</div>
+          </div>
+          <label class="col-sm-2 col-form-label">Contact No.*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.contact_no }}</div>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-2 col-form-label">Addres1*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.address1 }}</div>
+          </div>
+          <label class="col-sm-2 col-form-label">Addres2*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.address2 }}</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <label class="col-sm-2 col-form-label">City*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.city }}</div>
+          </div>
+          <label class="col-sm-2 col-form-label">Zip or Postal*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.pobox }}</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <label class="col-sm-2 col-form-label">State*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.state }}</div>
+          </div>
+          <label class="col-sm-2 col-form-label">Country*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">
+              {{ form.country }}
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <label class="col-sm-2 col-form-label">Email*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">
+             {{ form.email }}
+            </div>
+          </div>
+          <label class="col-sm-2 col-form-label">Description</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">
+             {{ form.desc }}
+            </div>
+          </div>
+        </div>
+
+        <br />
+        <button class="btn btn-rose btn-round float-right" type="Submit">
+          <i class="material-icons">near_me </i> Submit
+          <div class="ripple-container"></div>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock body %}

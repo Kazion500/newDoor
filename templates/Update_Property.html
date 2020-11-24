@@ -1,0 +1,126 @@
+{% extends 'Main_NewDoor.html' %} {% block body %}
+<div class="col-md-12">
+    <form id="TypeValidation" class="form-horizontal" action=" " method="post" novalidate="novalidate" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="card "><br>
+            <div class="row">
+                <div class="col-sm-12 offset-0" >
+                    <h4 class="alert alert-info">Update Property</h4>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="card-body ">
+                            <br> 
+
+{% comment %} Row1 {% endcomment %}
+                <div class="row">
+                    <label class="col-sm-2 col-form-label">Owner Name*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input class="form-control" value="{{pi.owner_name}}" type="text" id="owner_name" name="owner_name" required="true" aria-required="true">
+                        </div>
+                    </div>
+                    <label class="col-sm-2 col-form-label">Property Name*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input class="form-control" value="{{pi.property_name}}" type="text" id="property_name" name="property_name" required="true" aria-required="true">
+                        </div>
+                    </div>
+                </div>
+{% comment %} Row2 {% endcomment %}
+                <div class="row">
+                    <label class="col-sm-2 col-form-label" for="EntityID">Entity Name*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                           <select input class="form-control" type="text" id="EntityID" name="EntityID" required="true" aria-required="true">
+                              <option selected>Select Entity</option>
+                              {% for temp in ENTT  %}
+                                <option SELECTED value= "{{temp.id}}" > {{temp.entity_name}} </option>
+                              {% endfor %}
+                            </select>
+                         </div>
+                    </div>
+                    <label class="col-sm-2 col-form-label">Address1*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input class="form-control" value="{{pi.address1}}" type="text" id="address1" name="address1" required="true" aria-required="true">
+                        </div>
+                    </div>
+                </div>
+
+{% comment %} Row3 {% endcomment %}
+                <div class="row">
+                    <label class="col-sm-2 col-form-label">Address2*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input class="form-control" value="{{pi.address2}}" type="text" id="address2" name="address2" required="true" aria-required="true">
+                        </div>
+                    </div>
+                    <label class="col-sm-2 col-form-label">City*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input class="form-control" value="{{pi.city}}" type="text" id="city" name="city" required="true" aria-required="true">
+                        </div>
+                    </div>
+                </div>
+{% comment %} Row4 {% endcomment %}
+                <div class="row">
+                    <label class="col-sm-2 col-form-label">Zip or Postal*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input class="form-control" value="{{pi.pobox}}" type="text" id="pobox" name="pobox" required="true" aria-required="true">
+                        </div>
+                    </div>
+                    <label class="col-sm-2 col-form-label">State*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input class="form-control" value="{{pi.state}}" type="text" id="state" name="state" required="true" aria-required="true">
+                        </div>
+                    </div>
+                </div>
+
+{% comment %} Row5 {% endcomment %}
+                <div class="row">
+                    <label class="col-sm-2 col-form-label">Country*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input class="form-control" value="{{pi.country}}" type="text" id="country" name="country"  required="true" aria-required="true">
+                        </div>
+                    </div>
+                    <label class="col-sm-2 col-form-label">Email*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input class="form-control" value="{{pi.e_mail}}" type="text" id="e_mail" name="e_mail" required="true" aria-required="true">
+                        </div>
+                    </div>
+                </div>
+
+{% comment %} Row6 {% endcomment %}
+                <div class="row">
+                    <label class="col-sm-2 col-form-label">Contact No.*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input class="form-control" value="{{pi.contact_no}}" type="text" id="contact_no" name="contact_no" required="true" aria-required="true">
+                        </div>
+                    </div>
+                    <label class="col-sm-2 col-form-label">Location*</label>
+                    <div class="col-sm-4">
+                        <div class="form-group bmd-form-group">
+                            <input class="form-control" value="{{pi.location}}" type="text" id="location" name="location" required="true" aria-required="true">
+                        </div>
+                    </div>
+                </div>
+{% comment %} Row6 end {% endcomment %}
+                <br>
+                        <br>
+                    <div class="modal-footer">
+                    <input type="submit" class="btn btn-success btn-round float-right" value="Update" style="margin-right: 13px; margin-bottom: 20px; margin-top: 20px;">
+                    <a href="{% url 'Property_Overview'%}" class="btn btn-info btn-round float-right" style="margin-bottom: 20px; margin-top: 20px;"> Close </a>
+                    </div>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock body %}

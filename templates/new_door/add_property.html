@@ -1,0 +1,120 @@
+{% extends 'base.html' %} {% block title %} Add Property {% endblock %} 
+{% block body %}
+<div class="col-md-12">
+  <form
+    id="TypeValidation"
+    class="form-horizontal"
+    method="post"
+    novalidate="novalidate"
+  >
+    {% csrf_token %}
+    <div class="card">
+      <div class="card-header card-header-rose card-header-text">
+        <div class="card-text">
+          <h4 class="card-title">
+            <i class="material-icons">house</i>Add_Property
+          </h4>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <br />
+        {% comment %} Row1 {% endcomment %}
+        <div class="row">
+          <label class="col-sm-2 col-form-label">Owner Name*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.owner_name }}</div>
+          </div>
+          <label class="col-sm-2 col-form-label">Property Name*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">
+              {{ form.property_name }}
+            </div>
+          </div>
+        </div>
+        {% comment %} Row2 {% endcomment %}
+        <div class="row">
+          <label class="col-sm-2 col-form-label" for="EntityID"
+            >Entity Name*</label
+          >
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">
+              <select
+                input
+                class="form-control"
+                type="text"
+                id="EntityID"
+                name="EntityID"
+                required="true"
+                aria-required="true"
+              >
+                <option selected>Select Entity</option>
+                {% for entity in entities %}
+                <option value="{{entity.id}}">{{entity.entity_name}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <label class="col-sm-2 col-form-label">Address1*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.address1 }}</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <label class="col-sm-2 col-form-label">Address2*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.address2 }}</div>
+          </div>
+          <label class="col-sm-2 col-form-label">City*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.city }}</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <label class="col-sm-2 col-form-label">Zip or Postal*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.pobox }}</div>
+          </div>
+          <label class="col-sm-2 col-form-label">State*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.state }}</div>
+          </div>
+        </div>
+
+        {% comment %} Row5 {% endcomment %}
+        <div class="row">
+          <label class="col-sm-2 col-form-label">Country*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.country }}</div>
+          </div>
+          <label class="col-sm-2 col-form-label">Email*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.email }}</div>
+          </div>
+        </div>
+
+        {% comment %} Row6 {% endcomment %}
+        <div class="row">
+          <label class="col-sm-2 col-form-label">Contact No.*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.contact_no }}</div>
+          </div>
+          <label class="col-sm-2 col-form-label">Location*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.location }}</div>
+          </div>
+        </div>
+        {% comment %} Row6 end {% endcomment %}
+
+        <br />
+        <button class="btn btn-rose btn-round" type="Submit">
+          <i class="material-icons">near_me </i> Submit
+          <div class="ripple-container"></div>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock body %}

@@ -1,0 +1,55 @@
+{% extends 'Main_NewDoor.html' %} {% block body %}
+<div class="col-md-12">
+    <form id="TypeValidation" class="form-horizontal" action=" " method="post" novalidate="novalidate" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="card "><br>
+            <div class="row">
+                <div class="col-sm-8 offset-2">
+                    <h4 class="alert alert-info">View Property Type</h4>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="card-body ">
+                            <br> {% comment %} Row1 {% endcomment %}
+                            <div class="row">
+                                <label class="col-sm-3 col-form-label">Category Type*</label>
+                                <div class="col-sm-6">
+                                    <div class="form-group bmd-form-group">
+                                        <select input class="form-control" type="text" id="CatId" name="CatId" required="true" aria-required="true">
+                                            {% for temp in temp %} 
+                                                <option SELECTED readonly value="{{temp.id}}" >{{temp.CatType}} </option>
+                                            {% endfor %}
+                                        </select>
+                                        {% comment %} <input SELECTED readonly class="form-control" value="{{temp.CatType.id}}" type="text" id="CatType" name="CatType" required="true" aria-required="true"> {% endcomment %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-3 col-form-label" for="PrtType">Property Type*</label>
+                                <div class="col-sm-6">
+                                    <div class="form-group bmd-form-group">
+                                        <input readonly class="form-control" value="{{ip.PrtType}}" type="text" id="PrtType" name="PrtType" required="true" aria-required="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-3 col-form-label" for="desc">Description*</label>
+                                <div class="col-sm-6">
+                                    <div class="form-group bmd-form-group">
+                                        <input readonly class="form-control" value="{{ip.desc}}" type="text" id="desc" name="desc" required="true" aria-required="true">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    <div class="modal-footer">
+                    <a href="{% url 'Property_Type'%}" class="btn btn-info btn-round float-right" style="margin-bottom: 20px; margin-top: 20px;"> Close </a>
+                    </div>
+                        {% comment %} <a href="{% url 'Documents_Type'%}" class="btn btn-info btn-round float-right" style="margin-bottom: 30px; margin-top: 30px; margin-right: 280px;"> Back </a>
+                        <input type="submit" class="btn btn-success btn-round float-right" value="Update" style="margin-right: 13px;"> {% endcomment %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock body %}

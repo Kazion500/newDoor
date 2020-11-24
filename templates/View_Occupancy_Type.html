@@ -1,0 +1,40 @@
+{% extends 'Main_NewDoor.html' %} {% block body %}
+<div class="col-md-12">
+    <form id="TypeValidation" class="form-horizontal" action=" " method="post" novalidate="novalidate" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="card "><br>
+            <div class="row">
+                <div class="col-sm-8 offset-2">
+                    <h4 class="alert alert-info">View Occupancy Type</h4>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="card-body ">
+                            <br> {% comment %} Row1 {% endcomment %}
+                            <div class="row">
+                                <label class="col-sm-3 col-form-label" for="OccupancyType">Occupancy Type*</label>
+                                <div class="col-sm-6">
+                                    <div class="form-group bmd-form-group">
+                                        <input readonly style="background-color: #ffffff; margin-bottom: 30px;" class="form-control" value="{{pi.OccupancyType}}" type="text" id="OccupancyType" name="OccupancyType" required="true" aria-required="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-3 col-form-label" for="desc">Description*</label>
+                                <div class="col-sm-6">
+                                    <div class="form-group bmd-form-group">
+                                        <input readonly style="background-color: #ffffff;" class="form-control" value="{{pi.desc}}" type="text" id="desc" name="desc" required="true" aria-required="true">
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <a href="{% url 'Occupancy_Type'%}" class="btn btn-info btn-round float-right" style="margin-bottom: 30px; margin-top: 30px; margin-right: 280px;"> Back </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock body %}
