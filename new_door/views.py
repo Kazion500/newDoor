@@ -6,6 +6,9 @@ from django.contrib import messages
 from .forms import (
     EntityModelForm,
     PropertyModelForm,
+    UnitModelForm,
+    CategoryTypeModelForm,
+    PropertyTypeModelForm,
     #     F_CategoryType,
     #     f_OwnershipType,
     #     F_PropertyType,
@@ -22,15 +25,8 @@ from .forms import (
 
 from .models import (
     Entity, Property,
-    Unit, CategoryType,
-    OwnershipType, PropertyType,
-    DocumentType, PayModeType,
-    StatusReqType, TenantReqType,
-    ContractReqType, DocumentsType,
-    OccupancyType, TenantContract,
-    User, UnitImage
+    Unit, CategoryType
 )
-
 # Dashboard Rendering
 
 
@@ -116,6 +112,68 @@ def add_property(request):
     }
     return render(request, 'new_door/add_property.html', context)
 
+
+def Update_Property(request, id):
+    pi = Property.objects.get(pk=id)
+    ADPRT = F_property(request.POST, instance=pi)
+    if ADPRT.is_valid():
+        ADPRT.save()
+        messages.success(
+            request, 'Congratulations...! Property successfully Updated.')
+    else:
+        pi = Property.objects.get(pk=id)
+        ADPRT = F_property(instance=pi)
+    ENTT = Entity.objects.all()
+    return render(request, 'Update_Property.html', {'pi': pi, 'ENTT': ENTT})
+
+# def View_Property(request, id):
+#     pi = Property.objects.get(pk=id)
+#     ADPRT = F_property(request.POST, instance=pi)
+#     if ADPRT.is_valid():
+#         ADPRT.save()
+#         messages.success(
+#             request, 'Congratulations...! Property successfully Updated.')
+#     else:
+#         pi = Property.objects.get(pk=id)
+#         ADPRT = F_property(instance=pi)
+#         ENTT = Entity.objects.all()
+#     return render(request, 'View_Property.html', {'pi': pi, 'ADANTT': ENTT})
+# # ********** Update_Property Action button end here: 16.11.2020 11:34PM Javed Farooqui**********
+
+# # ********** Delete_Unit Action button start here: 16.11.2020 12:38AM Javed Farooqui**********
+
+
+# def Delete_Property(request, id):
+#     PRT = Property.objects.get(pk=id)
+#     PRT.delete()
+#     messages.success(
+#         request, 'Congratulations...! Property successfully Deleted.')
+#     PRT = Property.objects.all()
+#     return render(request, 'Property_Overview.html', {'ADPRT': PRT})
+# def Add_Tenant(request):
+#     if request.method == "POST":
+#         ADTNT = F_Tenant(request.POST)
+#         if ADTNT.is_valid():
+#             userid = ADTNT.cleaned_data['user_id']
+#             userpwrd = ADTNT.cleaned_data['user_password']
+#             usrfsnm = ADTNT.cleaned_data['usr_f_name']
+#             usrmdnm = ADTNT.cleaned_data['usr_m_name']
+#             usrlsnm = ADTNT.cleaned_data['usr_l_name']
+#             email = ADTNT.cleaned_data['email']
+#             pcont = ADTNT.cleaned_data['pcontact']
+#             scont = ADTNT.cleaned_data['scontact']
+#             marital = ADTNT.cleaned_data['marry_status']
+#             national = ADTNT.cleaned_data['nationality']
+#             roll = ADTNT.cleaned_data['rollid']
+#             tenant = Tenant(user_id=userid, user_password=userpwrd, usr_f_name=usrfsnm, usr_m_name=usrmdnm, usr_l_name=usrlsnm,
+#                             email=email, pcontact=pcont, scontact=scont, marry_status=marital, nationality=national, rollid=roll)
+#         tenant.save()
+#         messages.success(
+#             request, 'Congratulations...! Tenant successfully added.')
+#     else:
+#         ADTNT = F_Tenant()
+#     TENT = Tenant.objects.all()
+#     return render(request, 'Add_Tenant.html')
 # def login_User(request):
 #     if request.method == "POST":
 #         username = request.POST.get('username')
@@ -192,73 +250,6 @@ def add_property(request):
 # # ********** Delete_Entity Action button end here: 16.11.2020 12:36AM Javed Farooqui**********
 
 
-# # ********************************************************************************************************************************************
-
-
-# # *********Class Property Defination Start Here---07-11-2020 04.43PM- Javed Farooqui *******
-
-#     else:
-#         ADPRT = F_property()
-#     PRT = Property.objects.all()
-#     NTT = Entity.objects.all()
-#     return render(request, 'Add_Property.html', {'form': ADPRT, 'ADPRPRTY': PRT, 'ENTTY': NTT})
-# # *********Class Property Defination End Here---07-11-2020 05.00PM- Javed Farooqui *******
-
-# # *********Class Property_Overview Defination Start Here---07-11-2020 04.43PM- Javed Farooqui *******
-
-
-# # *********Class Property_Overview Defination End Here---07-11-2020 05.00PM- Javed Farooqui *******
-
-# # ********** Update_Property Action button start here: 16.11.2020 11:34PM Javed Farooqui**********
-
-
-# def Update_Property(request, id):
-#     pi = Property.objects.get(pk=id)
-#     ADPRT = F_property(request.POST, instance=pi)
-#     if ADPRT.is_valid():
-#         ADPRT.save()
-#         messages.success(
-#             request, 'Congratulations...! Property successfully Updated.')
-#     else:
-#         pi = Property.objects.get(pk=id)
-#         ADPRT = F_property(instance=pi)
-#     ENTT = Entity.objects.all()
-#     return render(request, 'Update_Property.html', {'pi': pi, 'ENTT': ENTT})
-# # ********** Update_Property Action button end here: 16.11.2020 11:34PM Javed Farooqui**********
-
-# # ********** Update_Property Action button start here: 16.11.2020 11:34PM Javed Farooqui**********
-
-
-# def View_Property(request, id):
-#     pi = Property.objects.get(pk=id)
-#     ADPRT = F_property(request.POST, instance=pi)
-#     if ADPRT.is_valid():
-#         ADPRT.save()
-#         messages.success(
-#             request, 'Congratulations...! Property successfully Updated.')
-#     else:
-#         pi = Property.objects.get(pk=id)
-#         ADPRT = F_property(instance=pi)
-#         ENTT = Entity.objects.all()
-#     return render(request, 'View_Property.html', {'pi': pi, 'ADANTT': ENTT})
-# # ********** Update_Property Action button end here: 16.11.2020 11:34PM Javed Farooqui**********
-
-# # ********** Delete_Unit Action button start here: 16.11.2020 12:38AM Javed Farooqui**********
-
-
-# def Delete_Property(request, id):
-#     PRT = Property.objects.get(pk=id)
-#     PRT.delete()
-#     messages.success(
-#         request, 'Congratulations...! Property successfully Deleted.')
-#     PRT = Property.objects.all()
-#     return render(request, 'Property_Overview.html', {'ADPRT': PRT})
-# # ********** Delete_Unit Action button end here: 16.11.2020 12:36AM Javed Farooqui**********
-
-# # **************************************************************************************************************************
-
-
-# # *********Class Add_Unit Defination Start Here---07-11-2020 06.00PM- Javed Farooqui *******
 # def Add_Unit(request):
 #     if request.method == 'POST':
 #         ADUNT = F_Unit(request.POST)
@@ -959,30 +950,7 @@ def add_property(request):
 # # ************************************************************************************************************************
 
 # # ********** Update Add_Tenant Action button start here: 21-11-2020 03:10PM Javed Farooqui**********
-# def Add_Tenant(request):
-#     if request.method == "POST":
-#         ADTNT = F_Tenant(request.POST)
-#         if ADTNT.is_valid():
-#             userid = ADTNT.cleaned_data['user_id']
-#             userpwrd = ADTNT.cleaned_data['user_password']
-#             usrfsnm = ADTNT.cleaned_data['usr_f_name']
-#             usrmdnm = ADTNT.cleaned_data['usr_m_name']
-#             usrlsnm = ADTNT.cleaned_data['usr_l_name']
-#             email = ADTNT.cleaned_data['email']
-#             pcont = ADTNT.cleaned_data['pcontact']
-#             scont = ADTNT.cleaned_data['scontact']
-#             marital = ADTNT.cleaned_data['marry_status']
-#             national = ADTNT.cleaned_data['nationality']
-#             roll = ADTNT.cleaned_data['rollid']
-#             tenant = Tenant(user_id=userid, user_password=userpwrd, usr_f_name=usrfsnm, usr_m_name=usrmdnm, usr_l_name=usrlsnm,
-#                             email=email, pcontact=pcont, scontact=scont, marry_status=marital, nationality=national, rollid=roll)
-#         tenant.save()
-#         messages.success(
-#             request, 'Congratulations...! Tenant successfully added.')
-#     else:
-#         ADTNT = F_Tenant()
-#     TENT = Tenant.objects.all()
-#     return render(request, 'Add_Tenant.html')
+
 # # ********** Update Add_Tenant Action button end here: 21-11-2020 03:35PM Javed Farooqui**********
 
 # # ********** Update Tenant_Contract Action button start here: 20-11-2020 03:10PM Javed Farooqui**********

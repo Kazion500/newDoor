@@ -1,18 +1,11 @@
 from django.core import validators
 from django import forms
 from .models import (
-    Property, Unit,
-    CategoryType, OwnershipType,
-    PropertyType, DocumentType,
-    PayModeType, StatusReqType,
-    TenantReqType, ContractReqType,
-    DocumentsType, OccupancyType,
-    TenantContract, User,
-    UnitImage, Entity
+    Property, Unit, PropertyType,
+    CategoryType, Entity
 )
 
 
-# ********Forms Entity Defination Start Here---30-10-2020 11.35PM- Javed Farooqui *******
 class EntityModelForm(forms.ModelForm):
     class Meta:
         model = Entity
@@ -30,8 +23,6 @@ class EntityModelForm(forms.ModelForm):
             'email': forms.TextInput(attrs={'class': 'form-control'}),
             'desc': forms.TextInput(attrs={'class': 'form-control'}),
         }
-
-# ********Forms Property Defination Start Here---31-10-2020 12.50AM- Javed Farooqui *******
 
 
 class PropertyModelForm(forms.ModelForm):
@@ -53,42 +44,47 @@ class PropertyModelForm(forms.ModelForm):
             'contact_no': forms.TextInput(attrs={'class': 'form-control'}),
             'location': forms.TextInput(attrs={'class': 'form-control'}),
         }
-# #********Forms Property Defination End Here---31-10-2020 12.55AM- Javed Farooqui *********************************************
 
 
-# #********Forms Unit Defination Start Here---31-10-2020 12.22AM- Javed Farooqui *******
-# class F_Unit(forms.ModelForm):
-#     class Meta:
-#         model = Unit
-#         fields = ('PropID', 'PrtTypID', 'flat', 'OwnerTypeID', 'rent_amount', 'size', 'OccupancyTypeID', 'bedrooms', 'bathrooms', 'parking', 'desc')
-#         widgets = {
-#             'PropID': forms.TextInput(attrs={'class':'form-control'}),
-#             'PrtTypID': forms.TextInput(attrs={'class':'form-control'}),
-#             'flat': forms.TextInput(attrs={'class':'form-control'}),
-#             'OwnerTypeID': forms.TextInput(attrs={'class':'form-control'}),
-#             'rent_amount': forms.TextInput(attrs={'class':'form-control'}),
-#             'size': forms.TextInput(attrs={'class':'form-control'}),
-#             'OccupancyTypeID': forms.TextInput(attrs={'class':'form-control'}),
-#             'bedrooms': forms.TextInput(attrs={'class':'form-control'}),
-#             'bathrooms': forms.TextInput(attrs={'class':'form-control'}),
-#             'parking': forms.TextInput(attrs={'class':'form-control'}),
-#             'desc': forms.TextInput(attrs={'class':'form-control'}),
-#         }
-# #********Forms Unit Defination End Here---31-10-2020 12.25AM- Javed Farooqui *********************************************
+class UnitModelForm(forms.ModelForm):
+    class Meta:
+        model = Unit
+        fields = ('property_id', 'property_type', 'flat', 'owner_type', 'rent_amount', 'size',
+                  'occupancy_type', 'bedrooms', 'bathrooms', 'parking', 'desc')
+        widgets = {
+            'property_id': forms.Select(attrs={'class': 'form-control'}),
+            'property_type': forms.Select(attrs={'class': 'form-control'}),
+            'flat': forms.TextInput(attrs={'class': 'form-control'}),
+            'owner_type': forms.TextInput(attrs={'class': 'form-control'}),
+            'rent_amount': forms.TextInput(attrs={'class': 'form-control'}),
+            'size': forms.TextInput(attrs={'class': 'form-control'}),
+            'occupancy_type': forms.TextInput(attrs={'class': 'form-control'}),
+            'bedrooms': forms.TextInput(attrs={'class': 'form-control'}),
+            'bathrooms': forms.TextInput(attrs={'class': 'form-control'}),
+            'parking': forms.TextInput(attrs={'class': 'form-control'}),
+            'desc': forms.TextInput(attrs={'class': 'form-control'}),
+        }
 
 
-# #********Forms CategoryType Defination Start Here---31-10-2020 02.35AM- Javed Farooqui *******
-# class F_CategoryType(forms.ModelForm):
-#     class Meta:
-#         model = CategoryType
-#         fields = ('CatType', 'desc')
-#         widgets = {
-#             'CatType': forms.TextInput(attrs={'class':'form-control'}),
-#             'desc': forms.TextInput(attrs={'class':'form-control'}),
-#         }
-# #********Forms CategoryType Defination End Here---31-10-2020 02.55AM- Javed Farooqui *****************************************
+class CategoryTypeModelForm(forms.ModelForm):
+    class Meta:
+        model = CategoryType
+        fields = ('cat_type', 'desc')
+        widgets = {
+            'cat_type': forms.TextInput(attrs={'class': 'form-control'}),
+            'desc': forms.TextInput(attrs={'class': 'form-control'}),
+        }
 
 
+class PropertyTypeModelForm(forms.ModelForm):
+    class Meta:
+        model = PropertyType
+        fields = ('category', 'property_type', 'desc')
+        widgets = {
+            'category': forms.TextInput(attrs={'class': 'form-control'}),
+            'property_types': forms.TextInput(attrs={'class': 'form-control'}),
+            'desc': forms.TextInput(attrs={'class': 'form-control'}),
+        }
 # #********Forms OwnershipType Defination Start Here---31-10-2020 03.48AM- Javed Farooqui *******
 # class f_OwnershipType (forms.ModelForm):
 #     class Meta:
@@ -102,15 +98,7 @@ class PropertyModelForm(forms.ModelForm):
 
 
 # #********Forms PropertyType Defination Start Here---31-10-2020 04:45PM- Javed Farooqui *******
-# class F_PropertyType (forms.ModelForm):
-#     class Meta:
-#         model = PropertyType
-#         fields = ('CatId', 'PrtType', 'desc')
-#         widgets = {
-#             'CatId': forms.TextInput(attrs={'class':'form-control'}),
-#             'PrtType': forms.TextInput(attrs={'class':'form-control'}),
-#             'desc': forms.TextInput(attrs={'class':'form-control'}),
-#         }
+
 # #********Forms PropertyType Defination End Here---31-10-2020 04:50PM- Javed Farooqui *****************************************
 
 
@@ -220,6 +208,25 @@ class PropertyModelForm(forms.ModelForm):
 #         }
 # #********Forms Tenant_Contract Defination End Here---08-11-2020 10:50PM- Javed Farooqui ************************************
 
+# class TenantModelForm(forms.ModelForm):
+#     class Meta:
+#         model = Tenant
+#         fields = ('user_id', 'user_password', 'usr_f_name', 'usr_m_name', 'usr_l_name',
+#                   'email', 'pcontact', 'scontact', 'marry_status', 'nationality', 'rollid')
+#         widgets = {
+#             'user_id': forms.TextInput(attrs={'class': 'form-control'}),
+#             'user_password': forms.TextInput(attrs={'class': 'form-control'}),
+#             'usr_f_name': forms.TextInput(attrs={'class': 'form-control'}),
+#             'usr_m_name': forms.TextInput(attrs={'class': 'form-control'}),
+#             'usr_l_name': forms.TextInput(attrs={'class': 'form-control'}),
+#             'email': forms.TextInput(attrs={'class': 'form-control'}),
+#             'pcontact': forms.TextInput(attrs={'class': 'form-control'}),
+#             'scontact': forms.TextInput(attrs={'class': 'form-control'}),
+#             'marry_status': forms.TextInput(attrs={'class': 'form-control'}),
+#             'nationality': forms.TextInput(attrs={'class': 'form-control'}),
+#             'rollid': forms.TextInput(attrs={'class': 'form-control'}),
+#         }
+
 
 # #********Forms Tenant_Contract Defination Start Here---08-11-2020 10:50PM- Javed Farooqui *******
 # class F_User (forms.ModelForm):
@@ -242,21 +249,5 @@ class PropertyModelForm(forms.ModelForm):
 # #********Forms Tenant_Contract Defination End Here---08-11-2020 10:50PM- Javed Farooqui ************************************
 
 # #********Forms Tenant_Contract Defination Start Here---08-11-2020 10:50PM- Javed Farooqui *******
-# class F_Tenant (forms.ModelForm):
-#     class Meta:
-#         model = Tenant
-#         fields = ('user_id', 'user_password', 'usr_f_name', 'usr_m_name', 'usr_l_name', 'email', 'pcontact', 'scontact', 'marry_status', 'nationality', 'rollid')
-#         widgets = {
-#             'user_id': forms.TextInput(attrs={'class':'form-control'}),
-#             'user_password': forms.TextInput(attrs={'class':'form-control'}),
-#             'usr_f_name': forms.TextInput(attrs={'class':'form-control'}),
-#             'usr_m_name': forms.TextInput(attrs={'class':'form-control'}),
-#             'usr_l_name': forms.TextInput(attrs={'class':'form-control'}),
-#             'email': forms.TextInput(attrs={'class':'form-control'}),
-#             'pcontact': forms.TextInput(attrs={'class':'form-control'}),
-#             'scontact': forms.TextInput(attrs={'class':'form-control'}),
-#             'marry_status': forms.TextInput(attrs={'class':'form-control'}),
-#             'nationality': forms.TextInput(attrs={'class':'form-control'}),
-#             'rollid': forms.TextInput(attrs={'class':'form-control'}),
-#         }
+
 # #********Forms Tenant_Contract Defination End Here---08-11-2020 10:50PM- Javed Farooqui ************************************

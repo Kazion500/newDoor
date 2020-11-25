@@ -1,143 +1,264 @@
-{% extends 'Main_NewDoor.html' %} {% block title %} Renew_Unit_Contract {% endblock title %} {% block body %}
-{% load static %}
+{% extends 'base.html'' %} {% block title %} Renew_Unit_Contract {% endblock
+title %} {% block body %} {% load static %}
 <div class="col-md-12">
-    <form id="TypeValidation" class="form-horizontal" action="/Tenant_Contract" method="post" novalidate="novalidate" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="card ">
-            <div class="card-header card-header-rose card-header-text"  style="font-size: 20px;">
-                <div class="card-text">
-                    <a href=" {% url 'Tenant_Contract'%} " class="card-header card-header-rose card-header-text ">
-                        <i class="material-icons ">roofing</i> Renew_Unit_Contract </a>
-                </div>
-            </div>
-
-            <div class="card-body ">
-            
-                <br> {% comment %} Row1 {% endcomment %}
-                <div class="row">
-                    <label class="col-sm-2 col-form-label" for="ContractNo">Contract No.*</label>
-                    <div class="col-sm-4">
-                        <div class="form-group bmd-form-group">
-                            <input class="form-control" type="text" id="ContractNo" name="ContractNo" required="true" aria-required="true">
-                        </div>
-                    </div>
-                    <label class="col-sm-2 col-form-label" for="StartDate">Start Date*</label>
-                    <div class="col-sm-4">
-                        <div class="form-group bmd-form-group">
-                            <input class="form-control" type="date" id="StartDate" name="StartDate" required="true" aria-required="true">
-                        </div>
-                    </div>
-                </div>
-
-                {% comment %} Row2 {% endcomment %}
-                <div class="row">
-                    <label class="col-sm-2 col-form-label" for="EndDate">End Date*</label>
-                    <div class="col-sm-4">
-                        <div class="form-group bmd-form-group">
-                            <input class="form-control" type="date" id="EndDate" name="EndDate" required="true" aria-required="true">
-                        </div>
-                    </div>
-                    <label class="col-sm-2 col-form-label" for="Discount">Discount*</label>
-                    <div class="col-sm-4">
-                        <div class="form-group bmd-form-group">
-                            <input class="form-control" type="text" id="Discount" name="Discount" required="true" aria-required="true">
-                        </div>
-                    </div>
-                </div>
-                {% comment %} Row3 {% endcomment %}
-                <div class="row">
-                    <label class="col-sm-2 col-form-label" for="AnnualRent">Annual Rent*</label>
-                    <div class="col-sm-4">
-                        <div class="form-group bmd-form-group">
-                            <input class="form-control" type="text" id="AnnualRent" name="AnnualRent" required="true" aria-required="true">
-                        </div>
-                    </div>
-                    
-                    <label class="col-sm-2 col-form-label" for="SecurityDep">Security Deposit*</label>
-                    <div class="col-sm-4">
-                        <div class="form-group bmd-form-group">
-                            <input class="form-control" type="text" id="SecurityDep" name="SecurityDep" required="true" aria-required="true">
-                        </div>
-                    </div>
-                </div>
-
-                {% comment %} Row4 {% endcomment %}
-                <div class="row">
-                    <label class="col-sm-2 col-form-label" for="Commission">Commission*</label>
-                    <div class="col-sm-4">
-                        <div class="form-group bmd-form-group">
-                            <input class="form-control" type="text" id="Commission" name="Commission" required="true" aria-required="true">
-                        </div>
-                    </div>
-                    <label class="col-sm-2 col-form-label" for="Installments">Installments*</label>
-                    <div class="col-sm-4">
-                        <div class="form-group bmd-form-group">
-                            <input class="form-control" type="number" id="Installments" name="Installments" required="true" aria-required="true">
-                        </div>
-                    </div>
-                </div>
-
-                {% comment %} Row5 {% endcomment %}
-                <div class="row">
-                    <label class="col-sm-2 col-form-label" for="Remark">Remark*</label>
-                    <div class="col-sm-4">
-                        <div class="form-group bmd-form-group">
-                            <input class="form-control" type="text" id="Remark" name="Remark" required="true" aria-required="true">
-                        </div>
-                    </div>
-               
-                    <div class="row">
-                        <div class="form-check form-check-inline" style="left: 4px;">
-                          <label class="form-check-label" for="SMSNotify">
-                            <input class="form-check-input" type="checkbox" value="" id="SMSNotify" name="SMSNotify" required="true" aria-required="true"> SMS Notification
-                            <span class="form-check-sign" style="left: 146px;">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                        <div class="form-check form-check-inline" style="left: 34px;">
-                          <label class="form-check-label" for="EmailNotify">
-                            <input class="form-check-input" type="checkbox" value="" id="EmailNotify" name="EmailNotify" required="true" aria-required="true"> Email Notification
-                            <span class="form-check-sign" style="left: 146px;">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                    </div>
-                </div>
-                <br>
-                <hr>
-{% comment %} *** Add image *** Start Here---20-10-2020 10.00pm- Faraz & Javed *** {% endcomment %}
-
-                {% comment %} <div class="row">
-                    <div class="fileinput fileinput-new text-center" data-provides="fileinput">
-                        <div class="fileinput-new thumbnail img-circle">
-                           <img src="{% static '/img/placeholder.jpg' %}">
-                        </div>
-                        <div class="fileinput-preview fileinput-exists thumbnail"></div>
-                        <div>
-                            <span class="btn btn-round btn-rose btn-file">
-                            <span class="fileinput-new">Add Files</span>
-                            <span class="fileinput-exists">Change</span>
-                            <input type="hidden"><input type="file" id="image" name="image">
-                            <div class="ripple-container"></div>
-                            </span>
-                            <br>
-                            <a href="#pablo" class="btn btn-danger btn-round fileinput-exists" data-dismiss="fileinput"><i class="fa fa-times"></i> Remove</a>
-                        </div>
-                    </div>
-                </div>  {% endcomment %}
-{% comment %} *** Add image *** End Here---21-10-2020 01.05pm- Javed *** {% endcomment %}                
-                {% comment %} Row6 end {% endcomment %}
-
-                <button class="btn btn-rose btn-round float-right" type=Submit>
-                       <i class="material-icons">near_me </i>  Submit
-                       <div class="ripple-container"></div>
-                    </button>
-                <br>
-
-            </div>
+  <form
+    id="TypeValidation"
+    class="form-horizontal"
+    action="/Tenant_Contract"
+    method="post"
+    novalidate="novalidate"
+    enctype="multipart/form-data"
+  >
+    {% csrf_token %}
+    <div class="card">
+      <div
+        class="card-header card-header-rose card-header-text"
+        style="font-size: 20px"
+      >
+        <div class="card-text">
+          <a
+            href=" {% url 'Tenant_Contract'%} "
+            class="card-header card-header-rose card-header-text"
+          >
+            <i class="material-icons">roofing</i> Renew_Unit_Contract
+          </a>
         </div>
-    </form>
+      </div>
+
+      <div class="card-body">
+        <br />
+        {% comment %} Row1 {% endcomment %}
+        <div class="row">
+          <label class="col-sm-2 col-form-label" for="ContractNo"
+            >Contract No.*</label
+          >
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">
+              <input
+                class="form-control"
+                type="text"
+                id="ContractNo"
+                name="ContractNo"
+                required="true"
+                aria-required="true"
+              />
+            </div>
+          </div>
+          <label class="col-sm-2 col-form-label" for="StartDate"
+            >Start Date*</label
+          >
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">
+              <input
+                class="form-control"
+                type="date"
+                id="StartDate"
+                name="StartDate"
+                required="true"
+                aria-required="true"
+              />
+            </div>
+          </div>
+        </div>
+
+        {% comment %} Row2 {% endcomment %}
+        <div class="row">
+          <label class="col-sm-2 col-form-label" for="EndDate">End Date*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">
+              <input
+                class="form-control"
+                type="date"
+                id="EndDate"
+                name="EndDate"
+                required="true"
+                aria-required="true"
+              />
+            </div>
+          </div>
+          <label class="col-sm-2 col-form-label" for="Discount"
+            >Discount*</label
+          >
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">
+              <input
+                class="form-control"
+                type="text"
+                id="Discount"
+                name="Discount"
+                required="true"
+                aria-required="true"
+              />
+            </div>
+          </div>
+        </div>
+        {% comment %} Row3 {% endcomment %}
+        <div class="row">
+          <label class="col-sm-2 col-form-label" for="AnnualRent"
+            >Annual Rent*</label
+          >
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">
+              <input
+                class="form-control"
+                type="text"
+                id="AnnualRent"
+                name="AnnualRent"
+                required="true"
+                aria-required="true"
+              />
+            </div>
+          </div>
+
+          <label class="col-sm-2 col-form-label" for="SecurityDep"
+            >Security Deposit*</label
+          >
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">
+              <input
+                class="form-control"
+                type="text"
+                id="SecurityDep"
+                name="SecurityDep"
+                required="true"
+                aria-required="true"
+              />
+            </div>
+          </div>
+        </div>
+
+        {% comment %} Row4 {% endcomment %}
+        <div class="row">
+          <label class="col-sm-2 col-form-label" for="Commission"
+            >Commission*</label
+          >
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">
+              <input
+                class="form-control"
+                type="text"
+                id="Commission"
+                name="Commission"
+                required="true"
+                aria-required="true"
+              />
+            </div>
+          </div>
+          <label class="col-sm-2 col-form-label" for="Installments"
+            >Installments*</label
+          >
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">
+              <input
+                class="form-control"
+                type="number"
+                id="Installments"
+                name="Installments"
+                required="true"
+                aria-required="true"
+              />
+            </div>
+          </div>
+        </div>
+
+        {% comment %} Row5 {% endcomment %}
+        <div class="row">
+          <label class="col-sm-2 col-form-label" for="Remark">Remark*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">
+              <input
+                class="form-control"
+                type="text"
+                id="Remark"
+                name="Remark"
+                required="true"
+                aria-required="true"
+              />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-check form-check-inline" style="left: 4px">
+              <label class="form-check-label" for="SMSNotify">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="SMSNotify"
+                  name="SMSNotify"
+                  required="true"
+                  aria-required="true"
+                />
+                SMS Notification
+                <span class="form-check-sign" style="left: 146px">
+                  <span class="check"></span>
+                </span>
+              </label>
+            </div>
+            <div class="form-check form-check-inline" style="left: 34px">
+              <label class="form-check-label" for="EmailNotify">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="EmailNotify"
+                  name="EmailNotify"
+                  required="true"
+                  aria-required="true"
+                />
+                Email Notification
+                <span class="form-check-sign" style="left: 146px">
+                  <span class="check"></span>
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <br />
+        <hr />
+        {% comment %} *** Add image *** Start Here---20-10-2020 10.00pm- Faraz &
+        Javed *** {% endcomment %} {% comment %}
+        <div class="row">
+          <div
+            class="fileinput fileinput-new text-center"
+            data-provides="fileinput"
+          >
+            <div class="fileinput-new thumbnail img-circle">
+              <img src="{% static '/img/placeholder.jpg' %}" />
+            </div>
+            <div class="fileinput-preview fileinput-exists thumbnail"></div>
+            <div>
+              <span class="btn btn-round btn-rose btn-file">
+                <span class="fileinput-new">Add Files</span>
+                <span class="fileinput-exists">Change</span>
+                <input type="hidden" /><input
+                  type="file"
+                  id="image"
+                  name="image"
+                />
+                <div class="ripple-container"></div>
+              </span>
+              <br />
+              <a
+                href="#pablo"
+                class="btn btn-danger btn-round fileinput-exists"
+                data-dismiss="fileinput"
+                ><i class="fa fa-times"></i> Remove</a
+              >
+            </div>
+          </div>
+        </div>
+        {% endcomment %} {% comment %} *** Add image *** End Here---21-10-2020
+        01.05pm- Javed *** {% endcomment %} {% comment %} Row6 end {% endcomment
+        %}
+
+        <button class="btn btn-rose btn-round float-right" type="Submit">
+          <i class="material-icons">near_me </i> Submit
+          <div class="ripple-container"></div>
+        </button>
+        <br />
+      </div>
+    </div>
+  </form>
 </div>
 {% endblock body %}

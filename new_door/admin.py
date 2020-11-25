@@ -1,13 +1,6 @@
 from django.contrib import admin
 from .models import (
-    Property, Unit,
-    CategoryType, OwnershipType,
-    PropertyType, DocumentType,
-    PayModeType, StatusReqType,
-    TenantReqType, ContractReqType,
-    DocumentsType, OccupancyType,
-    TenantContract, User,
-    UnitImage, Entity
+    Property, Entity
 )
 
 
