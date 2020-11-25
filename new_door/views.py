@@ -102,8 +102,6 @@ def add_property(request):
     entities = Entity.objects.all()
     if request.method == 'POST':
         form = PropertyModelForm(request.POST)
-        print(form.data)
-        print(form.errors)
         if form.is_valid():
             form.save()
             messages.success(
