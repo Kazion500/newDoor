@@ -1,0 +1,182 @@
+{% extends 'base.html' %} {% block title %} Add_Unit {% endblock title %} {% block body %} {% load static %}
+<div class="col-md-12">
+  <form
+    id="TypeValidation"
+    class="form-horizontal"
+    method="post"
+    novalidate="novalidate"
+    enctype="multipart/form-data"
+  >
+    {% csrf_token %}
+    <div class="card">
+      <div
+        class="card-header card-header-rose card-header-text"
+        style="font-size: 20px"
+      >
+        <div class="card-text">
+          <a
+            href=" {% url 'add_unit'%} "
+            class="card-header card-header-rose card-header-text"
+          >
+            <i class="material-icons">roofing</i> Add Unit
+          </a>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <br />
+        {% comment %} Row1 {% endcomment %}
+        <div class="row">
+          <label class="col-sm-2 col-form-label" for="PropID"
+            >Property Name*</label
+          >
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">
+              <select
+                input
+                class="form-control"
+                type="text"
+                id="property_id"
+                name="property_id"
+                required="true"
+                aria-required="true"
+              >
+                <option selected>Select Property</option>
+                {% for property in properties %}
+                <option value="{{property.id}}">
+                  {{ property.property_name }}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <label class="col-sm-2 col-form-label" for="PrtTypID"
+            >Property Type*</label
+          >
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">
+              <select
+                input
+                class="form-control"
+                type="text"
+                id="property_type"
+                name="property_type"
+                required="true"
+                aria-required="true"
+              >
+                <option selected>Select Property Type</option>
+                {% for property_type in property_types %}
+                <option value="{{property_type.id}}">
+                  {{property_type.property_type}}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+        </div>
+        {% comment %} Row2 {% endcomment %}
+        <div class="row">
+          <label class="col-sm-2 col-form-label">Flat No.*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.flat }}</div>
+          </div>
+          <label class="col-sm-2 col-form-label" for="OwnerTypeID"
+            >Ownership Type*</label
+          >
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">
+              <select
+                input
+                class="form-control"
+                type="text"
+                id="ownership_type"
+                name="ownership_type"
+                required="true"
+                aria-required="true"
+              >
+                <option selected>Select Ownership Type</option>
+                {% for ownership_type in ownership_types %}
+                <option value="{{ownership_type.id}}">
+                  {{ownership_type.ownership_type}}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {% comment %} Row3 {% endcomment %}
+        <div class="row">
+          <label class="col-sm-2 col-form-label">Rental Amount*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.rent_amount }}</div>
+          </div>
+          <label class="col-sm-2 col-form-label">Size (SqFt)*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.size }}</div>
+          </div>
+        </div>
+        {% comment %} Row4 {% endcomment %}
+        <div class="row">
+          <label class="col-sm-2 col-form-label" for="OccupancyTypeID"
+            >Occupancy*</label
+          >
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">
+              <select
+                input
+                class="form-control"
+                type="text"
+                id="occupancy_type"
+                name="occupancy_type"
+                required="true"
+                aria-required="true"
+              >
+                <option selected>Select Occupancy</option>
+                {% for occupancy_type in occupancy_types %}
+                <option value="{{occupancy_type.id}}">
+                  {{occupancy_type.occupancy_type}}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <label class="col-sm-2 col-form-label">No. of Bedrooms*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.bedrooms }}</div>
+          </div>
+        </div>
+
+        {% comment %} Row5 {% endcomment %}
+        <div class="row">
+          <label class="col-sm-2 col-form-label">No. of Bathrooms*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.bathrooms }}</div>
+          </div>
+          <label class="col-sm-2 col-form-label">Parking*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.parking }}</div>
+          </div>
+        </div>
+
+        {% comment %} Row6 {% endcomment %}
+        <div class="row">
+          <label class="col-sm-2 col-form-label">Description*</label>
+          <div class="col-sm-10">
+            <div class="form-group bmd-form-group">{{ form.desc }}</div>
+          </div>
+        </div>
+        <br />
+        <hr />
+
+        <button class="btn btn-rose btn-round float-right" type="Submit">
+          <i class="material-icons">near_me </i> Submit
+          <div class="ripple-container"></div>
+        </button>
+        <br />
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock body %}

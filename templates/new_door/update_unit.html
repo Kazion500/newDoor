@@ -1,0 +1,164 @@
+{% extends 'base.html' %} {% block body %}
+<div class="col-md-12">
+  <form
+    id="TypeValidation"
+    class="form-horizontal"
+    action=" "
+    method="post"
+    novalidate="novalidate"
+    enctype="multipart/form-data"
+  >
+    {% csrf_token %}
+    <div class="card">
+      <br />
+      <div class="row">
+        <div class="col-sm-12 offset-0">
+          <h4 class="alert alert-info">Update Unit</h4>
+          <form
+            id="TypeValidation"
+            class="form-horizontal"
+            action=" "
+            method="post"
+            novalidate="novalidate"
+          >
+            {% csrf_token %}
+            <div class="card-body">
+              <div class="row">
+                {% for field in form %}
+                <label class="col-sm-2 col-form-label"
+                  >{{ field.label }}*</label
+                >
+
+                {% if field.name == 'property_id' %}
+                <div class="col-sm-4">
+                  <div class="form-group bmd-form-group">
+                    <select
+                      input
+                      class="form-control"
+                      type="text"
+                      id="{{field.id}}"
+                      name="{{field.name}}"
+                      required="true"
+                      aria-required="true"
+                    >
+                      <option selected>Select Owner' Name</option>
+                      {% for property in properties %}
+                      <option selected value="{{property.id}}">
+                        {{property.property_name}}
+                      </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+
+                {% elif field.name == 'property_type' %}
+                <div class="col-sm-4">
+                  <div class="form-group bmd-form-group">
+                    <select
+                      input
+                      class="form-control"
+                      type="text"
+                      id="{{field.id}}"
+                      name="{{field.name}}"
+                      required="true"
+                      aria-required="true"
+                    >
+                      <option selected>Select Entity</option>
+                      {% for property_type in property_types %}
+                      <option selected value="{{property_type.id}}">
+                        {{property_type.property_type}}
+                      </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+
+                {% elif field.name == 'ownership_type' %}
+                <div class="col-sm-4">
+                  <div class="form-group bmd-form-group">
+                    <select
+                      input
+                      class="form-control"
+                      type="text"
+                      id="{{field.id}}"
+                      name="{{field.name}}"
+                      required="true"
+                      aria-required="true"
+                    >
+                      <option selected>Select Entity</option>
+                      {% for ownership_type in ownership_types %}
+                      <option selected value="{{ownership_type.id}}">
+                        {{ownership_type.ownership_type}}
+                      </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+
+                {% elif field.name == 'occupancy_type' %}
+                <div class="col-sm-4">
+                  <div class="form-group bmd-form-group">
+                    <select
+                      input
+                      class="form-control"
+                      type="text"
+                      id="{{field.id}}"
+                      name="{{field.name}}"
+                      required="true"
+                      aria-required="true"
+                    >
+                      <option selected>Select Entity</option>
+                      {% for occupancy_type in occupancy_types %}
+                      <option selected value="{{occupancy_type.id}}">
+                        {{occupancy_type.occupancy_type}}
+                      </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+
+                {% else %}
+
+                <div class="col-sm-4">
+                  <div class="form-group bmd-form-group">
+                    <input
+                      class="form-control"
+                      value="{{ field.value }}"
+                      type="text"
+                      id="{{field.id}}"
+                      name="{{field.name}}"
+                      required="true"
+                      aria-required="true"
+                    />
+                  </div>
+                </div>
+                {% endif %} {% endfor %}
+
+                <div class="modal-footer" style="float: right; width: 100%">
+                  <input
+                    type="submit"
+                    class="btn btn-success btn-round float-right"
+                    value="Update"
+                    style="
+                      margin-right: 13px;
+                      margin-bottom: 20px;
+                      margin-top: 20px;
+                    "
+                  />
+                  <a
+                    href="{% url 'property_overview'%}"
+                    class="btn btn-info btn-round float-right"
+                    style="margin-bottom: 20px; margin-top: 20px"
+                  >
+                    Close
+                  </a>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock body %}

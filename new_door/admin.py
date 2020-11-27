@@ -1,6 +1,10 @@
 from django.contrib import admin
 from .models import (
-    Property, Entity
+    Property, Entity,
+    Profile, Unit,
+    UnitImage, PropertyType,
+    CategoryType, OwnershipType,
+    OccupancyType
 )
 
 
@@ -12,33 +16,47 @@ class EntityModelAdmin(admin.ModelAdmin):
 
 @admin.register(Property)
 class PropertyModelAdmin(admin.ModelAdmin):
-    list_display = ('id', 'owner_name', 'property_name', 'entity', 'address1', 'address2',
+    list_display = ('id', 'property_name', 'entity', 'address1', 'address2',
                     'city', 'pobox', 'state', 'country', 'email', 'contact_no', 'location')
 
-# @admin.register (Unit)
-# class A_Unit(admin.ModelAdmin):
-#     list_display = ('id', 'PropID', 'PrtTypID', 'flat', 'OwnerTypeID', 'rent_amount', 'size', 'OccupancyTypeID', 'bedrooms', 'bathrooms', 'parking', 'desc')
 
-# @admin.register (UnitImage)
-# class A_UnitImage(admin.ModelAdmin):
-#     list_display = ('id', 'unit_id', 'unit_image')
+@admin.register(Profile)
+class PropertyModelAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'first_name', 'mid_name', 'last_name', 'email',
+                    'pcontact', 'scontact', 'marital_status', 'nationality', 'roll_id')
 
-#     #*************Master Table Category_Type*************
-# @admin.register (CategoryType)
-# class A_CategoryType(admin.ModelAdmin):
-#     list_display = ('id', 'CatType', 'desc')
 
-#     #*************Master Table Ownership_Type*************
-# @admin.register (OwnershipType)
-# class A_OwnershipType(admin.ModelAdmin):
-#     list_display = ('id', 'OwnershipType', 'desc')
+@admin.register(Unit)
+class UnitModelAdmin(admin.ModelAdmin):
+    list_display = ('id', 'property_id', 'property_type', 'flat', 'ownership_type', 'rent_amount',
+                    'size', 'occupancy_type', 'bedrooms', 'bathrooms', 'parking', 'desc')
 
-#     #*************Master Table Property_Type*************
-# @admin.register (PropertyType)
-# class A_PropertyType(admin.ModelAdmin):
-#     list_display = ('id', 'CatId', 'PrtType', 'desc')
 
-#     #*************Master Table Document_Type*************
+@admin.register(UnitImage)
+class A_UnitImage(admin.ModelAdmin):
+    list_display = ('id', 'unit_id', 'unit_image')
+
+
+@admin.register(CategoryType)
+class A_CategoryType(admin.ModelAdmin):
+    list_display = ('id', 'cat_type', 'desc')
+
+
+@admin.register(PropertyType)
+class A_PropertyType(admin.ModelAdmin):
+    list_display = ('id', 'category', 'property_type', 'desc')
+
+
+@admin.register(OwnershipType)
+class A_OwnershipType(admin.ModelAdmin):
+    list_display = ('id', 'ownership_type', 'desc')
+
+
+@admin.register(OccupancyType)
+class A_OccupancyType(admin.ModelAdmin):
+    list_display = ('id', 'occupancy_type', 'desc')
+
+
 # @admin.register (DocumentType)
 # class A_DocumentType(admin.ModelAdmin):
 #     list_display = ('DocsType', 'desc')
@@ -69,9 +87,7 @@ class PropertyModelAdmin(admin.ModelAdmin):
 #     list_display = ('id', 'DocumentsType', 'desc')
 
 #     #*************Master Table Documents_Type*************
-# @admin.register (OccupancyType)
-# class A_OccupancyType(admin.ModelAdmin):
-#     list_display = ('id', 'OccupancyType', 'desc')
+
 
 #     #*************Master Table Documents_Type*************
 # @admin.register (TenantContract)

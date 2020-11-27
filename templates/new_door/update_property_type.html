@@ -1,82 +1,57 @@
-{% extends 'base.html'' %} {% block body %}
+{% extends 'base.html' %} {% block body %}
 <div class="col-md-12">
-  <form
-    id="TypeValidation"
-    class="form-horizontal"
-    action=" "
-    method="post"
-    novalidate="novalidate"
-    enctype="multipart/form-data"
-  >
-    {% csrf_token %}
     <div class="card">
       <br />
       <div class="row">
         <div class="col-sm-8 offset-2">
           <h4 class="alert alert-info">Update Property Type</h4>
-          <form action="" method="post">
+            <form id="TypeValidation" class="form-horizontal" action=" " method="post" novalidate="novalidate">
+   
             {% csrf_token %}
             <div class="card-body">
               <br />
-              {% comment %} Row1 {% endcomment %}
+             <!-- # Code refactored - 26-11-2020 10.00PM- Patrick -->
+              {% for field in form %}
               <div class="row">
-                <label class="col-sm-3 col-form-label">Category Type*</label>
+               
+                {% if field.name == "category" %}
+                <label class="col-sm-3 col-form-label">{{ field.label }}*</label>
                 <div class="col-sm-6">
                   <div class="form-group bmd-form-group">
                     <select
-                      input
                       class="form-control"
                       type="text"
-                      id="CatId"
-                      name="CatId"
+                      id="{{ field.id }}"
+                      name="{{ field.name }}"
                       required="true"
                       aria-required="true"
                     >
-                      {% for temp in temp %}
-                      <option selected value="{{temp.id}}">
-                        {{temp.CatType}}
+                      {% for category in categories %}
+                      <option selected value="{{category.id}}">
+                        {{category.cat_type}}
                       </option>
                       {% endfor %}
                     </select>
                   </div>
                 </div>
-              </div>
-              <div class="row">
-                <label class="col-sm-3 col-form-label" for="PrtType"
-                  >Property Type*</label
-                >
+                {% else %}
+                 <label class="col-sm-3 col-form-label">{{ field.label }}*</label>
                 <div class="col-sm-6">
                   <div class="form-group bmd-form-group">
                     <input
                       class="form-control"
-                      value="{{ip.PrtType}}"
+                      value="{{ field.value }}"
                       type="text"
-                      id="PrtType"
-                      name="PrtType"
+                      id="{{ field.id }}"
+                      name="{{ field.name }}"
                       required="true"
                       aria-required="true"
                     />
                   </div>
                 </div>
+                {% endif %} 
               </div>
-              <div class="row">
-                <label class="col-sm-3 col-form-label" for="desc"
-                  >Description*</label
-                >
-                <div class="col-sm-6">
-                  <div class="form-group bmd-form-group">
-                    <input
-                      class="form-control"
-                      value="{{ip.desc}}"
-                      type="text"
-                      id="desc"
-                      name="desc"
-                      required="true"
-                      aria-required="true"
-                    />
-                  </div>
-                </div>
-              </div>
+              {% endfor %}
             </div>
             <br />
             <div class="modal-footer">
@@ -91,7 +66,7 @@
                 "
               />
               <a
-                href="{% url 'Property_Type'%}"
+                href="{% url 'add_property_type'%}"
                 class="btn btn-info btn-round float-right"
                 style="margin-bottom: 20px; margin-top: 20px"
               >
@@ -100,7 +75,7 @@
             </div>
             {% comment %}
             <a
-              href="{% url 'Documents_Type'%}"
+              href=""
               class="btn btn-info btn-round float-right"
               style="margin-bottom: 30px; margin-top: 30px; margin-right: 280px"
             >
@@ -117,6 +92,5 @@
         </div>
       </div>
     </div>
-  </form>
 </div>
 {% endblock body %}

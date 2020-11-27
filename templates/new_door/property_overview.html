@@ -108,7 +108,7 @@
               </tr>
             </thead>
             <tbody>
-              {% if pt %} {% for property in properties %}
+              {% if properties %} {% for property in properties %}
               <tr>
                 <td>{{property.owner_name}}</td>
                 <td>{{property.property_name}}</td>
@@ -148,7 +148,11 @@
                     >
                   </a>
 
-                  <a href="# " method="post " class="d-inline">
+                  <a
+                    href=""
+                    method="post "
+                    class="d-inline"
+                  >
                     {% csrf_token %}
                     <i
                       class="material-icons"
@@ -184,7 +188,10 @@
                     >
                   </a>
 
-                  <a href="" method="post " class="d-inline"
+                  <a
+                    href="{% url 'update_property' property.pk  %}"
+                    method="post "
+                    class="d-inline"
                     >{% csrf_token %}
                     <div class="ripple-container success"></div>
                     <i
@@ -197,6 +204,25 @@
                       "
                       >create</i
                     >
+                  </a>
+
+                  <a
+                    href="{% url 'delete_property' property.pk  %}"
+                    method="post "
+                    class="d-inline"
+                  >
+                    {% csrf_token %}
+                    <i
+                      class="material-icons"
+                      style="
+                        margin-right: 10px;
+                        margin-top: 10px;
+                        margin-bottom: 20px;
+                        color: #f44336;
+                      "
+                      >delete</i
+                    >
+                    <div class="ripple-container"></div>
                   </a>
                 </td>
               </tr>

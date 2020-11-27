@@ -6,16 +6,65 @@ from django.conf.urls import url
 urlpatterns = [
     path('', views.dashboard_view, name='dashboard'),
     path('tenant-dashboard/', views.tenant_dashboard, name='tenant_dashboard'),
+
+    # """ Entity Routes """
     path('entity-overview/', views.entity_overview, name='entity_overview'),
-    path('property-overview/', views.property_overview, name='property_overview'),
-    path('unit-overview/', views.unit_overview, name='unit_overview'),
-    path('upload-documents/', views.upload_documents, name='upload_documents'),
-    path('payment/', views.payment, name='payment'),
-
-    # Create,read,delete,update functionality
-
     path('add-entity/', views.add_entity, name='add_entity'),
+    path('update-entity/<id>', views.update_entity, name='update_entity'),
+    path('delete-entity/<id>', views.delete_entity, name='delete_entity'),
+
+
+
+    # """ Propery Routes """
+    path('property-overview/', views.property_overview, name='property_overview'),
     path('add-property/', views.add_property, name='add_property'),
+    path('update-property/<id>', views.update_property, name='update_property'),
+    path('delete-property/<id>', views.delete_property, name='delete_property'),
+
+
+    # """ Unit Routes """
+    path('unit-overview/', views.unit_overview, name='unit_overview'),
+    path('add-unit/', views.add_unit, name='add_unit'),
+    path('update-unit/<id>', views.update_unit, name='update_unit'),
+    path('delete-unit/<id>', views.delete_unit, name='delete_unit'),
+
+    # """ Master Routes Catergory Type"""
+    path('add-category-type/', views.add_category_type,
+         name='add_category_type'),
+    path('delete-category-type/<id>', views.delete_category_type,
+         name='delete_category_type'),
+
+    # """ Master Routes Property Type """
+    path('add-property-type/', views.add_property_type, name='add_property_type'),
+    path('update-property-type/<id>', views.update_property_type,
+         name='update_property_type'),
+    path('delete-property-type/<id>', views.delete_property_type,
+         name='delete_property_type'),
+    # path('Update_Property_Type-<id>/',
+    #      views.Update_Property_Type, name='UpdatePropertyType'),
+    # path('Delete_Property_Type/<int:id>/',
+    #      views.Delete_Property_Type, name="DeletePropertyType"),
+
+
+    # # *************Master Table Ownership_Type*************
+    path('add-ownership-type', views.add_ownership_type, name='add_ownership_type'),
+    path('update-ownership-type/<id>', views.update_ownership_type,
+         name='update_ownership_type'),
+    path('delete-ownership-type/<id>', views.delete_ownership_type,
+         name='delete_ownership_type'),
+    # path('View_Ownership_Type-<id>/',
+    #      views.View_Ownership, name='ViewOwnershipType'),
+    # path('Update_Ownership_Type-<id>/',
+    #      views.update_Ownership, name='UpdateOwnershipType'),
+    # path('Delete_Ownership_Type/<int:id>/',
+    #      views.delete_Ownership, name="DeleteOwnershipType"),
+
+    # path('upload-documents/', views.upload_documents, name='upload_documents'),
+    # path('payment/', views.payment, name='payment'),
+
+
+
+
     # path('checklist/', views.checklist, name='checklist'),
     # path('login', views.login_User, name='login'),
     # path('logout', views.logout_User, name='logout'),
@@ -60,23 +109,9 @@ urlpatterns = [
     # path('Delete_Category_Type/<int:id>/',
     #      views.delete_category, name="deletecategory"),
 
-    # # *************Master Table Ownership_Type*************
-    # path('Ownership_Type', views.Ownership_Type, name='Ownership_Type'),
-    # path('View_Ownership_Type-<id>/',
-    #      views.View_Ownership, name='ViewOwnershipType'),
-    # path('Update_Ownership_Type-<id>/',
-    #      views.update_Ownership, name='UpdateOwnershipType'),
-    # path('Delete_Ownership_Type/<int:id>/',
-    #      views.delete_Ownership, name="DeleteOwnershipType"),
 
-    # # *************Master Table Property_Type*************
-    # path('Property_Type', views.Property_Type, name='Property_Type'),
-    # path('View_Property_Type-<id>/',
-    #      views.View_Property_Type, name='ViewPropertyType'),
-    # path('Update_Property_Type-<id>/',
-    #      views.Update_Property_Type, name='UpdatePropertyType'),
-    # path('Delete_Property_Type/<int:id>/',
-    #      views.Delete_Property_Type, name="DeletePropertyType"),
+
+
 
     # # *************Master Table PayMode_Type*************
     # path('PayMode_Type', views.PayMode_Type, name='PayMode_Type'),

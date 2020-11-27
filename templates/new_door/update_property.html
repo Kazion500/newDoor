@@ -1,0 +1,107 @@
+{% extends 'base.html' %} {% block body %}
+<div class="col-md-12">
+  <div class="card">
+    <br />
+    <div class="row">
+      <div class="col-sm-12 offset-0">
+        <h4 class="alert alert-info">Update Property</h4>
+        <!-- Changed by patrick 26.11.20 -->
+        <form
+          id="TypeValidation"
+          class="form-horizontal"
+          action=" "
+          method="post"
+          novalidate="novalidate"
+        >
+          {% csrf_token %}
+          <div class="card-body">
+            <div class="row">
+              {% for field in form %}
+              <label class="col-sm-2 col-form-label">{{ field.label }}*</label>
+              {% if field.name == 'owner_name'%}
+              <div class="col-sm-4">
+                <div class="form-group bmd-form-group">
+                  <select
+                    input
+                    class="form-control"
+                    type="text"
+                    id="{{field.id}}"
+                    name="{{field.name}}"
+                    required="true"
+                    aria-required="true"
+                  >
+                    <option selected>Select Owner' Name</option>
+                    {% for owner in owners %}
+                    <option selected value="{{owner.id}}">
+                      {{owner.user}}
+                    </option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+
+              {% elif field.name == 'entity' %}
+              <div class="col-sm-4">
+                <div class="form-group bmd-form-group">
+                  <select
+                    input
+                    class="form-control"
+                    type="text"
+                    id="{{field.id}}"
+                    name="{{field.name}}"
+                    required="true"
+                    aria-required="true"
+                  >
+                    <option selected>Select Entity</option>
+                    {% for entity in entities %}
+                    <option selected value="{{entity.id}}">
+                      {{entity.entity_name}}
+                    </option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              {% else %}
+              <div class="col-sm-4">
+                <div class="form-group bmd-form-group">
+                  <input
+                    class="form-control"
+                    value="{{ field.value }}"
+                    type="text"
+                    id="{{field.id}}"
+                    name="{{field.name}}"
+                    required="true"
+                    aria-required="true"
+                  />
+                </div>
+              </div>
+              {% endif %} {% endfor %}
+
+              <div class="modal-footer" style="float: right; width: 100%">
+                <input
+                  type="submit"
+                  class="btn btn-success btn-round float-right"
+                  value="Update"
+                  style="
+                    margin-right: 13px;
+                    margin-bottom: 20px;
+                    margin-top: 20px;
+                  "
+                />
+                <a
+                  href="{% url 'property_overview'%}"
+                  class="btn btn-info btn-round float-right"
+                  style="margin-bottom: 20px; margin-top: 20px"
+                >
+                  Close
+                </a>
+              </div>
+            </div>
+          </div>
+        </form>
+        <!-- Changed by patrick 26.11.20 -->
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock body %}

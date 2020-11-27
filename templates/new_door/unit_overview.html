@@ -109,10 +109,10 @@
             </tr>
           </thead>
           <tbody>
-            {% if ADUNIT %} {% for i in ADUNIT %}
+            {% if units %} {% for unit in units %}
             <tr>
-              <td>{{i.id}}</td>
-              <td>{{i.PrtTypID.PrtType}}</td>
+              <td>{{unit.id}}</td>
+              <td>{{unit.property_type.property_type}}</td>
               <td>
                 <a
                   href=""
@@ -133,13 +133,13 @@
                       );
                     "
                   >
-                    {{i.OccupancyTypeID.OccupancyType}}
+                    {{unit.occupancy_type.occupancy_type}}
                   </button>
                 </a>
               </td>
-              <td>{{i.size}}</td>
-              <td>{{i.bedrooms}}</td>
-              <td>{{i.bedrooms}}</td>
+              <td>{{unit.size}}</td>
+              <td>{{unit.bedrooms}}</td>
+              <td>{{unit.bedrooms}}</td>
               <td class="text-right">
                 <a href="#" method="post " class="d-inline">
                   {% csrf_token %}
@@ -192,7 +192,7 @@
                   >
                 </a>
 
-                <a href="" method="post " class="d-inline"
+                <a href="{% url 'update_unit' unit.pk %}" method="post " class="d-inline"
                   >{% csrf_token %}
                   <div class="ripple-container success"></div>
                   <i
@@ -205,6 +205,21 @@
                     "
                     >create</i
                   >
+                </a>
+
+                  <a href="{% url 'delete_unit' unit.pk %}" class="d-inline">
+
+                  <i
+                    class="material-icons"
+                    style="
+                      margin-right: 5px;
+                      margin-top: 10px;
+                      margin-bottom: 20px;
+                      color: #f44336;
+                    "
+                    >delete</i
+                  >
+                  <div class="ripple-container"></div>
                 </a>
               </td>
             </tr>

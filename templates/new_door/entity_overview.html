@@ -47,11 +47,11 @@
                 <td class="text-right">
                   <a
                     href=""
-                    method="post "
+                    method="post"
                     class="d-inline"
-                    rel="tooltip "
+                    rel="tooltip"
                     title=" "
-                    data-original-title="Remove "
+                    data-original-title="Remove"
                     >{% csrf_token %}
                     <div class="ripple-container success"></div>
                     <i
@@ -66,7 +66,10 @@
                     >
                   </a>
 
-                  <a href="" method="post" class="d-inline"
+                  <a
+                    href="{% url 'update_entity' entity.pk %}"
+                    method="post"
+                    class="d-inline"
                     >{% csrf_token %}
                     <div class="ripple-container success"></div>
                     <i
@@ -81,7 +84,7 @@
                     >
                   </a>
 
-                  <a href="" method="post" class="d-inline">
+                  <a href="{% url 'delete_entity' entity.pk %}" method="post" class="d-inline">
                     {% csrf_token %}
                     <i
                       class="material-icons"

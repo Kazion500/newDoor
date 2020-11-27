@@ -1,4 +1,4 @@
-{% extends 'base.html'' %} {% block title %} Review_Documents {% endblock title %} {% block body %} {% load static %}
+{% extends 'base.html' %} {% block title %} Review_Documents {% endblock title %} {% block body %} {% load static %}
 <div class="col-md-12">
     <form id="TypeValidation" class="form-horizontal" action="/Review_Documents" method="post" novalidate="novalidate" enctype="multipart/form-data">
         {% csrf_token %}

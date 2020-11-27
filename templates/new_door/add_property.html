@@ -23,7 +23,22 @@
         <div class="row">
           <label class="col-sm-2 col-form-label">Owner Name*</label>
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.owner_name }}</div>
+            <div class="form-group bmd-form-group">
+              <select
+                input
+                class="form-control"
+                type="text"
+                id="EntityID"
+                name="owner_name"
+                required="true"
+                aria-required="true"
+              >
+                <option selected>Select Owner's Name</option>
+                {% for user in profiles %}
+                <option value="{{user.id}}">{{user.user}}</option>
+                {% endfor %}
+              </select>
+            </div>
           </div>
           <label class="col-sm-2 col-form-label">Property Name*</label>
           <div class="col-sm-4">
@@ -44,7 +59,7 @@
                 class="form-control"
                 type="text"
                 id="EntityID"
-                name="EntityID"
+                name="entity"
                 required="true"
                 aria-required="true"
               >

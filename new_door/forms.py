@@ -1,16 +1,19 @@
 from django.core import validators
 from django import forms
 from .models import (
-    Property, Unit, PropertyType,
-    CategoryType, Entity
+    Property, Entity,
+    Profile, Unit,
+    UnitImage, PropertyType,
+    CategoryType, OwnershipType,
+    OccupancyType
 )
 
 
 class EntityModelForm(forms.ModelForm):
     class Meta:
         model = Entity
-        fields = ['entity_name', 'contact_no', 'address1', 'address2',
-                  'city', 'pobox', 'state', 'country', 'email', 'desc']
+        fields = '__all__'
+        exclude = ['id']
         widgets = {
             'entity_name': forms.TextInput(attrs={'class': 'form-control'}),
             'contact_no': forms.TextInput(attrs={'class': 'form-control'}),
@@ -20,7 +23,7 @@ class EntityModelForm(forms.ModelForm):
             'pobox': forms.TextInput(attrs={'class': 'form-control'}),
             'state': forms.TextInput(attrs={'class': 'form-control'}),
             'country': forms.TextInput(attrs={'class': 'form-control'}),
-            'email': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'desc': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
@@ -28,8 +31,8 @@ class EntityModelForm(forms.ModelForm):
 class PropertyModelForm(forms.ModelForm):
     class Meta:
         model = Property
-        fields = ('owner_name', 'property_name', 'entity', 'address1',  'address2',
-                  'city', 'pobox', 'state', 'country', 'email', 'contact_no', 'location')
+        fields = '__all__'
+        exclude = ['id']
         widgets = {
             'owner_name': forms.TextInput(attrs={'class': 'form-control'}),
             'property_name': forms.TextInput(attrs={'class': 'form-control'}),
@@ -45,17 +48,20 @@ class PropertyModelForm(forms.ModelForm):
             'location': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
+# Code refactored - 26-11-2020 11.03PM- Patrick
 
 class UnitModelForm(forms.ModelForm):
     class Meta:
         model = Unit
-        fields = ('property_id', 'property_type', 'flat', 'owner_type', 'rent_amount', 'size',
-                  'occupancy_type', 'bedrooms', 'bathrooms', 'parking', 'desc')
+        fields = '__all__'
+        exclude = ['id']
+        # ('property_id', 'property_type', 'flat', 'owner_type', 'rent_amount', 'size',
+        #           'occupancy_type', 'bedrooms', 'bathrooms', 'parking', 'desc')
         widgets = {
-            'property_id': forms.Select(attrs={'class': 'form-control'}),
-            'property_type': forms.Select(attrs={'class': 'form-control'}),
+            'property_id': forms.TextInput(attrs={'class': 'form-control'}),
+            'property_type': forms.TextInput(attrs={'class': 'form-control'}),
             'flat': forms.TextInput(attrs={'class': 'form-control'}),
-            'owner_type': forms.TextInput(attrs={'class': 'form-control'}),
+            'ownership_type': forms.TextInput(attrs={'class': 'form-control'}),
             'rent_amount': forms.TextInput(attrs={'class': 'form-control'}),
             'size': forms.TextInput(attrs={'class': 'form-control'}),
             'occupancy_type': forms.TextInput(attrs={'class': 'form-control'}),
@@ -64,6 +70,8 @@ class UnitModelForm(forms.ModelForm):
             'parking': forms.TextInput(attrs={'class': 'form-control'}),
             'desc': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+# Code refactored - 26-11-2020 8.32PM- Patrick
 
 
 class CategoryTypeModelForm(forms.ModelForm):
@@ -75,6 +83,8 @@ class CategoryTypeModelForm(forms.ModelForm):
             'desc': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
+# Code refactored - 26-11-2020 7.03PM- Patrick
+
 
 class PropertyTypeModelForm(forms.ModelForm):
     class Meta:
@@ -82,18 +92,20 @@ class PropertyTypeModelForm(forms.ModelForm):
         fields = ('category', 'property_type', 'desc')
         widgets = {
             'category': forms.TextInput(attrs={'class': 'form-control'}),
-            'property_types': forms.TextInput(attrs={'class': 'form-control'}),
+            'property_type': forms.TextInput(attrs={'class': 'form-control'}),
             'desc': forms.TextInput(attrs={'class': 'form-control'}),
         }
-# #********Forms OwnershipType Defination Start Here---31-10-2020 03.48AM- Javed Farooqui *******
-# class f_OwnershipType (forms.ModelForm):
-#     class Meta:
-#         model = OwnershipType
-#         fields = ('OwnershipType', 'desc')
-#         widgets = {
-#             'OwnershipType': forms.TextInput(attrs={'class':'form-control'}),
-#             'desc': forms.TextInput(attrs={'class':'form-control'}),
-#         }
+
+
+# Code refactored - 27-11-2020 6.48PM- Patrick
+class OwnershipTypeModelForm(forms.ModelForm):
+    class Meta:
+        model = OwnershipType
+        fields = ('ownership_type', 'desc')
+        widgets = {
+            'ownership_type': forms.TextInput(attrs={'class': 'form-control'}),
+            'desc': forms.TextInput(attrs={'class': 'form-control'}),
+        }
 # #********Forms OwnershipType Defination End Here---31-10-2020 03.49AM- Javed Farooqui *****************************************
 
 

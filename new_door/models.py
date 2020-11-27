@@ -1,10 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here.
-# *********Class Entity Defination Start Here---30-10-2020 11.35PM- Javed Farooqui *******
 
-# *********Class User Defination Start Here---11-11-2020 10:10PM- Javed *******
 
 
 class Profile(models.Model):
@@ -18,7 +15,7 @@ class Profile(models.Model):
     first_name = models.CharField(max_length=50,)
     mid_name = models.CharField(max_length=50, )
     last_name = models.CharField(max_length=50, )
-    email = models.CharField(max_length=254, )
+    email = models.EmailField(max_length=254, )
     pcontact = models.CharField(max_length=254,)
     scontact = models.CharField(max_length=254, )
     marital_status = models.CharField(choices=MARITAL_STATUS, max_length=50)
@@ -49,16 +46,16 @@ class Entity(models.Model):
 
 class Property(models.Model):
     owner_name = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    property_name = models.CharField(max_length=20)
     entity = models.ForeignKey(
         Entity, on_delete=models.CASCADE, )
+    property_name = models.CharField(max_length=20)
     address1 = models.CharField(max_length=250)
     address2 = models.CharField(max_length=250)
     city = models.CharField(max_length=50)
     pobox = models.CharField(max_length=20)
     state = models.CharField(max_length=50)
     country = models.CharField(max_length=50)
-    email = models.CharField(max_length=30)
+    email = models.EmailField(max_length=30)
     contact_no = models.CharField(max_length=30)
     location = models.CharField(max_length=254)
 
@@ -87,10 +84,16 @@ class OwnershipType(models.Model):
     ownership_type = models.CharField(max_length=50,)
     desc = models.TextField(max_length=550,)
 
+    def __str__(self):
+        return self.ownership_type
+
 
 class OccupancyType(models.Model):
     occupancy_type = models.CharField(max_length=50, )
     desc = models.TextField(max_length=550,)
+
+    def __str__(self):
+        return self.occupancy_type
 
 
 class Unit(models.Model):
@@ -99,7 +102,7 @@ class Unit(models.Model):
     property_type = models.ForeignKey(
         PropertyType, on_delete=models.CASCADE, )
     flat = models.CharField(max_length=250)
-    owner_type = models.ForeignKey(
+    ownership_type = models.ForeignKey(
         OwnershipType, on_delete=models.CASCADE, )
     rent_amount = models.CharField(max_length=50)
     size = models.CharField(max_length=20,)

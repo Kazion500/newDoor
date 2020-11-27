@@ -1,4 +1,4 @@
-{% extends 'base.html'' %} {% block body %}
+{% extends 'base.html' %} {% block body %}
 <div class="col-md-12">
   <form
     id="TypeValidation"
@@ -13,25 +13,25 @@
       <br />
       <div class="row">
         <div class="col-sm-8 offset-2">
-          <h4 class="alert alert-info">Update Ownership Type</h4>
+          <h4 class="alert alert-info">Update Occupancy Type</h4>
           <form action="" method="post">
             {% csrf_token %}
             <div class="card-body">
               <br />
-              {% comment %} Row1 {% endcomment %}
+              <!-- # Code refactored - 26-11-2020 9.20PM- Patrick -->
               <div class="row">
-                <label class="col-sm-3 col-form-label" for="OwnershipType"
-                  >Ownership Type*</label
+                <label class="col-sm-3 col-form-label" for="OccupancyType"
+                  >Occupancy Type*</label
                 >
                 <div class="col-sm-6">
                   <div class="form-group bmd-form-group">
                     <input
                       style="background-color: #ffffff; margin-bottom: 30px"
                       class="form-control"
-                      value="{{pi.OwnershipType}}"
+                      value="{{pi.OccupancyType}}"
                       type="text"
-                      id="OwnershipType"
-                      name="OwnershipType"
+                      id="OccupancyType"
+                      name="OccupancyType"
                       required="true"
                       aria-required="true"
                     />
@@ -58,6 +58,7 @@
                 </div>
               </div>
             </div>
+            <br />
             <div class="modal-footer">
               <input
                 type="submit"
@@ -70,7 +71,7 @@
                 "
               />
               <a
-                href="{% url 'Ownership_Type'%}"
+                href="{% url 'Occupancy_Type'%}"
                 class="btn btn-info btn-round float-right"
                 style="margin-bottom: 20px; margin-top: 20px"
               >

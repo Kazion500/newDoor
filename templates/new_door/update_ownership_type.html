@@ -1,0 +1,56 @@
+{% extends 'base.html' %} {% block body %}
+<div class="col-md-12">
+  
+  <div class="card">
+    <br />
+    <div class="row">
+      <div class="col-sm-8 offset-2">
+        <h4 class="alert alert-info">Update Ownership Type</h4>
+        <form id="TypeValidation"class="form-horizontal" action=" " method="post"novalidate="novalidate" >
+          {% csrf_token %}
+          <div class="card-body">
+            <br />
+            <!-- # Code refactored - 26-11-2020 9.20PM- Patrick -->
+           {% for field in form %}
+            <div class="row">
+              <label class="col-sm-3 col-form-label" for="OwnershipType"
+                >{{ field.label }}*</label
+              >
+              <div class="col-sm-6">
+                <div class="form-group bmd-form-group">
+                  <input
+                    style="background-color: #ffffff; margin-bottom: 30px"
+                    class="form-control"
+                    value="{{ field.value }}"
+                    type="text"
+                    id="{{ field.id }}"
+                    name="{{ field.name }}"
+                    required="true"
+                    aria-required="true"
+                  />
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="modal-footer">
+            <input
+              type="submit"
+              class="btn btn-success btn-round float-right"
+              value="Update"
+              style="margin-right: 13px; margin-bottom: 20px; margin-top: 20px"
+            />
+            <a
+              href="{% url 'add_ownership_type'%}"
+              class="btn btn-info btn-round float-right"
+              style="margin-bottom: 20px; margin-top: 20px"
+            >
+              Close
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock body %}
