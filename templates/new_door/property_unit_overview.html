@@ -83,12 +83,12 @@
           class="card-header card-header-rose card-header-text"
           style="font-size: 20px"
         >
-          <i class="material-icons">house</i> Unit Overview
+          <i class="material-icons">house</i> Property Unit For {{ property.property_name.capitalize }}
         </a>
       </div>
        <div class="card-icon float-right" style="padding:.5em 0; font-size: 1rem; background: rgb(224, 79, 115);">
           <a
-            href=" {% url 'add_unit'%} "
+            href=" {% url 'prepopulated_field_unit' property.id  %} "
             class="card-header card-header-rose card-header-text"
           >
             <i class="material-icons">add</i>Add Unit

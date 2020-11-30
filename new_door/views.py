@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Sum, Count
 from django.contrib.auth import logout, authenticate, login
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
@@ -10,6 +11,7 @@ from .forms import (
     CategoryTypeModelForm,
     PropertyTypeModelForm,
     OwnershipTypeModelForm,
+    OccupancyTypeModelForm,
 )
 
 from .models import (
@@ -38,18 +40,38 @@ def entity_overview(request):
 
 
 def property_overview(request):
+
     properties = Property.objects.all()
+    number_of_units = Unit.objects.all().count()
+    number_of_vacant_units = Unit.objects.filter(is_vacant=True).count()
+    total_ = Unit.objects.aggregate(earnings=Sum('rent_amount'))
+
     context = {
-        'properties': properties
+        'properties': properties,
+        'number_of_units': number_of_units,
+        'number_of_vacant_units': number_of_vacant_units,
+        'total': total_,
     }
+
     return render(request, 'new_door/property_overview.html', context)
 
 
 def unit_overview(request):
+
     units = Unit.objects.all()
+    total_ = Unit.objects.aggregate(earnings=Sum('rent_amount'))
+
+    number_of_units = Unit.objects.all().count()
+    number_of_vacant_units = Unit.objects.filter(is_vacant=True).count()
+    units_occupied = number_of_units - number_of_vacant_units
+
     context = {
-        'units': units
+        'units': units,
+        'units_occupied': units_occupied,
+        'number_of_vacant_units': number_of_vacant_units,
+        'total': total_,
     }
+
     return render(request, 'new_door/unit_overview.html', context)
 
 
@@ -120,11 +142,11 @@ def add_unit(request):
 
     if request.method == 'POST':
         form = UnitModelForm(request.POST)
-        print(form.errors)
         if form.is_valid():
             form.save()
             messages.success(
                 request, 'Congratulations...! Unit successfully added.')
+            return redirect('add_unit')
     else:
         form = UnitModelForm(request.POST)
 
@@ -149,6 +171,7 @@ def add_category_type(request):
             form.save()
             messages.success(
                 request, 'Congratulations...! Category Type successfully added.')
+            return redirect('add_category_type')
     else:
         form = CategoryTypeModelForm()
 
@@ -168,6 +191,7 @@ def add_property_type(request):
             form.save()
             messages.success(
                 request, 'Congratulations...! Property Type successfully added.')
+            return redirect('add_property_type')
 
     else:
         form = PropertyTypeModelForm()
@@ -203,12 +227,34 @@ def add_ownership_type(request):
     return render(request, 'new_door/ownership_type.html', context)
 
 
+def add_occupancy_type(request):
+
+    occupancy_types = OccupancyType.objects.all()
+
+    if request.method == 'POST':
+        form = OccupancyTypeModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, 'Congratulations...! Ownership Type successfully added.')
+            return redirect('add_occupancy_type')
+    else:
+        form = OccupancyTypeModelForm()
+
+    context = {
+        'form': form,
+        'occupancy_types': occupancy_types,
+    }
+
+    return render(request, 'new_door/add_occupancy_type.html', context)
+
+
 """ Edit Views  """
 
 
 def update_entity(request, id):
 
-    entity = Entity.objects.get(pk=id)
+    entity = get_object_or_404(Entity, pk=id)
 
     if request.method == "POST":
         form = EntityModelForm(request.POST, instance=entity)
@@ -230,7 +276,7 @@ def update_entity(request, id):
 
 
 def update_property(request, id):
-    _property = Property.objects.get(pk=id)
+    _property = get_object_or_404(Property, pk=id)
     entities = Entity.objects.all()
     owners = Profile.objects.all()
     form = PropertyModelForm(request.POST, instance=_property)
@@ -238,6 +284,7 @@ def update_property(request, id):
         form.save()
         messages.success(
             request, 'Congratulations...! Property successfully Updated.')
+        return redirect('property_overview')
     else:
         form = PropertyModelForm(instance=_property)
 
@@ -253,7 +300,7 @@ def update_property(request, id):
 
 
 def update_unit(request, id):
-    unit = Unit.objects.get(pk=id)
+    unit = get_object_or_404(Unit, pk=id)
     properties = Property.objects.all()
     property_types = PropertyType.objects.all()
     ownership_types = OwnershipType.objects.all()
@@ -265,6 +312,7 @@ def update_unit(request, id):
             form.save()
             messages.success(
                 request, 'Congratulations...! Unit successfully Updated.')
+            return redirect('unit_overview')
     else:
         form = UnitModelForm(instance=unit)
 
@@ -283,7 +331,7 @@ def update_unit(request, id):
 
 def update_property_type(request, id):
 
-    property_type = PropertyType.objects.get(pk=id)
+    property_type = get_object_or_404(PropertyType, pk=id)
     categories = CategoryType.objects.all()
 
     if request.method == "POST":
@@ -292,6 +340,7 @@ def update_property_type(request, id):
             form.save()
             messages.success(
                 request, 'Congratulations...! Property Type successfully Updated.')
+            return redirect('add_product_type')
     else:
         form = PropertyTypeModelForm(instance=property_type)
 
@@ -307,7 +356,7 @@ def update_property_type(request, id):
 
 def update_ownership_type(request, id):
 
-    ownership_type = OwnershipType.objects.get(pk=id)
+    ownership_type = get_object_or_404(OwnershipType, pk=id)
 
     if request.method == "POST":
         form = OwnershipTypeModelForm(request.POST, instance=ownership_type)
@@ -315,6 +364,7 @@ def update_ownership_type(request, id):
             form.save()
             messages.success(
                 request, 'Congratulations...! Property Type successfully Updated.')
+            return redirect('add_ownership_type')
     else:
         form = OwnershipTypeModelForm(instance=ownership_type)
 
@@ -325,16 +375,40 @@ def update_ownership_type(request, id):
     return render(request, 'new_door/update_ownership_type.html', context)
 
 
+def update_occupancy_type(request, id):
+
+    occupancy_type = get_object_or_404(OccupancyType, pk=id)
+
+    if request.method == "POST":
+        form = OccupancyTypeModelForm(request.POST, instance=occupancy_type)
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, 'Congratulations...! Occupancy Type successfully Updated.')
+            return redirect('add_occupancy_type')
+    else:
+        form = OccupancyTypeModelForm(instance=occupancy_type)
+
+    context = {
+        "form": form,
+    }
+
+    return render(request, 'new_door/update_occupancy_type.html', context)
+
+
 """ Delete Views """
 
 # Code refactored - 26-11-2020 11.33PM- Patrick
 
+
 def delete_entity(request, id):
-    entity = Entity.objects.get(pk=id)
+    entity = get_object_or_404(Entity, pk=id)
     entity.delete()
     messages.success(
         request, 'Congratulations...! Entity successfully Deleted.')
     return redirect('entity_overview')
+
+# Code refactored - 27-11-2020 5.30PM- Patrick
 
 
 def delete_property(request, id):
@@ -360,6 +434,8 @@ def delete_category_type(request, id):
         request, 'Congratulations...! Category Type successfully Deleted.')
     return redirect('add_category_type')
 
+# Code refactored - 27-11-2020 11.45PM- Patrick
+
 
 def delete_property_type(request, id):
     property_type = PropertyType.objects.get(pk=id)
@@ -377,6 +453,162 @@ def delete_ownership_type(request, id):
     return redirect('add_ownership_type')
 
 
+def delete_occupancy_type(request, id):
+    occupancy_type = OccupancyType.objects.get(pk=id)
+    occupancy_type.delete()
+    messages.success(
+        request, 'Congratulations...! Occupancy Type successfully Deleted.')
+    return redirect('add_occupancy_type')
+
+
+""" Display Detail Views """
+
+
+def view_entity(request, id):
+
+    entity = get_object_or_404(Entity, pk=id)
+    form = EntityModelForm(instance=entity)
+
+    context = {
+        'form': form,
+        'entity': entity
+    }
+
+    return render(request, 'new_door/view_entity.html', context)
+
+# Code refactored - 28-11-2020 5.30PM- Patrick
+
+
+def view_property(request, id):
+
+    _property = get_object_or_404(Property, pk=id)
+    entities = Entity.objects.all()
+    owners = Profile.objects.all()
+
+    form = PropertyModelForm(instance=_property)
+
+    context = {
+        'form': form,
+        'property': _property,
+        'entities': entities,
+        'owners': owners,
+    }
+
+    return render(request, 'new_door/view_property.html', context)
+
+
+def view_unit(request, id):
+
+    unit = get_object_or_404(Unit, pk=id)
+    properties = Property.objects.all()
+    property_types = PropertyType.objects.all()
+    ownership_types = OwnershipType.objects.all()
+    occupancy_types = OccupancyType.objects.all()
+
+    form = UnitModelForm(instance=unit)
+
+    context = {
+        'form': form,
+        'property': unit,
+        'properties': properties,
+        'property_types': property_types,
+        'ownership_types': ownership_types,
+        'occupancy_types': occupancy_types,
+    }
+
+    return render(request, 'new_door/view_unit.html', context)
+
+
+def view_property_type(request, id):
+
+    property_type = get_object_or_404(PropertyType, pk=id)
+    categories = CategoryType.objects.all()
+
+    form = PropertyTypeModelForm(instance=property_type)
+
+    context = {
+        "form": form,
+        "categories": categories
+    }
+
+    return render(request, 'new_door/view_property_type.html', context)
+
+
+# Code refactored - 28-11-2020 9.53PM- Patrick
+
+def view_ownership_type(request, id):
+
+    ownership_type = get_object_or_404(OwnershipType, pk=id)
+    form = OwnershipTypeModelForm(instance=ownership_type)
+
+    context = {
+        "form": form,
+    }
+
+    return render(request, 'new_door/view_ownership_type.html', context)
+
+
+def view_occupancy_type(request, id):
+
+    occupancy_type = get_object_or_404(OccupancyType, pk=id)
+    form = OccupancyTypeModelForm(instance=occupancy_type)
+
+    context = {
+        "form": form,
+    }
+
+    return render(request, 'new_door/view_occupancy_type.html', context)
+
+
+
+
+""" Propery Unit Views """
+
+# Code refactored - 28-11-2020 11.53PM- Patrick
+
+
+def prepopulated_field_unit(request, id):
+    _property = Property.objects.get(pk=id)
+    unit = Unit.objects.filter(property_id=_property.pk).first
+    print(_property.unit_set.filter(property_id=_property.pk))
+
+    if request.method == 'POST':
+        form = UnitModelForm(request.POST,instance=_property)
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, 'Congratulations...! Unit successfully added.')
+            return redirect('add_unit')
+    else:
+        form = UnitModelForm(request.POST, instance=_property)
+
+    context = {
+        'form': form,
+        # 'unit': unit,
+        # 'property_types': property_types,
+        # 'ownership_types': ownership_types,
+        # 'occupancy_types': occupancy_types,
+    }
+
+    return render(request, 'new_door/add_property_unit.html', context)
+
+
+def property_unit_overview(request, id):
+    _property = get_object_or_404(Property, pk=id)
+    units = Unit.objects.filter(property_id=_property.pk)
+    number_of_units = Unit.objects.filter(property_id=_property).count()
+    number_of_vacant_units = Unit.objects.filter(is_vacant=True).count()
+    units_occupied = number_of_units - number_of_vacant_units
+
+    context = {
+        'property': _property,
+        'units': units,
+        'number_of_units': number_of_units,
+        'number_of_vacant_units': number_of_vacant_units,
+        'units_occupied': units_occupied
+    }
+
+    return render(request, 'new_door/property_unit_overview.html', context)
 
 
 # # *********Class Documents_Type Defination Start Here---04-11-2020 10.15PM- Javed Farooqui *************************************

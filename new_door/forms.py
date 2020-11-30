@@ -50,6 +50,7 @@ class PropertyModelForm(forms.ModelForm):
 
 # Code refactored - 26-11-2020 11.03PM- Patrick
 
+
 class UnitModelForm(forms.ModelForm):
     class Meta:
         model = Unit
@@ -104,6 +105,16 @@ class OwnershipTypeModelForm(forms.ModelForm):
         fields = ('ownership_type', 'desc')
         widgets = {
             'ownership_type': forms.TextInput(attrs={'class': 'form-control'}),
+            'desc': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+
+class OccupancyTypeModelForm(forms.ModelForm):
+    class Meta:
+        model = OccupancyType
+        fields = ('occupancy_type', 'desc')
+        widgets = {
+            'occupancy_type': forms.TextInput(attrs={'class': 'form-control'}),
             'desc': forms.TextInput(attrs={'class': 'form-control'}),
         }
 # #********Forms OwnershipType Defination End Here---31-10-2020 03.49AM- Javed Farooqui *****************************************
@@ -187,14 +198,7 @@ class OwnershipTypeModelForm(forms.ModelForm):
 
 
 # #********Forms Documents_Type Defination Start Here---07-11-2020 01:34PM- Javed Farooqui *******
-# class F_OccupancyType (forms.ModelForm):
-#     class Meta:
-#         model = OccupancyType
-#         fields = ('OccupancyType', 'desc')
-#         widgets = {
-#             'OccupancyType': forms.TextInput(attrs={'class':'form-control'}),
-#             'desc': forms.TextInput(attrs={'class':'form-control'}),
-#         }
+#
 # #********Forms Documents_Type Defination End Here---07-11-2020 01:37PM- Javed Farooqui *****************************************
 
 

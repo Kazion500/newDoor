@@ -14,7 +14,7 @@
             <div class="card-icon">
               <i class="material-icons">account_balance_wallet</i>
             </div>
-            <h3 class="card-title">$514184</h3>
+            <h3 class="card-title">${{ total.earnings }}</h3>
             <br /><br />
             <p class="card-category">Total Earnings</p>
           </div>
@@ -48,7 +48,7 @@
             <div class="card-icon">
               <i class="material-icons">home</i>
             </div>
-            <h3 class="card-title">2450</h3>
+            <h3 class="card-title">{{ number_of_units }}</h3>
             <br /><br />
             <p class="card-category">Total Units</p>
           </div>
@@ -65,7 +65,7 @@
             <div class="card-icon">
               <i class="material-icons">vpn_key</i>
             </div>
-            <h3 class="card-title">890</h3>
+            <h3 class="card-title">{{ number_of_vacant_units }}</h3>
             <br /><br />
             <p class="card-category">Total Vacant</p>
           </div>
@@ -81,6 +81,21 @@
             style="font-size: 20px"
           >
             <i class="material-icons">roofing</i> Property Overview
+          </a>
+        </div>
+        <div
+          class="card-icon float-right"
+          style="
+            padding: 0.5em 0;
+            font-size: 1rem;
+            background: rgb(224, 79, 115);
+          "
+        >
+          <a
+            href=" {% url 'add_property'%} "
+            class="card-header card-header-rose card-header-text"
+          >
+            <i class="material-icons">add</i>Add Property
           </a>
         </div>
       </div>
@@ -99,10 +114,11 @@
             <thead>
               <tr>
                 <th>Owner Name</th>
+                <th>Entity Name</th>
                 <th>Property Name</th>
-                <th>Total Earning</th>
-                <th>Due Amount</th>
-                <th>Total Unit</th>
+                <th>Address</th>
+                <th>City</th>
+                <th>Country</th>
                 <th>Occupancy Graph</th>
                 <th class="disabled-sorting text-right">Actions</th>
               </tr>
@@ -111,9 +127,10 @@
               {% if properties %} {% for property in properties %}
               <tr>
                 <td>{{property.owner_name}}</td>
+                <td>{{property.entity.entity_name}}</td>
                 <td>{{property.property_name}}</td>
                 <td>{{property.address1}}</td>
-                <td>{{property.state}}</td>
+                <td>{{property.city}}</td>
                 <td>{{property.country}}</td>
                 <td>
                   <div
@@ -126,14 +143,17 @@
                       aria-valuenow="60"
                       aria-valuemin="0"
                       aria-valuemax="100"
-                      style="width: 30%"
+                      style="width: 80%"
                     >
                       <span class="sr-only">60% Complete</span>
                     </div>
                   </div>
                 </td>
                 <td class="text-right">
-                  <a href="# " method="post " class="d-inline"
+                  <a
+                    href=" {% url 'property_unit_overview' property.pk %} "
+                    method="post "
+                    class="d-inline"
                     >{% csrf_token %}
                     <div class="ripple-container success"></div>
                     <i
@@ -148,11 +168,7 @@
                     >
                   </a>
 
-                  <a
-                    href=""
-                    method="post "
-                    class="d-inline"
-                  >
+                  <a href="" method="post " class="d-inline">
                     {% csrf_token %}
                     <i
                       class="material-icons"
@@ -168,11 +184,9 @@
                   </a>
 
                   <a
-                    href=""
-                    method="post "
+                    href="{% url 'view_property' property.pk %}"
                     class="d-inline"
                     rel="tooltip "
-                    title=" "
                     data-original-title="Remove "
                     >{% csrf_token %}
                     <div class="ripple-container success"></div>

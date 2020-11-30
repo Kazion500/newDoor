@@ -5,15 +5,17 @@
     <br />
     <div class="row">
       <div class="col-sm-12">
-        <h4 class="alert alert-info">Update Occupancy Type</h4>
+        <h4 class="alert alert-info">Ownership Type Details</h4>
         <form id="TypeValidation"class="form-horizontal" action=" " method="post"novalidate="novalidate" >
           {% csrf_token %}
           <div class="card-body">
             <br />
-            <!-- # Code refactored - 30-11-2020 9.20PM- Patrick -->
+            <!-- # Code refactored - 26-11-2020 9.20PM- Patrick -->
            {% for field in form %}
             <div class="row">
-              <label class="col-sm-3 col-form-label" for="OwnershipType">{{ field.label }}*</label>
+              <label class="col-sm-3 col-form-label" for="OwnershipType"
+                >{{ field.label }}*</label
+              >
               <div class="col-sm-6">
                 <div class="form-group bmd-form-group">
                   <input
@@ -25,6 +27,7 @@
                     name="{{ field.name }}"
                     required="true"
                     aria-required="true"
+                    disabled
                   />
                 </div>
               </div>

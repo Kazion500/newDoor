@@ -112,6 +112,7 @@ class Unit(models.Model):
     bathrooms = models.CharField(max_length=30,)
     parking = models.CharField(max_length=30, )
     desc = models.TextField(max_length=550, )
+    is_vacant = models.BooleanField(default=False)
     # image= models.ImageField(upload_to = "pictures")
 
 

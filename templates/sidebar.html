@@ -79,33 +79,16 @@
         <div class="collapse" id="pagesExamples">
           <ul class="nav">
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'add_entity' %}">
-                <span class="sidebar-mini"> AE </span>
-                <span class="sidebar-normal"> Add Entity </span>
-              </a>
-            </li>
-            <li class="nav-item">
               <a class="nav-link" href="/entity-overview">
                 <span class="sidebar-mini"> AE </span>
                 <span class="sidebar-normal"> Entity Overview </span>
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'add_property' %}">
-                <span class="sidebar-mini"> AE </span>
-                <span class="sidebar-normal"> Add Property </span>
-              </a>
-            </li>
+
             <li class="nav-item">
               <a class="nav-link" href="{% url 'property_overview' %}">
                 <span class="sidebar-mini"> EO </span>
                 <span class="sidebar-normal"> Property Overview </span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'add_unit' %}">
-                <span class="sidebar-mini"> RS </span>
-                <span class="sidebar-normal"> Add Unit </span>
               </a>
             </li>
             <li class="nav-item">
@@ -183,7 +166,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/Occupancy_Type">
+              <a class="nav-link" href="{% url 'add_occupancy_type' %}">
                 <span class="sidebar-mini"> OT </span>
                 <span class="sidebar-normal"> Occupancy Type </span>
               </a>

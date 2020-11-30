@@ -5,17 +5,13 @@
         <div class="card ">
             <div class="card-header card-header-rose card-header-text"  style="font-size: 20px;">
                 <div class="card-text">
-                <a href=" {% url 'add_ownership_type'%} " class="card-header card-header-rose card-header-text ">
-                        <i class="material-icons ">roofing</i> Ownership Type </a>
+                <a href=" {% url 'add_occupancy_type'%} " class="card-header card-header-rose card-header-text ">
+                        <i class="material-icons ">roofing</i> Occupancy Type </a>
                 </div>
             </div>
 
             <div class="card-body ">
                 <br> {% comment %} Row1 {% endcomment %}
-                
-                
-                
-                    
                 <div class="row">
                    {% for field in form %}
                     <label class="col-sm-2 col-form-label" for="OwnershipType">{{ field.label }}*</label>
@@ -69,27 +65,27 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% if ownership_types %} 
-                                        {% for ownership_type in ownership_types %}
+                                        {% if occupancy_types %} 
+                                        {% for occupancy_type in occupancy_types %}
                                         <tr>
-                                            <td scope="row">{{ownership_type.id}}</td>
-                                            <td>{{ownership_type.ownership_type}}</td>
-                                            <td>{{ownership_type.desc}}</td>
+                                            <td scope="row">{{occupancy_type.pk}}</td>
+                                            <td>{{occupancy_type.occupancy_type}}</td>
+                                            <td>{{occupancy_type.desc}}</td>
                                             <td class="text-right">
 
-                                                <a href=" {% url 'view_ownership_type' ownership_type.id %} " class="d-inline " rel="tooltip " data-original-title="Remove ">{% csrf_token %}
+                                                <a href=" {% url 'view_occupancy_type' occupancy_type.pk %} " class="d-inline " rel="tooltip " data-original-title="Remove ">{% csrf_token %}
                                                 <div class="ripple-container success "></div>
                                                 <i class="material-icons " style="margin-right: 10px; margin-top: 10px; margin-bottom: 20px; color: #ff9800;" >dvr</i>
                                                 </a>
                                               
 
-                                                <a href=" {% url 'update_ownership_type' ownership_type.pk %}" class="d-inline ">{% csrf_token %}
+                                                <a href=" {% url 'update_occupancy_type' occupancy_type.pk %} " class="d-inline ">{% csrf_token %}
                                                     <div class="ripple-container success "></div>
                                                     <i class="material-icons "  style="margin-right: 5px; margin-top: 10px; margin-bottom: 20px; color: #4caf50; ">create</i>
                                                 </a>
                                                
 
-                                                <a href="{% url 'delete_ownership_type' ownership_type.pk %} " class="d-inline ">
+                                                <a href=" {% url 'delete_occupancy_type' occupancy_type.pk %} " class="d-inline ">
                                                    
                                                     <i class="material-icons " style="margin-right: 5px; margin-top: 10px; margin-bottom: 20px; color: #f44336; " >delete</i>
                                                     <div class="ripple-container"></div>

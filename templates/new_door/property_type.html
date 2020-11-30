@@ -118,11 +118,9 @@
                       <td>{{property_type.desc}}</td>
                       <td class="text-right">
                         <a
-                          href=""
-                          method="post "
+                          href="{% url 'view_property_type' property_type.pk %}"
                           class="d-inline"
                           rel="tooltip "
-                          title=" "
                           data-original-title="Remove "
                           >{% csrf_token %}
                           <div class="ripple-container success"></div>

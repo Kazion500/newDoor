@@ -4,7 +4,7 @@
       <br />
       <div class="row">
         <div class="col-sm-12">
-          <h4 class="alert alert-info">Update Property Type</h4>
+          <h4 class="alert alert-info">Property Type Details</h4>
             <form id="TypeValidation" class="form-horizontal" action=" " method="post" novalidate="novalidate">
    
             {% csrf_token %}
@@ -25,6 +25,7 @@
                       name="{{ field.name }}"
                       required="true"
                       aria-required="true"
+                      disabled
                     >
                       {% for category in categories %}
                       <option selected value="{{category.id}}">
@@ -46,6 +47,7 @@
                       name="{{ field.name }}"
                       required="true"
                       aria-required="true"
+                      disabled
                     />
                   </div>
                 </div>
@@ -55,22 +57,12 @@
             </div>
             <br />
             <div class="modal-footer">
-              <input
-                type="submit"
-                class="btn btn-success btn-round float-right"
-                value="Update"
-                style="
-                  margin-right: 13px;
-                  margin-bottom: 20px;
-                  margin-top: 20px;
-                "
-              />
               <a
                 href="{% url 'add_property_type'%}"
                 class="btn btn-info btn-round float-right"
                 style="margin-bottom: 20px; margin-top: 20px"
               >
-                Close
+                Back
               </a>
             </div>
             {% comment %}
