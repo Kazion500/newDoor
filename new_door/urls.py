@@ -19,10 +19,11 @@ urlpatterns = [
 
     # """ Propery Routes """
 
-    path('property-overview/', views.property_overview, name='property_overview'),
+    path('property-overview/<str:entity>',
+         views.property_overview, name='property_overview'),
     path('property-unit-overview/<id>', views.property_unit_overview,
          name='property_unit_overview'),
-    path('add-property/', views.add_property, name='add_property'),
+    path('add-property/<str:entity>', views.add_property, name='add_property'),
     path('update-property/<id>', views.update_property, name='update_property'),
     path('view-property/<id>', views.view_property, name='view_property'),
     path('delete-property/<id>', views.delete_property, name='delete_property'),
@@ -32,7 +33,8 @@ urlpatterns = [
 
     path('unit-overview/', views.unit_overview, name='unit_overview'),
     path('add-unit/', views.add_unit, name='add_unit'),
-    path('add-unit/<id>', views.prepopulated_field_unit, name='prepopulated_field_unit'),
+    path('add-unit/<id>', views.prepopulated_field_unit,
+         name='prepopulated_field_unit'),
     path('update-unit/<id>', views.update_unit, name='update_unit'),
     path('view-unit/<id>', views.view_unit, name='view_unit'),
     path('delete-unit/<id>', views.delete_unit, name='delete_unit'),

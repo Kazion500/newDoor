@@ -39,18 +39,18 @@ def entity_overview(request):
     return render(request, 'new_door/entity_overview.html', context)
 
 
-def property_overview(request):
-
-    properties = Property.objects.all()
-    number_of_units = Unit.objects.all().count()
-    number_of_vacant_units = Unit.objects.filter(is_vacant=True).count()
-    total_ = Unit.objects.aggregate(earnings=Sum('rent_amount'))
+def property_overview(request,entity):
+    entity = get_object_or_404(Entity,entity_name=entity)
+    properties = Property.objects.filter(entity__entity_name=entity)
+    number_of_units = Unit.objects.filter(property_id__entity__entity_name=entity).count()
+    number_of_vacant_units = Unit.objects.filter(
+        is_vacant=True, property_id__entity__entity_name=entity).count()
 
     context = {
+        'entity': entity,
         'properties': properties,
         'number_of_units': number_of_units,
         'number_of_vacant_units': number_of_vacant_units,
-        'total': total_,
     }
 
     return render(request, 'new_door/property_overview.html', context)
@@ -110,10 +110,10 @@ def add_entity(request):
     return render(request, 'new_door/add_entity.html', context)
 
 
-def add_property(request):
-
-    entities = Entity.objects.all()
+def add_property(request,entity):
+    entity = get_object_or_404(Entity,entity_name=entity)
     profiles = Profile.objects.all()
+
     if request.method == 'POST':
         form = PropertyModelForm(request.POST)
         if form.is_valid():
@@ -126,7 +126,7 @@ def add_property(request):
 
     context = {
         'form': form,
-        'entities': entities,
+        'entity': entity,
         'profiles': profiles,
     }
 
@@ -284,7 +284,7 @@ def update_property(request, id):
         form.save()
         messages.success(
             request, 'Congratulations...! Property successfully Updated.')
-        return redirect('property_overview')
+        return redirect('property_overview', _property.pk)
     else:
         form = PropertyModelForm(instance=_property)
 
@@ -416,7 +416,7 @@ def delete_property(request, id):
     _property.delete()
     messages.success(
         request, 'Congratulations...! Property successfully Deleted.')
-    return redirect('property_overview')
+    return redirect('entity_overview')
 
 
 def delete_unit(request, id):
@@ -560,34 +560,37 @@ def view_occupancy_type(request, id):
     return render(request, 'new_door/view_occupancy_type.html', context)
 
 
-
-
 """ Propery Unit Views """
 
 # Code refactored - 28-11-2020 11.53PM- Patrick
 
 
 def prepopulated_field_unit(request, id):
-    _property = Property.objects.get(pk=id)
-    unit = Unit.objects.filter(property_id=_property.pk).first
-    print(_property.unit_set.filter(property_id=_property.pk))
+    _property = get_object_or_404(Property, pk=id)
+
+    property_types = PropertyType.objects.all()
+    ownership_types = OwnershipType.objects.all()
+    occupancy_types = OccupancyType.objects.all()
 
     if request.method == 'POST':
-        form = UnitModelForm(request.POST,instance=_property)
+        form = UnitModelForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(
                 request, 'Congratulations...! Unit successfully added.')
-            return redirect('add_unit')
+            return redirect('property_unit_overview')
     else:
-        form = UnitModelForm(request.POST, instance=_property)
+        data = {
+            'product_id': _property
+        }
+        form = UnitModelForm(request.POST, initial=data)
 
     context = {
         'form': form,
-        # 'unit': unit,
-        # 'property_types': property_types,
-        # 'ownership_types': ownership_types,
-        # 'occupancy_types': occupancy_types,
+        'property': _property,
+        'property_types': property_types,
+        'ownership_types': ownership_types,
+        'occupancy_types': occupancy_types,
     }
 
     return render(request, 'new_door/add_property_unit.html', context)

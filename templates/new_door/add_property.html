@@ -12,7 +12,7 @@
       <div class="card-header card-header-rose card-header-text">
         <div class="card-text">
           <h4 class="card-title">
-            <i class="material-icons">house</i>Add_Property
+            <i class="material-icons">roof</i>Add_Property
           </h4>
         </div>
       </div>
@@ -63,10 +63,8 @@
                 required="true"
                 aria-required="true"
               >
-                <option selected>Select Entity</option>
-                {% for entity in entities %}
-                <option value="{{entity.id}}">{{entity.entity_name}}</option>
-                {% endfor %}
+                <option selected value="{{entity.id}}">{{entity.entity_name}}</option>
+               
               </select>
             </div>
           </div>

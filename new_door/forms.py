@@ -56,8 +56,6 @@ class UnitModelForm(forms.ModelForm):
         model = Unit
         fields = '__all__'
         exclude = ['id']
-        # ('property_id', 'property_type', 'flat', 'owner_type', 'rent_amount', 'size',
-        #           'occupancy_type', 'bedrooms', 'bathrooms', 'parking', 'desc')
         widgets = {
             'property_id': forms.TextInput(attrs={'class': 'form-control'}),
             'property_type': forms.TextInput(attrs={'class': 'form-control'}),
@@ -71,7 +69,7 @@ class UnitModelForm(forms.ModelForm):
             'parking': forms.TextInput(attrs={'class': 'form-control'}),
             'desc': forms.TextInput(attrs={'class': 'form-control'}),
         }
-
+        
 # Code refactored - 26-11-2020 8.32PM- Patrick
 
 

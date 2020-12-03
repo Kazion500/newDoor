@@ -29,7 +29,7 @@ class Profile(models.Model):
 
 
 class Entity(models.Model):
-    entity_name = models.CharField(max_length=50, )
+    entity_name = models.CharField(max_length=50, unique=True)
     contact_no = models.CharField(max_length=20, )
     address1 = models.CharField(max_length=250, )
     address2 = models.CharField(max_length=250, )
