@@ -1,5 +1,4 @@
-{% extends 'base.html' %} {% block title %} Add Property {% endblock %} 
-{% block body %}
+{% extends 'base.html' %} {% block title %} Add Property {% endblock %} {% block body %}
 <div class="col-md-12">
   <form
     id="TypeValidation"
@@ -9,11 +8,17 @@
   >
     {% csrf_token %}
     <div class="card">
-      <div class="card-header card-header-rose card-header-text">
-        <div class="card-text">
-          <h4 class="card-title">
-            <i class="material-icons">roof</i>Add_Property
-          </h4>
+      <div
+        class="card-header card-header-rose card-header-text"
+        style="font-size: 20px"
+      >
+        <div class="card-text" style="padding-left: 0px">
+          <a
+            href=" "
+            class="card-header card-header-rose card-header-text"
+          >
+            <i class="material-icons">roofing</i> Add Property
+          </a>
         </div>
       </div>
 
@@ -63,8 +68,9 @@
                 required="true"
                 aria-required="true"
               >
-                <option selected value="{{entity.id}}">{{entity.entity_name}}</option>
-               
+                <option selected value="{{entity.id}}">
+                  {{entity.entity_name}}
+                </option>
               </select>
             </div>
           </div>
