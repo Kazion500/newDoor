@@ -27,7 +27,7 @@ class ProfileRegistrationForm(UserCreationForm):
         fields = ['username', 'email','city', 'password1', 'password2']
 
 
-class RegisterUserForm(forms.Form):
+class SiginInUserForm(forms.Form):
     username = forms.CharField(max_length=50, widget=(forms.TextInput(attrs={
         "class": "form-control",
         "placeholder": "Enter username"
