@@ -42,7 +42,7 @@
               <img
                 class="mt-4"
                 style="width: 70px; height: 70px"
-                src="/static/img/faces/NewDoor_Logo.png"
+                src="{% static '/img/faces/NewDoor_Logo.png' %} "
                 alt="logo"
               />
             </div>
@@ -83,7 +83,7 @@
                 Sign in
               </button>
               <h6 class="text-muted text-center mt-3">
-                Not yet a member? <a href="">Sign up</a>
+                Not yet a member? <a href="{% url 'signup' %}">Sign up</a>
               </h6>
             </div>
           </div>

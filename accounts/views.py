@@ -1,7 +1,35 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
-from .forms import SiginInUserForm
+from .forms import SiginInUserForm, ProfileRegistrationForm
 from django.contrib import messages
+from new_door.models import Profile
+
+
+def signup_view(request):
+    if request.method == "POST":
+        form = ProfileRegistrationForm(request.POST)
+        print(form.errors)
+        if form.is_valid():
+            user = form.save()
+            # print(dir(user))
+            # profile = Profile.objects.get(user=user)
+            # profile.email = user.email
+            # profile.first_name = user.first_name
+            # profile.mid_name = user.mid_name
+            # profile.last_name = user.last_name
+            # profile.pcontact = user.pcontact
+            # profile.scontact = user.scontact
+            # profile.marital_status = user.marital_status
+            # profile.nationality= user.nationality
+            # profile.roll_id = user.nationality
+            # profile.save()
+    else:
+        form = ProfileRegistrationForm()
+    context = {
+        "form": form,
+    }
+
+    return render(request, 'auth/signup.html', context)
 
 
 def login_view(request):

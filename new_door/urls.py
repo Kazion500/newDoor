@@ -151,6 +151,7 @@ urlpatterns = [
 
 
     # Authentication routes
+    path('auth/signup/', auth_views.signup_view, name='signup'),
     path('auth/login/', auth_views.login_view, name='login'),
     path('auth/logout/', auth_views.logout_view, name='logout'),
 ]

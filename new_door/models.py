@@ -2,19 +2,18 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-
-
 class Profile(models.Model):
     MARITAL_STATUS = (
+        ("", "Select marital status"),
         ("Married", "Married"),
         ("Single", "Single")
     )
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=50,)
     mid_name = models.CharField(max_length=50, )
     last_name = models.CharField(max_length=50, )
     email = models.EmailField(max_length=254, unique=True)
-    pcontact = models.CharField(max_length=254,unique=True)
+    pcontact = models.CharField(max_length=254, unique=True)
     scontact = models.CharField(max_length=254, unique=True)
     marital_status = models.CharField(choices=MARITAL_STATUS, max_length=50)
     nationality = models.CharField(max_length=254,)
@@ -53,7 +52,7 @@ class Property(models.Model):
     pobox = models.CharField(max_length=20)
     state = models.CharField(max_length=50)
     country = models.CharField(max_length=50)
-    email = models.EmailField(max_length=30,unique=True)
+    email = models.EmailField(max_length=30, unique=True)
     contact_no = models.CharField(max_length=30, unique=True)
     location = models.CharField(max_length=254)
 
