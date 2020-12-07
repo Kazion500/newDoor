@@ -10,14 +10,12 @@ class Profile(models.Model):
         ("Single", "Single")
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    # user_id = models.CharField(max_length=20,)
-    # user_password = models.CharField(max_length=20, )
     first_name = models.CharField(max_length=50,)
     mid_name = models.CharField(max_length=50, )
     last_name = models.CharField(max_length=50, )
-    email = models.EmailField(max_length=254, )
-    pcontact = models.CharField(max_length=254,)
-    scontact = models.CharField(max_length=254, )
+    email = models.EmailField(max_length=254, unique=True)
+    pcontact = models.CharField(max_length=254,unique=True)
+    scontact = models.CharField(max_length=254, unique=True)
     marital_status = models.CharField(choices=MARITAL_STATUS, max_length=50)
     nationality = models.CharField(max_length=254,)
     roll_id = models.CharField(max_length=254,)
@@ -30,14 +28,14 @@ class Profile(models.Model):
 
 class Entity(models.Model):
     entity_name = models.CharField(max_length=50, unique=True)
-    contact_no = models.CharField(max_length=20, )
+    contact_no = models.CharField(max_length=20, unique=True)
     address1 = models.CharField(max_length=250, )
     address2 = models.CharField(max_length=250, )
     city = models.CharField(max_length=50,)
     pobox = models.CharField(max_length=20, )
     state = models.CharField(max_length=50, )
     country = models.CharField(max_length=50, )
-    email = models.EmailField(max_length=30, )
+    email = models.EmailField(max_length=30, unique=True)
     desc = models.TextField(max_length=550,)
 
     def __str__(self):
@@ -55,8 +53,8 @@ class Property(models.Model):
     pobox = models.CharField(max_length=20)
     state = models.CharField(max_length=50)
     country = models.CharField(max_length=50)
-    email = models.EmailField(max_length=30)
-    contact_no = models.CharField(max_length=30)
+    email = models.EmailField(max_length=30,unique=True)
+    contact_no = models.CharField(max_length=30, unique=True)
     location = models.CharField(max_length=254)
 
     def __str__(self):
@@ -65,7 +63,7 @@ class Property(models.Model):
 
 class CategoryType(models.Model):
     cat_type = models.CharField(max_length=50,)
-    desc = models.CharField(max_length=550, )
+    desc = models.CharField(max_length=550, unique=True)
 
     def __str__(self):
         return self.cat_type
@@ -73,7 +71,7 @@ class CategoryType(models.Model):
 
 class PropertyType(models.Model):
     category = models.ForeignKey(CategoryType, on_delete=models.CASCADE)
-    property_type = models.CharField(max_length=100)
+    property_type = models.CharField(max_length=100, unique=True)
     desc = models.TextField(max_length=550,)
 
     def __str__(self):
@@ -81,7 +79,7 @@ class PropertyType(models.Model):
 
 
 class OwnershipType(models.Model):
-    ownership_type = models.CharField(max_length=50,)
+    ownership_type = models.CharField(max_length=50, unique=True)
     desc = models.TextField(max_length=550,)
 
     def __str__(self):
@@ -89,7 +87,7 @@ class OwnershipType(models.Model):
 
 
 class OccupancyType(models.Model):
-    occupancy_type = models.CharField(max_length=50, )
+    occupancy_type = models.CharField(max_length=50, unique=True)
     desc = models.TextField(max_length=550,)
 
     def __str__(self):
@@ -112,7 +110,7 @@ class Unit(models.Model):
     bathrooms = models.CharField(max_length=30,)
     parking = models.CharField(max_length=30, )
     desc = models.TextField(max_length=550, )
-    is_vacant = models.BooleanField(default=False)
+    # is_vacant = models.BooleanField(default=True)
     # image= models.ImageField(upload_to = "pictures")
 
 
@@ -121,45 +119,45 @@ class UnitImage(models.Model):
     unit_image = models.ImageField(upload_to="unit",)
 
 
-# class DocumentType(models.Model):
-#     docs_type = models.CharField(max_length=50,)
-#     desc = models.CharField(max_length=550, )
+class DocumentType(models.Model):
+    docs_type = models.CharField(max_length=50,)
+    desc = models.TextField(max_length=550, )
 
 
-# class PayModeType(models.Model):
-#     pay_type = models.CharField(max_length=50)
-#     desc = models.CharField(max_length=550, )
+class PayModeType(models.Model):
+    pay_type = models.CharField(max_length=50)
+    desc = models.TextField(max_length=550, )
 
 
-# class StatusReqType(models.Model):
-#     str_qty = models.CharField(max_length=50, )
-#     desc = models.CharField(max_length=550, )
+class StatusReqType(models.Model):
+    str_req = models.CharField(max_length=50, )
+    desc = models.TextField(max_length=550, )
 
 
-# class TenantReqType(models.Model):
-#     tenant_req_type = models.CharField(max_length=50, )
-#     desc = models.CharField(max_length=550, )
+class TenantReqType(models.Model):
+    tenant_req_type = models.CharField(max_length=50, )
+    desc = models.TextField(max_length=550, )
 
 
-# class ContractReqType(models.Model):
-#     tenant = models.ForeignKey(Profile, on_delete=models.CASCADE)
-#     contract_req = models.CharField(max_length=50)
-#     desc = models.CharField(max_length=550)
+class ContractReqType(models.Model):
+    tenant = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    contract_req = models.CharField(max_length=50)
+    desc = models.TextField(max_length=550)
 
 
-# class TenantContract(models.Model):
-#     tenant = models.ForeignKey(Profile, on_delete=models.CASCADE)
-#     property_id = models.ForeignKey(
-#         Property, on_delete=models.CASCADE, )
-#     unit_id = models.ForeignKey(Unit, on_delete=models.CASCADE,)
-#     contract_no = models.CharField(max_length=50,)
-#     start_date = models.DateField(max_length=50, )
-#     end_date = models.CharField(max_length=50, )
-#     discount = models.CharField(max_length=50,)
-#     annual_rent = models.CharField(max_length=50,)
-#     security_dep = models.CharField(max_length=50, )
-#     commission = models.CharField(max_length=50, )
-#     installments = models.CharField(max_length=50,)
-#     remark = models.CharField(max_length=550,)
-#     sms_notify = models.BooleanField(default='False')
-#     email_notify = models.BooleanField(default='False')
+class TenantContract(models.Model):
+    tenant = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    property_id = models.ForeignKey(
+        Property, on_delete=models.CASCADE, )
+    unit_id = models.ForeignKey(Unit, on_delete=models.CASCADE,)
+    contract_no = models.CharField(max_length=50,)
+    start_date = models.DateField(max_length=50, )
+    end_date = models.CharField(max_length=50, )
+    discount = models.CharField(max_length=50,)
+    annual_rent = models.CharField(max_length=50,)
+    security_dep = models.CharField(max_length=50, )
+    commission = models.CharField(max_length=50, )
+    installments = models.CharField(max_length=50,)
+    remark = models.CharField(max_length=550,)
+    sms_notify = models.BooleanField(default='False')
+    email_notify = models.BooleanField(default='False')

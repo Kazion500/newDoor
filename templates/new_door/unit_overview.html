@@ -175,7 +175,7 @@
                   href="{% url 'view_unit' unit.pk  %}"
                   class="d-inline"
                   rel="tooltip "
-                  title=" "
+                  title="View unit"
                   data-original-title="Remove "
                   >
                   <div class="ripple-container success"></div>
@@ -191,8 +191,7 @@
                   >
                 </a>
 
-                <a href="{% url 'update_unit' unit.pk %}" class="d-inline"
-                  >
+                <a href="{% url 'update_unit' unit.pk %}" class="d-inline" title="Update unit">
                   <div class="ripple-container success"></div>
                   <i
                     class="material-icons"
@@ -206,7 +205,7 @@
                   >
                 </a>
 
-                  <a href="{% url 'delete_unit' unit.pk %}" class="d-inline">
+                  <a href="{% url 'delete_unit' unit.pk %}" class="d-inline" title="Delete unit">
 
                   <i
                     class="material-icons"

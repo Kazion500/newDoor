@@ -2,7 +2,7 @@
 <div class="row">
   <div class="col-md-12">
     <!-- **************Mini Dashbar************************************************** -->
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-lg-3 col-md-6 col-sm-6">
         <div
           class="card card-stats"
@@ -14,7 +14,7 @@
             <div class="card-icon">
               <i class="material-icons">account_balance_wallet</i>
             </div>
-            <h3 class="card-title">$9877</h3>
+            <h3 class="card-title">${{ total.earnings }}</h3>
             <br /><br />
             <p class="card-category">Total Earnings</p>
           </div>
@@ -71,7 +71,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="card">
       <div class="card-header card-header-primary card-header-icon">
         <div class="card-icon" style="padding-left: 1px">
@@ -92,7 +92,7 @@
           "
         >
           <a
-            href=" {% url 'add_property' entity.entity_name %} "
+            href=" {% url 'add_property_all' %} "
             class="card-header card-header-rose card-header-text"
           >
             <i class="material-icons">add</i>Add Property
@@ -168,7 +168,7 @@
                   </a>
 
                   <a href="" class="d-inline" title="View location">
-                    
+           
                     <i
                       class="material-icons"
                       style="
@@ -184,10 +184,8 @@
 
                   <a
                     href="{% url 'view_property' property.pk %}"
-                    class="d-inline"
-                    rel="tooltip "
-                    data-original-title="Remove"
-                     title="View property"
+                    class="d-inline" title="View property" rel="tooltip "
+                    data-original-title="Remove "
                     >
                     <div class="ripple-container success"></div>
                     <i
@@ -204,8 +202,7 @@
 
                   <a
                     href="{% url 'update_property' property.pk  %}"
-                   title="Update property"
-                    class="d-inline"
+                    class="d-inline" title="Update property"
                     >
                     <div class="ripple-container success"></div>
                     <i
@@ -222,10 +219,8 @@
 
                   <a
                     href="{% url 'delete_property' property.pk  %}"
-                    title="Delete property"
-                    class="d-inline"
+                    class="d-inline" title="Delete property"
                   >
-                    
                     <i
                       class="material-icons"
                       style="

@@ -1,5 +1,4 @@
-{% extends 'base.html' %} {% block title %} Property_Type {% endblock title %}
-{% block body %} {% load static %}
+{% extends 'base.html' %} {% block title %} PayMode_Type {% endblock title %} {% block body %} {% load static %}
 <div class="col-md-12">
   <form
     id="TypeValidation"
@@ -17,10 +16,10 @@
       >
         <div class="card-text" style="padding-left: 1px">
           <a
-            href=" {% url 'add_property_type'%} "
+            href=" {% url 'add_payment_mode'%} "
             class="card-header card-header-rose card-header-text"
           >
-            <i class="material-icons">roofing</i> Property Type
+            <i class="material-icons">roofing</i> Payment Mode Type
           </a>
         </div>
       </div>
@@ -30,39 +29,23 @@
         {% comment %} Row1 {% endcomment %}
 
         <div class="row">
-          <label class="col-sm-2 col-form-label" for="CatId"
-            >Category Type*</label
+          {% for field in form %}
+          <label class="col-sm-2 col-form-label" for="PayType"
+            >{{ field.label }}*</label
           >
           <div class="col-sm-4">
             <div class="form-group bmd-form-group">
-              <select
-                input
+              <input
                 class="form-control"
                 type="text"
-                id="category"
-                name="category"
+                id="{{ field.id }}"
+                name="{{ field.name }}"
                 required="true"
                 aria-required="true"
-              >
-                <option selected>Select Category Type</option>
-                {% for category in categories %}
-                <option value="{{category.id}}">{{category.cat_type}}</option>
-                {% endfor %}
-              </select>
+              />
             </div>
           </div>
-        </div>
-        <div class="row">
-          <label class="col-sm-2 col-form-label" for="PrtType"
-            >Property Type*</label
-          >
-          <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{form.property_type}}</div>
-          </div>
-          <label class="col-sm-2 col-form-label" for="desc">Description*</label>
-          <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{form.desc}}</div>
-          </div>
+          {% endfor %}
         </div>
         {% comment %} Row1 end here {% endcomment %}
 
@@ -72,20 +55,12 @@
         </button>
         <br />
       </div>
-      <hr
-        style="
-          width: 100%;
-          font-weight: bold;
-          margin-top: 1rem;
-          border-top: 5px solid rgba(145, 145, 145, 0.1);
-        "
-      />
       {% comment %} Main form send here {% endcomment %}
       <div class="row">
         <div class="col-md-12">
           <div class="card">
             <div class="card-header card-header-primary card-header-icon">
-              <h4 class="card-title">Property Type Overview</h4>
+              <h4 class="card-title">Payment Mode Type Overview</h4>
             </div>
             <div class="card-body">
               <div class="toolbar">
@@ -102,28 +77,24 @@
                   <thead>
                     <tr>
                       <th>ID</th>
-                      <th>Category</th>
-                      <th>Property Type</th>
+                      <th>Payment Mode</th>
                       <th>Description</th>
                       <th class="disabled-sorting text-right">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {% if property_types %} 
-                    {% for property_type in property_types %}
+                    {% if payment_modes %} {% for payment_mode in payment_modes
+                    %}
                     <tr>
-                      <td scope="row">{{property_type.id}}</td>
-                      <td>{{property_type.category.cat_type}}</td>
-                      <td>{{property_type.property_type}}</td>
-                      <td>{{property_type.desc}}</td>
+                      <td scope="row">{{payment_mode.pk}}</td>
+                      <td>{{payment_mode.pay_type}}</td>
+                      <td>{{payment_mode.desc}}</td>
                       <td class="text-right">
                         <a
-                          href="{% url 'view_property_type' property_type.pk %}"
+                          href=" {% url 'view_payment_mode' payment_mode.pk %}"
                           class="d-inline"
-                          rel="tooltip "
-                          data-original-title="Remove "
-                          title="View property type"
-                          >{% csrf_token %}
+                          title="View payment mode"
+                        >
                           <div class="ripple-container success"></div>
                           <i
                             class="material-icons"
@@ -138,10 +109,10 @@
                         </a>
 
                         <a
-                          href="{% url 'update_property_type' property_type.pk  %} "
-                         title="Update property type"
+                          href="{% url 'update_payment_mode' payment_mode.pk %}"
                           class="d-inline"
-                          >
+                          title="Update payment mode"
+                        >
                           <div class="ripple-container success"></div>
                           <i
                             class="material-icons"
@@ -156,11 +127,10 @@
                         </a>
 
                         <a
-                          href="{% url 'delete_property_type' property_type.pk  %} "
-                          title="Delete property type"
+                          href=" {% url 'delete_payment_mode' payment_mode.pk %}"
                           class="d-inline"
+                          title="Delete payment mode"
                         >
-                    
                           <i
                             class="material-icons"
                             style="

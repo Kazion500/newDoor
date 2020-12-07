@@ -1,0 +1,63 @@
+{% extends 'base.html' %} {% block body %}
+<div class="col-md-12">
+  <div class="card">
+    <br />
+    <div class="row">
+      <div class="col-sm-12">
+        <h4 class="alert alert-info">Update Contract Request Type</h4>
+        <form
+          id="TypeValidation"
+          class="form-horizontal"
+          action=" "
+          method="post"
+          novalidate="novalidate"
+        >
+          {% csrf_token %}
+          <div class="card-body">
+            <div class="row">
+              <label class="col-sm-2 col-form-label" for="PropID"
+                >Tenant*</label
+              >
+              <div class="col-md-6">
+                <div class="form-group bmd-form-group">{{ form.tenant }}</div>
+              </div>
+            </div>
+            {% comment %} Row2 {% endcomment %}
+            <div class="row">
+              <label class="col-sm-2 col-form-label">Contract request*</label>
+              <div class="col-md-6">
+                <div class="form-group bmd-form-group">
+                  {{ form.contract_req }}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label" for="OwnerTypeID"
+                >Description*</label
+              >
+              <div class="col-md-6">
+                <div class="form-group bmd-form-group">{{ form.desc }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <input
+              type="submit"
+              class="btn btn-success btn-round float-right"
+              value="Update"
+              style="margin-right: 13px; margin-bottom: 20px; margin-top: 20px"
+            />
+            <a
+              href="{% url 'add_contract_request'%}"
+              class="btn btn-info btn-round float-right"
+              style="margin-bottom: 20px; margin-top: 20px"
+            >
+              Close
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock body %}

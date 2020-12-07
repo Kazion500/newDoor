@@ -79,14 +79,14 @@
         <div class="collapse" id="pagesExamples">
           <ul class="nav">
             <li class="nav-item">
-              <a class="nav-link" href="/entity-overview">
+              <a class="nav-link" href="{% url 'entity_overview' %}">
                 <span class="sidebar-mini"> AE </span>
                 <span class="sidebar-normal"> Entity Overview </span>
               </a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="">
+              <a class="nav-link" href="{% url 'property_all_overview' %}">
                 <span class="sidebar-mini"> EO </span>
                 <span class="sidebar-normal"> Property Overview </span>
               </a>
@@ -136,31 +136,31 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/Documents_Type">
+              <a class="nav-link" href="{% url 'add_doc_type' %}">
                 <span class="sidebar-mini"> DT </span>
                 <span class="sidebar-normal"> Documents Type </span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/PayMode_Type">
+              <a class="nav-link" href="{% url 'add_payment_mode' %}">
                 <span class="sidebar-mini"> PMT </span>
                 <span class="sidebar-normal"> Payment Mode Type </span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/StatusReq_Type">
+              <a class="nav-link" href="{% url 'add_status_request' %}">
                 <span class="sidebar-mini"> SRT </span>
                 <span class="sidebar-normal"> Status Request Type </span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/TenantReq_Type">
+              <a class="nav-link" href="{% url 'add_tenant_request' %}">
                 <span class="sidebar-mini"> TRT </span>
                 <span class="sidebar-normal"> Tenant Request Type </span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/ContractReq_Type">
+              <a class="nav-link" href="{% url 'add_contract_request' %}">
                 <span class="sidebar-mini"> CRT </span>
                 <span class="sidebar-normal"> Contract Request Type </span>
               </a>
@@ -192,7 +192,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/Tenant_Contract">
+              <a class="nav-link" href="{% url 'add_tetant_contract' %}">
                 <span class="sidebar-mini"> TC </span>
                 <span class="sidebar-normal"> Tenant Contract </span>
               </a>

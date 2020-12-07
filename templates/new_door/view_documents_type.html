@@ -12,24 +12,27 @@
     <div class="card">
       <br />
       <div class="row">
-        <div class="col-sm-8 offset-2">
-          <h4 class="alert alert-info">Update Documents Type</h4>
+        <div class="col-md-12">
+          <h4 class="alert alert-info">View Documents Type</h4>
           <form action="" method="post">
             {% csrf_token %}
             <div class="card-body">
               <br />
               {% comment %} Row1 {% endcomment %}
               <div class="row">
-                <label class="col-sm-3 col-form-label">Documents Type*</label>
+                <label class="col-sm-3 col-form-label" for="DocumentsType"
+                  >Documents Type*</label
+                >
                 <div class="col-sm-6">
                   <div class="form-group bmd-form-group">
                     <input
+                      disabled
                       style="background-color: #ffffff; margin-bottom: 30px"
                       class="form-control"
-                      value="{{pi.DocumentsType}}"
+                      value="{{doc_type.docs_type}}"
                       type="text"
-                      id="DocumentsType"
-                      name="DocumentsType"
+                      id="doc_type"
+                      name="docs_type"
                       required="true"
                       aria-required="true"
                     />
@@ -43,9 +46,10 @@
                 <div class="col-sm-6">
                   <div class="form-group bmd-form-group">
                     <input
+                      disabled
                       style="background-color: #ffffff"
                       class="form-control"
-                      value="{{pi.desc}}"
+                      value="{{doc_type.desc}}"
                       type="text"
                       id="desc"
                       name="desc"
@@ -56,41 +60,17 @@
                 </div>
               </div>
             </div>
-            <br />
-            <div class="modal-footer">
-              <input
-                type="submit"
-                class="btn btn-success btn-round float-right"
-                value="Update"
-                style="
-                  margin-right: 13px;
-                  margin-bottom: 20px;
-                  margin-top: 20px;
-                "
-              />
-              <a
-                href="{% url 'Documents_Type'%}"
-                class="btn btn-info btn-round float-right"
-                style="margin-bottom: 20px; margin-top: 20px"
-              >
-                Close
-              </a>
-            </div>
-            {% comment %}
-            <a
-              href="{% url 'Documents_Type'%}"
-              class="btn btn-info btn-round float-right"
-              style="margin-bottom: 30px; margin-top: 30px; margin-right: 280px"
-            >
-              Back
-            </a>
-            <input
-              type="submit"
-              class="btn btn-success btn-round float-right"
-              value="Update"
-              style="margin-right: 13px"
-            />
-            {% endcomment %}
+
+             <div class="modal-footer" style="float: right; width: 100%">
+                <a
+                  href="{% url 'add_doc_type' %}"
+                  class="btn btn-info btn-round float-right"
+                  style="margin-bottom: 20px; margin-top: 20px"
+                >
+                  Back
+                </a>
+              </div>
+            <!-- <input type="submit" class="btn btn-success btn-round float-right" value="Update" style="margin-right: 13px;"> -->
           </form>
         </div>
       </div>

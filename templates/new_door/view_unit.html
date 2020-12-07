@@ -28,12 +28,11 @@
                     aria-required="true"
                     disabled
                   >
-                    <option selected>Select Owner' Name</option>
-                    {% for property in properties %}
-                    <option selected value="{{property.id}}">
-                      {{property.property_name}}
+                    <option selected>Select property name</option>
+
+                    <option selected value="{{field.value}}">
+                      {{ unit.property_id.property_name}}
                     </option>
-                    {% endfor %}
                   </select>
                 </div>
               </div>
@@ -51,12 +50,10 @@
                     aria-required="true"
                     disabled
                   >
-                    <option selected>Select Entity</option>
-                    {% for property_type in property_types %}
-                    <option selected value="{{property_type.id}}">
-                      {{property_type.property_type}}
+                    <option selected>Select property type</option>
+                    <option selected value="{{field.value}}">
+                      {{unit.property_type.property_type}}
                     </option>
-                    {% endfor %}
                   </select>
                 </div>
               </div>
@@ -74,12 +71,10 @@
                     aria-required="true"
                     disabled
                   >
-                    <option selected>Select Entity</option>
-                    {% for ownership_type in ownership_types %}
-                    <option selected value="{{ownership_type.id}}">
-                      {{ownership_type.ownership_type}}
+                    <option selected>Select ownership type</option>
+                    <option selected value="{{field.value}}">
+                      {{unit.ownership_type.ownership_type}}
                     </option>
-                    {% endfor %}
                   </select>
                 </div>
               </div>
@@ -97,12 +92,10 @@
                     aria-required="true"
                     disabled
                   >
-                    <option selected>Select Entity</option>
-                    {% for occupancy_type in occupancy_types %}
-                    <option selected value="{{occupancy_type.id}}">
-                      {{occupancy_type.occupancy_type}}
+                    <option selected>Select occupancy type</option>
+                    <option selected value="{{field.value}}">
+                      {{unit.occupancy_type.occupancy_type}}
                     </option>
-                    {% endfor %}
                   </select>
                 </div>
               </div>
@@ -127,7 +120,7 @@
 
               <div class="modal-footer" style="float: right; width: 100%">
                 <a
-                  href=""
+                  href="{% url 'property_unit_overview' unit.property_id.pk %}"
                   class="btn btn-info btn-round float-right"
                   style="margin-bottom: 20px; margin-top: 20px"
                 >

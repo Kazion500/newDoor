@@ -4,23 +4,21 @@
     <br />
     <div class="row">
       <div class="col-sm-12 offset-0">
-        <h4 class="alert alert-info">Property Details</h4>
-        <!-- Changed by patrick 26.11.20 -->
+        <h4 class="alert alert-info">Contract Request Details</h4>
         <form
           id="TypeValidation"
           class="form-horizontal"
           novalidate="novalidate"
         >
-          {% csrf_token %}
           <div class="card-body">
             <div class="row">
               {% for field in form %}
               <label class="col-sm-2 col-form-label">{{ field.label }}*</label>
-              {% if field.name == 'owner_name'%}
+
+              {% if field.name == 'tenant' %}
               <div class="col-sm-4">
                 <div class="form-group bmd-form-group">
                   <select
-                    input
                     class="form-control"
                     type="text"
                     id="{{field.id}}"
@@ -29,39 +27,15 @@
                     aria-required="true"
                     disabled
                   >
-                    <option selected>Select Owner' Name</option>
-                    {% for owner in owners %}
-                    <option selected value="{{owner.id}}">
-                      {{owner.user}}
+                    <option selected value="{{field.value}}">
+                      {{tenant.user.username}}
                     </option>
-                    {% endfor %}
                   </select>
                 </div>
               </div>
 
-              {% elif field.name == 'entity' %}
-              <div class="col-sm-4">
-                <div class="form-group bmd-form-group">
-                  <select
-                    input
-                    class="form-control"
-                    type="text"
-                    id="{{field.id}}"
-                    name="{{field.name}}"
-                    required="true"
-                    aria-required="true"
-                    disabled
-                  >
-                    <option selected>Select Entity</option>
-                    {% for entity in entities %}
-                    <option selected value="{{entity.id}}">
-                      {{entity.entity_name}}
-                    </option>
-                    {% endfor %}
-                  </select>
-                </div>
-              </div>
               {% else %}
+
               <div class="col-sm-4">
                 <div class="form-group bmd-form-group">
                   <input
@@ -76,11 +50,12 @@
                   />
                 </div>
               </div>
-              {% endif %} {% endfor %}
+              {% endif %} 
+              {% endfor %}
 
               <div class="modal-footer" style="float: right; width: 100%">
                 <a
-                  href="{% url 'property_all_overview' %}"
+                  href="{% url 'add_contract_request' %}"
                   class="btn btn-info btn-round float-right"
                   style="margin-bottom: 20px; margin-top: 20px"
                 >
@@ -90,7 +65,6 @@
             </div>
           </div>
         </form>
-        <!-- Changed by patrick 26.11.20 -->
       </div>
     </div>
   </div>

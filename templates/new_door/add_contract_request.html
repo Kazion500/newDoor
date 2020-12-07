@@ -1,0 +1,154 @@
+{% extends 'base.html' %} {% block title %} Contract_Request_Type {% endblock title %} {% block body %} {% load static %}
+<div class="col-md-12">
+  <div class="card">
+    <div
+      class="card-header card-header-rose card-header-text"
+      style="font-size: 20px"
+    >
+      <div class="card-text" style="padding-left: 1px">
+        <a href=" " class="card-header card-header-rose card-header-text">
+          <i class="material-icons">roofing</i> Contract Request Type
+        </a>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <form
+        id="TypeValidation"
+        class="form-horizontal"
+        method="post"
+        novalidate="novalidate"
+      >
+        {% csrf_token %}
+        <br />
+
+        <div class="row">
+          <label class="col-sm-2 col-form-label">Tenant*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.tenant }}</div>
+          </div>
+          <label class="col-sm-2 col-form-label">Contract Request Type*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.contract_req }}</div>
+          </div>
+          <label class="col-sm-2 col-form-label">Description*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.desc }}</div>
+          </div>
+        </div>
+        {% comment %} Row1 end here {% endcomment %}
+
+        <button class="btn btn-rose btn-round float-right" type="Submit">
+          <i class="material-icons">near_me </i> Submit
+          <div class="ripple-container"></div>
+        </button>
+      </form>
+    </div>
+
+    {% comment %} Main form send here {% endcomment %}
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-primary card-header-icon">
+            <h4 class="card-title">Contract Request Type Overview</h4>
+          </div>
+          <div class="card-body">
+            <div class="toolbar">
+              <!--        Here you can write extra buttons/actions for the toolbar              -->
+            </div>
+            <div class="material-datatables">
+              <table
+                id="datatables"
+                class="table table-striped table-no-bordered table-hover"
+                cellspacing="0"
+                width="100%"
+                style="width: 100%"
+              >
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Tenant</th>
+                    <th>Contract Request Type</th>
+                    <th>Description</th>
+                    <th class="disabled-sorting text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if contract_requests %} 
+                  {% for contract_request in contract_requests %}
+                  <tr>
+                    <td scope="row">{{contract_request.pk}}</td>
+                    <td scope="row">
+                      {{contract_request.tenant.user.username.capitalize }}
+                    </td>
+                    <td>{{contract_request.contract_req}}</td>
+                    <td>{{contract_request.desc}}</td>
+                    <td class="text-right">
+                      <a
+                        href="{% url 'view_contract_request' contract_request.pk %}"
+                        class="d-inline"
+                        rel="tooltip "
+                        title="View contract request"
+                        data-original-title="Remove"
+                      >
+                        <div class="ripple-container success"></div>
+                        <i
+                          class="material-icons"
+                          style="
+                            margin-right: 10px;
+                            margin-top: 10px;
+                            margin-bottom: 20px;
+                            color: #ff9800;
+                          "
+                          >dvr</i
+                        >
+                      </a>
+
+                      <a
+                        href=" {% url 'update_contract_request' contract_request.pk  %} "
+                        class="d-inline" title="Update contract request" >
+                        <div class="ripple-container success"></div>
+                        <i
+                          class="material-icons"
+                          style="
+                            margin-right: 5px;
+                            margin-top: 10px;
+                            margin-bottom: 20px;
+                            color: #4caf50;
+                          "
+                          >create</i
+                        >
+                      </a>
+
+                      <a
+                        href="{% url 'delete_contract_request' contract_request.pk  %} "
+                        class="d-inline" title="Delete contract request"
+                      >
+                        <i
+                          class="material-icons"
+                          style="
+                            margin-right: 5px;
+                            margin-top: 10px;
+                            margin-bottom: 20px;
+                            color: #f44336;
+                          "
+                          >delete</i
+                        >
+                        <div class="ripple-container"></div>
+                      </a>
+                    </td>
+                  </tr>
+                  {% endfor %} {% else %} NoData {% endif %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- end content-->
+        </div>
+        <!--  end card  -->
+      </div>
+      <!-- end col-md-12 -->
+    </div>
+  </div>
+</div>
+{% endblock body %}

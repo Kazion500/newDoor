@@ -1,20 +1,12 @@
 {% extends 'base.html' %} {% block body %}
 <div class="col-md-12">
-  <form
-    id="TypeValidation"
-    class="form-horizontal"
-    action=" "
-    method="post"
-    novalidate="novalidate"
-    enctype="multipart/form-data"
-  >
-    {% csrf_token %}
+  
     <div class="card">
       <br />
       <div class="row">
-        <div class="col-sm-8 offset-2">
+        <div class="col-md-12">
           <h4 class="alert alert-info">Update Category Type</h4>
-          <form action="" method="post">
+          <form id="TypeValidation" class="form-horizontal" method="post" novalidate="novalidate">
             {% csrf_token %}
             <div class="card-body">
               <br />
@@ -26,10 +18,10 @@
                     <input
                       style="background-color: #ffffff; margin-bottom: 30px"
                       class="form-control"
-                      value="{{pi.CatType}}"
+                      value="{{category_type.cat_type}}"
                       type="text"
-                      id="CatType"
-                      name="CatType"
+                      id="cat_type"
+                      name="cat_type"
                       required="true"
                       aria-required="true"
                     />
@@ -45,7 +37,7 @@
                     <input
                       style="background-color: #ffffff"
                       class="form-control"
-                      value="{{pi.desc}}"
+                      value="{{category_type.desc}}"
                       type="text"
                       id="desc"
                       name="desc"
@@ -68,7 +60,7 @@
                 "
               />
               <a
-                href="{% url 'Category_Type'%}"
+                href="{% url 'add_category_type'%}"
                 class="btn btn-info btn-round float-right"
                 style="margin-bottom: 20px; margin-top: 20px"
               >
@@ -79,6 +71,5 @@
         </div>
       </div>
     </div>
-  </form>
 </div>
 {% endblock body %}

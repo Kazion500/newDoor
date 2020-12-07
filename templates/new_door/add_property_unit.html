@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block title %} Add_Unit {% endblock title %} {% block body %} {% load static %}
+{% extends 'base.html' %} {% block title %} Add_Unit {% endblock title %} {%block body %} {% load static %}
 <div class="col-md-12">
   <form
     id="TypeValidation"
@@ -51,22 +51,7 @@
           >
           <div class="col-sm-4">
             <div class="form-group bmd-form-group">
-              <select
-                input
-                class="form-control"
-                type="text"
-                id="property_type"
-                name="property_type"
-                required="true"
-                aria-required="true"
-              >
-                <option selected>Select Property Type</option>
-                {% for property_type in property_types %}
-                <option value="{{property_type.id}}">
-                  {{property_type.property_type}}
-                </option>
-                {% endfor %}
-              </select>
+              {{ form.property_type }}
             </div>
           </div>
         </div>
@@ -81,22 +66,7 @@
           >
           <div class="col-sm-4">
             <div class="form-group bmd-form-group">
-              <select
-                input
-                class="form-control"
-                type="text"
-                id="ownership_type"
-                name="ownership_type"
-                required="true"
-                aria-required="true"
-              >
-                <option selected>Select Ownership Type</option>
-                {% for ownership_type in ownership_types %}
-                <option value="{{ownership_type.id}}">
-                  {{ownership_type.ownership_type}}
-                </option>
-                {% endfor %}
-              </select>
+              {{ form.ownership_type }}
             </div>
           </div>
         </div>

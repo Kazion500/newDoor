@@ -12,27 +12,27 @@
     <div class="card">
       <br />
       <div class="row">
-        <div class="col-sm-8 offset-2">
-          <h4 class="alert alert-info">View Occupancy Type</h4>
+        <div class="col-md-12">
+          <h4 class="alert alert-info">View Payment Mode Type</h4>
           <form action="" method="post">
             {% csrf_token %}
             <div class="card-body">
               <br />
               {% comment %} Row1 {% endcomment %}
               <div class="row">
-                <label class="col-sm-3 col-form-label" for="OccupancyType"
-                  >Occupancy Type*</label
+                <label class="col-sm-3 col-form-label" for="PayType"
+                  >Payment Mode Type*</label
                 >
                 <div class="col-sm-6">
                   <div class="form-group bmd-form-group">
                     <input
-                      readonly
+                      disabled
                       style="background-color: #ffffff; margin-bottom: 30px"
                       class="form-control"
-                      value="{{pi.OccupancyType}}"
+                      value="{{payment_mode.pay_type}}"
                       type="text"
-                      id="OccupancyType"
-                      name="OccupancyType"
+                      id="pay_type"
+                      name="pay_type"
                       required="true"
                       aria-required="true"
                     />
@@ -46,10 +46,10 @@
                 <div class="col-sm-6">
                   <div class="form-group bmd-form-group">
                     <input
-                      readonly
+                      disabled
                       style="background-color: #ffffff"
                       class="form-control"
-                      value="{{pi.desc}}"
+                      value="{{payment_mode.desc}}"
                       type="text"
                       id="desc"
                       name="desc"
@@ -60,14 +60,16 @@
                 </div>
               </div>
             </div>
-
-            <a
-              href="{% url 'Occupancy_Type'%}"
-              class="btn btn-info btn-round float-right"
-              style="margin-bottom: 30px; margin-top: 30px; margin-right: 280px"
-            >
-              Back
-            </a>
+            <br />
+            <div class="modal-footer">
+              <a
+                href="{% url 'add_payment_mode'%}"
+                class="btn btn-info btn-round float-right"
+                style="margin-bottom: 20px; margin-top: 20px"
+              >
+                Back
+              </a>
+            </div>
           </form>
         </div>
       </div>

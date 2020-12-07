@@ -1,6 +1,4 @@
-{% extends 'base.html' %} {% block title %} Add Entity {% endblock title %}
-{% block body %}
-
+{% extends 'base.html' %} {% block title %} Add Property {% endblock %} {% block body %}
 <div class="col-md-12">
   <form
     id="TypeValidation"
@@ -10,67 +8,88 @@
   >
     {% csrf_token %}
     <div class="card">
-      <div class="card-header card-header-rose card-header-text">
-        <div class="card-text">
-          <h4 class="card-title">
-            <i class="material-icons">person</i>Add Entity
-          </h4>
+      <div
+        class="card-header card-header-rose card-header-text"
+        style="font-size: 20px"
+      >
+        <div class="card-text" style="padding-left: 0px">
+          <a href=" " class="card-header card-header-rose card-header-text">
+            <i class="material-icons">roofing</i> Add Property
+          </a>
         </div>
       </div>
 
       <div class="card-body">
         <br />
+        {% comment %} Row1 {% endcomment %}
         <div class="row">
-          <label class="col-sm-2 col-form-label">Entity Name*</label>
+          <label class="col-sm-2 col-form-label">Owner Name*</label>
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.entity_name }}</div>
+            <div class="form-group bmd-form-group">{{ form.owner_name }}</div>
           </div>
-          <label class="col-sm-2 col-form-label">Contact No.*</label>
+          <label class="col-sm-2 col-form-label">Property Name*</label>
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.contact_no }}</div>
+            <div class="form-group bmd-form-group">
+              {{ form.property_name }}
+            </div>
           </div>
         </div>
+        {% comment %} Row2 {% endcomment %}
         <div class="row">
+          <label class="col-sm-2 col-form-label" for="EntityID"
+            >Entity Name*</label
+          >
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{form.entity}}</div>
+          </div>
           <label class="col-sm-2 col-form-label">Address1*</label>
           <div class="col-sm-4">
             <div class="form-group bmd-form-group">{{ form.address1 }}</div>
           </div>
+        </div>
+
+        <div class="row">
           <label class="col-sm-2 col-form-label">Address2*</label>
           <div class="col-sm-4">
             <div class="form-group bmd-form-group">{{ form.address2 }}</div>
           </div>
-        </div>
-
-        <div class="row">
           <label class="col-sm-2 col-form-label">City*</label>
           <div class="col-sm-4">
             <div class="form-group bmd-form-group">{{ form.city }}</div>
           </div>
+        </div>
+
+        <div class="row">
           <label class="col-sm-2 col-form-label">Zip or Postal*</label>
           <div class="col-sm-4">
             <div class="form-group bmd-form-group">{{ form.pobox }}</div>
           </div>
-        </div>
-
-        <div class="row">
           <label class="col-sm-2 col-form-label">State*</label>
           <div class="col-sm-4">
             <div class="form-group bmd-form-group">{{ form.state }}</div>
           </div>
+        </div>
+
+        {% comment %} Row5 {% endcomment %}
+        <div class="row">
           <label class="col-sm-2 col-form-label">Country*</label>
           <div class="col-sm-4">
             <div class="form-group bmd-form-group">{{ form.country }}</div>
           </div>
-        </div>
-
-        <div class="row">
           <label class="col-sm-2 col-form-label">Email*</label>
           <div class="col-sm-4">
             <div class="form-group bmd-form-group">{{ form.email }}</div>
           </div>
-          <label class="col-sm-2 col-form-label">Description</label>
+        </div>
+
+        <div class="row">
+          <label class="col-sm-2 col-form-label">Contact No.*</label>
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.desc }}</div>
+            <div class="form-group bmd-form-group">{{ form.contact_no }}</div>
+          </div>
+          <label class="col-sm-2 col-form-label">Location*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.location }}</div>
           </div>
         </div>
 

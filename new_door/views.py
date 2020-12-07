@@ -12,13 +12,22 @@ from .forms import (
     PropertyTypeModelForm,
     OwnershipTypeModelForm,
     OccupancyTypeModelForm,
+    TenantContractModelForm,
+    ContractReqTypeModelForm,
+    TenantReqTypeModelForm,
+    StatusReqTypeModelForm,
+    DocumentTypeModelForm,
+    PayModeTypeModelForm,
 )
 
 from .models import (
     Entity, Property,
     Unit, CategoryType,
     Profile, PropertyType,
-    OccupancyType, OwnershipType
+    OccupancyType, OwnershipType,
+    DocumentType, PayModeType,
+    StatusReqType, TenantReqType,
+    ContractReqType, TenantContract,
 )
 # Dashboard Rendering
 
@@ -39,12 +48,14 @@ def entity_overview(request):
     return render(request, 'new_door/entity_overview.html', context)
 
 
-def property_overview(request,entity):
-    entity = get_object_or_404(Entity,entity_name=entity)
+def property_overview(request, entity):
+    entity = get_object_or_404(Entity, entity_name=entity)
     properties = Property.objects.filter(entity__entity_name=entity)
-    number_of_units = Unit.objects.filter(property_id__entity__entity_name=entity).count()
+    number_of_units = Unit.objects.filter(
+        property_id__entity__entity_name=entity).count()
     number_of_vacant_units = Unit.objects.filter(
-        is_vacant=True, property_id__entity__entity_name=entity).count()
+        occupancy_type__occupancy_type__iexact="vacant",
+        property_id__entity__entity_name=entity).count()
 
     context = {
         'entity': entity,
@@ -56,20 +67,32 @@ def property_overview(request,entity):
     return render(request, 'new_door/property_overview.html', context)
 
 
+def property_all_overview(request):
+    properties = Property.objects.all()
+
+    context = {
+        'properties': properties,
+    }
+
+    return render(request, 'new_door/property_all_overview.html', context)
+
+
 def unit_overview(request):
 
     units = Unit.objects.all()
-    total_ = Unit.objects.aggregate(earnings=Sum('rent_amount'))
 
     number_of_units = Unit.objects.all().count()
-    number_of_vacant_units = Unit.objects.filter(is_vacant=True).count()
+    number_of_vacant_units = Unit.objects.filter(
+        occupancy_type__occupancy_type__iexact="vacant").count()
+
     units_occupied = number_of_units - number_of_vacant_units
+    if units_occupied is None:
+        units_occupied = 0
 
     context = {
         'units': units,
         'units_occupied': units_occupied,
         'number_of_vacant_units': number_of_vacant_units,
-        'total': total_,
     }
 
     return render(request, 'new_door/unit_overview.html', context)
@@ -84,7 +107,7 @@ def upload_documents(request):
 
 
 def payment(request):
-    return render(request, 'new_door/payment.html')
+    return render(request, 'new_door/add_payment.html')
 
 
 """ Add Views  """
@@ -100,6 +123,10 @@ def add_entity(request):
             messages.success(
                 request, 'Congratulations...! Document Type successfully added.')
             return redirect('add_entity')
+        else:
+            messages.info(
+                request, 'Entity already exits')
+            return redirect('add_entity')
     else:
         form = EntityModelForm()
 
@@ -110,17 +137,18 @@ def add_entity(request):
     return render(request, 'new_door/add_entity.html', context)
 
 
-def add_property(request,entity):
-    entity = get_object_or_404(Entity,entity_name=entity)
+def add_property(request, entity):
+    entity = get_object_or_404(Entity, entity_name=entity)
     profiles = Profile.objects.all()
 
     if request.method == 'POST':
         form = PropertyModelForm(request.POST)
+
         if form.is_valid():
             form.save()
             messages.success(
                 request, 'Congratulations...! Property successfully added.')
-            return redirect('add_property')
+            return redirect('add_property', entity.entity_name)
     else:
         form = PropertyModelForm(request.POST)
 
@@ -131,6 +159,29 @@ def add_property(request,entity):
     }
 
     return render(request, 'new_door/add_property.html', context)
+
+
+def add_property_all(request):
+    entities = Entity.objects.all()
+    profiles = Profile.objects.all()
+
+    if request.method == 'POST':
+        form = PropertyModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, 'Congratulations...! Property successfully added.')
+            return redirect('property_all_overview')
+    else:
+        form = PropertyModelForm(request.POST)
+
+    context = {
+        'form': form,
+        'entities': entities,
+        'profiles': profiles,
+    }
+
+    return render(request, 'new_door/add_property_all_overview.html', context)
 
 
 def add_unit(request):
@@ -170,14 +221,14 @@ def add_category_type(request):
         if form.is_valid():
             form.save()
             messages.success(
-                request, 'Congratulations...! Category Type successfully added.')
+                request, 'Congratulations...! Category type successfully added.')
             return redirect('add_category_type')
     else:
         form = CategoryTypeModelForm()
 
     context = {'form': form, 'categories': categories}
 
-    return render(request, 'new_door/category_type.html', context)
+    return render(request, 'new_door/add_category_type.html', context)
 
 
 def add_property_type(request):
@@ -190,7 +241,7 @@ def add_property_type(request):
         if form.is_valid():
             form.save()
             messages.success(
-                request, 'Congratulations...! Property Type successfully added.')
+                request, 'Congratulations...! Property type successfully added.')
             return redirect('add_property_type')
 
     else:
@@ -214,7 +265,7 @@ def add_ownership_type(request):
         if form.is_valid():
             form.save()
             messages.success(
-                request, 'Congratulations...! Ownership Type successfully added.')
+                request, 'Congratulations...! Ownership type successfully added.')
             return redirect('add_ownership_type')
     else:
         form = OwnershipTypeModelForm()
@@ -224,7 +275,7 @@ def add_ownership_type(request):
         'ownership_types': ownership_types,
     }
 
-    return render(request, 'new_door/ownership_type.html', context)
+    return render(request, 'new_door/add_ownership_type.html', context)
 
 
 def add_occupancy_type(request):
@@ -236,7 +287,7 @@ def add_occupancy_type(request):
         if form.is_valid():
             form.save()
             messages.success(
-                request, 'Congratulations...! Ownership Type successfully added.')
+                request, 'Congratulations...! Ownership type successfully added.')
             return redirect('add_occupancy_type')
     else:
         form = OccupancyTypeModelForm()
@@ -247,6 +298,141 @@ def add_occupancy_type(request):
     }
 
     return render(request, 'new_door/add_occupancy_type.html', context)
+
+
+def add_tetant_contract(request):
+    # Todo: Make sure template has valid fields
+
+    occupancy_types = OccupancyType.objects.all()
+
+    if request.method == 'POST':
+        form = TenantContractModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, 'Congratulations...! Contract successfully added.')
+            return redirect('add_tetant_contract')
+    else:
+        form = TenantContractModelForm()
+
+    context = {
+        'form': form,
+        'occupancy_types': occupancy_types,
+    }
+
+    return render(request, 'new_door/tenant_contract.html', context)
+
+
+def add_contract_request(request):
+
+    tenants = Profile.objects.all()
+    contract_requests = ContractReqType.objects.all()
+
+    if request.method == 'POST':
+        form = ContractReqTypeModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, 'Congratulations...! Contract request type successfully added.')
+            return redirect('add_contract_request')
+    else:
+        form = ContractReqTypeModelForm()
+
+    context = {
+        'form': form,
+        'tenants': tenants,
+        'contract_requests': contract_requests,
+    }
+
+    return render(request, 'new_door/add_contract_request.html', context)
+
+
+def add_tenant_request(request):
+
+    tenant_requests = TenantReqType.objects.all()
+
+    if request.method == 'POST':
+        form = TenantReqTypeModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, 'Congratulations...! Tenant request type successfully added.')
+            return redirect('add_tenant_request')
+    else:
+        form = TenantReqTypeModelForm()
+
+    context = {
+        'form': form,
+        'tenant_requests': tenant_requests,
+    }
+
+    return render(request, 'new_door/add_tenant_request.html', context)
+
+
+def add_status_request(request):
+
+    statuses = StatusReqType.objects.all()
+
+    if request.method == 'POST':
+        form = StatusReqTypeModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, 'Congratulations...! Status request type successfully added.')
+            return redirect('add_status_request')
+    else:
+        form = StatusReqTypeModelForm()
+
+    context = {
+        'form': form,
+        'statuses': statuses
+    }
+
+    return render(request, 'new_door/add_status_request.html', context)
+
+
+def add_doc_type(request):
+
+    docs = DocumentType.objects.all()
+
+    if request.method == 'POST':
+        form = DocumentTypeModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, 'Congratulations...! Document type successfully added.')
+            return redirect('add_doc_type')
+    else:
+        form = DocumentTypeModelForm()
+
+    context = {
+        'form': form,
+        'docs': docs
+    }
+
+    return render(request, 'new_door/add_documents_type.html', context)
+
+
+def add_payment_mode(request):
+
+    payment_modes = PayModeType.objects.all()
+
+    if request.method == 'POST':
+        form = PayModeTypeModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, 'Congratulations...! Payment mode successfully added.')
+            return redirect('add_payment_mode')
+    else:
+        form = PayModeTypeModelForm()
+
+    context = {
+        'form': form,
+        'payment_modes': payment_modes,
+    }
+
+    return render(request, 'new_door/add_payment_mode.html', context)
 
 
 """ Edit Views  """
@@ -262,7 +448,7 @@ def update_entity(request, id):
         if form.is_valid():
             form.save()
             messages.success(
-                request, 'Congratulations...! Entity successfully Updated.')
+                request, 'Congratulations...! Entity successfully updated.')
             return redirect('entity_overview')
     else:
         form = EntityModelForm(instance=entity)
@@ -283,7 +469,7 @@ def update_property(request, id):
     if form.is_valid():
         form.save()
         messages.success(
-            request, 'Congratulations...! Property successfully Updated.')
+            request, 'Congratulations...! Property successfully updated.')
         return redirect('property_overview', _property.pk)
     else:
         form = PropertyModelForm(instance=_property)
@@ -301,28 +487,20 @@ def update_property(request, id):
 
 def update_unit(request, id):
     unit = get_object_or_404(Unit, pk=id)
-    properties = Property.objects.all()
-    property_types = PropertyType.objects.all()
-    ownership_types = OwnershipType.objects.all()
-    occupancy_types = OccupancyType.objects.all()
 
     if request.method == "POST":
         form = UnitModelForm(request.POST, instance=unit)
         if form.is_valid():
             form.save()
             messages.success(
-                request, 'Congratulations...! Unit successfully Updated.')
-            return redirect('unit_overview')
+                request, 'Congratulations...! Unit successfully updated.')
+            return redirect('property_unit_overview', unit.property_id.pk)
     else:
         form = UnitModelForm(instance=unit)
 
     context = {
         'form': form,
-        'property': unit,
-        'properties': properties,
-        'property_types': property_types,
-        'ownership_types': ownership_types,
-        'occupancy_types': occupancy_types,
+        'unit': unit,
     }
     return render(request, 'new_door/update_unit.html', context)
 
@@ -339,7 +517,7 @@ def update_property_type(request, id):
         if form.is_valid():
             form.save()
             messages.success(
-                request, 'Congratulations...! Property Type successfully Updated.')
+                request, 'Congratulations...! Property Type successfully updated.')
             return redirect('add_product_type')
     else:
         form = PropertyTypeModelForm(instance=property_type)
@@ -352,7 +530,29 @@ def update_property_type(request, id):
     return render(request, 'new_door/update_property_type.html', context)
 
 
-# Code refactored - 26-11-2020 8.33PM- Patrick
+# Code refactored - 6-12-2020 8.33PM- Patrick
+
+def update_category_type(request, id):
+
+    category_type = get_object_or_404(CategoryType, pk=id)
+
+    if request.method == "POST":
+        form = CategoryTypeModelForm(request.POST, instance=category_type)
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, 'Congratulations...! Category type successfully updated.')
+            return redirect('add_category_type')
+    else:
+        form = CategoryTypeModelForm(instance=category_type)
+
+    context = {
+        "form": form,
+        "category_type": category_type,
+    }
+
+    return render(request, 'new_door/update_category_type.html', context)
+
 
 def update_ownership_type(request, id):
 
@@ -363,7 +563,7 @@ def update_ownership_type(request, id):
         if form.is_valid():
             form.save()
             messages.success(
-                request, 'Congratulations...! Property Type successfully Updated.')
+                request, 'Congratulations...! Ownership type successfully updated.')
             return redirect('add_ownership_type')
     else:
         form = OwnershipTypeModelForm(instance=ownership_type)
@@ -384,7 +584,7 @@ def update_occupancy_type(request, id):
         if form.is_valid():
             form.save()
             messages.success(
-                request, 'Congratulations...! Occupancy Type successfully Updated.')
+                request, 'Congratulations...! Occupancy type successfully updated.')
             return redirect('add_occupancy_type')
     else:
         form = OccupancyTypeModelForm(instance=occupancy_type)
@@ -396,6 +596,121 @@ def update_occupancy_type(request, id):
     return render(request, 'new_door/update_occupancy_type.html', context)
 
 
+def update_contract_request(request, id):
+
+    contract_request = get_object_or_404(ContractReqType, pk=id)
+    tenant = get_object_or_404(Profile, pk=contract_request.tenant.pk)
+
+    if request.method == "POST":
+        form = ContractReqTypeModelForm(
+            request.POST, instance=contract_request)
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, 'Congratulations...! Contract request type successfully updated.')
+            return redirect('add_contract_request')
+    else:
+        form = ContractReqTypeModelForm(instance=contract_request)
+
+    context = {
+        "form": form,
+        "tenant": tenant
+    }
+
+    return render(request, 'new_door/update_contract_request.html', context)
+
+
+def update_tenant_request(request, id):
+
+    tenant_request = get_object_or_404(TenantReqType, pk=id)
+
+    if request.method == "POST":
+        form = TenantReqTypeModelForm(
+            request.POST, instance=tenant_request)
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, 'Congratulations...! Tenant request type successfully updated.')
+            return redirect('add_tenant_request')
+    else:
+        form = TenantReqTypeModelForm(instance=tenant_request)
+
+    context = {
+        "form": form,
+    }
+
+    return render(request, 'new_door/update_tenant_request.html', context)
+
+
+def update_status_request(request, id):
+
+    status_request = get_object_or_404(StatusReqType, pk=id)
+
+    if request.method == "POST":
+        form = StatusReqTypeModelForm(
+            request.POST, instance=status_request)
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, 'Congratulations...! Status request type successfully updated.')
+            return redirect('add_status_request')
+    else:
+        form = StatusReqTypeModelForm(instance=status_request)
+
+    context = {
+        "form": form,
+        "status_request": status_request
+    }
+
+    return render(request, 'new_door/update_status_request.html', context)
+
+
+def update_doc_type(request, id):
+
+    doc_type = get_object_or_404(DocumentType, pk=id)
+
+    if request.method == "POST":
+        form = DocumentTypeModelForm(
+            request.POST, instance=doc_type)
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, 'Congratulations...! Document type successfully updated.')
+            return redirect('add_doc_type')
+    else:
+        form = DocumentTypeModelForm(instance=doc_type)
+
+    context = {
+        "form": form,
+        "doc_type": doc_type
+    }
+
+    return render(request, 'new_door/update_documents_type.html', context)
+
+
+def update_payment_mode(request, id):
+
+    payment_mode = get_object_or_404(PayModeType, pk=id)
+
+    if request.method == "POST":
+        form = PayModeTypeModelForm(
+            request.POST, instance=payment_mode)
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, 'Congratulations...! Payment mode successfully updated.')
+            return redirect('add_payment_mode')
+    else:
+        form = PayModeTypeModelForm(instance=payment_mode)
+
+    context = {
+        "form": form,
+        "payment_mode": payment_mode
+    }
+
+    return render(request, 'new_door/update_payment_mode.html', context)
+
+
 """ Delete Views """
 
 # Code refactored - 26-11-2020 11.33PM- Patrick
@@ -405,7 +720,7 @@ def delete_entity(request, id):
     entity = get_object_or_404(Entity, pk=id)
     entity.delete()
     messages.success(
-        request, 'Congratulations...! Entity successfully Deleted.')
+        request, 'Congratulations...! Entity successfully deleted.')
     return redirect('entity_overview')
 
 # Code refactored - 27-11-2020 5.30PM- Patrick
@@ -415,15 +730,15 @@ def delete_property(request, id):
     _property = Property.objects.get(pk=id)
     _property.delete()
     messages.success(
-        request, 'Congratulations...! Property successfully Deleted.')
-    return redirect('entity_overview')
+        request, 'Congratulations...! Property successfully deleted.')
+    return redirect('property_all_overview')
 
 
 def delete_unit(request, id):
     unit = Unit.objects.get(pk=id)
     unit.delete()
     messages.success(
-        request, 'Congratulations...! Unit successfully Deleted.')
+        request, 'Congratulations...! Unit successfully deleted.')
     return redirect('unit_overview')
 
 
@@ -431,7 +746,7 @@ def delete_category_type(request, id):
     category_type = CategoryType.objects.get(pk=id)
     category_type.delete()
     messages.success(
-        request, 'Congratulations...! Category Type successfully Deleted.')
+        request, 'Congratulations...! Category Type successfully deleted.')
     return redirect('add_category_type')
 
 # Code refactored - 27-11-2020 11.45PM- Patrick
@@ -441,7 +756,7 @@ def delete_property_type(request, id):
     property_type = PropertyType.objects.get(pk=id)
     property_type.delete()
     messages.success(
-        request, 'Congratulations...! Property Type successfully Deleted.')
+        request, 'Congratulations...! Property Type successfully deleted.')
     return redirect('add_property_type')
 
 
@@ -449,7 +764,7 @@ def delete_ownership_type(request, id):
     ownership_type = OwnershipType.objects.get(pk=id)
     ownership_type.delete()
     messages.success(
-        request, 'Congratulations...! Ownership Type successfully Deleted.')
+        request, 'Congratulations...! Ownership Type successfully deleted.')
     return redirect('add_ownership_type')
 
 
@@ -457,8 +772,56 @@ def delete_occupancy_type(request, id):
     occupancy_type = OccupancyType.objects.get(pk=id)
     occupancy_type.delete()
     messages.success(
-        request, 'Congratulations...! Occupancy Type successfully Deleted.')
+        request, 'Congratulations...! Occupancy type successfully deleted.')
     return redirect('add_occupancy_type')
+
+
+# Code refactored - 6-12-2020 9.40PM- Patrick
+
+def delete_contract_request(request, id):
+
+    contract_request = get_object_or_404(ContractReqType, pk=id)
+    contract_request.delete()
+    messages.success(
+        request, 'Congratulations...! Contract request type successfully deleted.')
+
+    return redirect('add_contract_request')
+
+
+def delete_tenant_request(request, id):
+
+    tenant_request = get_object_or_404(TenantReqType, pk=id)
+    tenant_request.delete()
+    messages.success(
+        request, 'Congratulations...! Tenant request type successfully deleted.')
+    return redirect('add_tenant_request')
+
+
+def delete_status_request(request, id):
+
+    status_request = get_object_or_404(StatusReqType, pk=id)
+    status_request.delete()
+    messages.success(
+        request, 'Congratulations...! Status request type successfully deleted.')
+    return redirect('add_status_request')
+
+
+def delete_doc_type(request, id):
+
+    doc_type = get_object_or_404(DocumentType, pk=id)
+    doc_type.delete()
+    messages.success(
+        request, 'Congratulations...! Document type successfully deleted.')
+    return redirect('add_doc_type')
+
+
+def delete_payment_mode(request, id):
+
+    payment_mode = get_object_or_404(PayModeType, pk=id)
+    payment_mode.delete()
+    messages.success(
+        request, 'Congratulations...! Payment mode successfully deleted.')
+    return redirect('add_payment_mode')
 
 
 """ Display Detail Views """
@@ -509,7 +872,7 @@ def view_unit(request, id):
 
     context = {
         'form': form,
-        'property': unit,
+        'unit': unit,
         'properties': properties,
         'property_types': property_types,
         'ownership_types': ownership_types,
@@ -536,6 +899,19 @@ def view_property_type(request, id):
 
 # Code refactored - 28-11-2020 9.53PM- Patrick
 
+def view_category_type(request, id):
+
+    category_type = get_object_or_404(CategoryType, pk=id)
+    form = OwnershipTypeModelForm(instance=category_type)
+
+    context = {
+        "form": form,
+        "category_type": category_type,
+    }
+
+    return render(request, 'new_door/view_category_type.html', context)
+
+
 def view_ownership_type(request, id):
 
     ownership_type = get_object_or_404(OwnershipType, pk=id)
@@ -559,10 +935,81 @@ def view_occupancy_type(request, id):
 
     return render(request, 'new_door/view_occupancy_type.html', context)
 
+# Todo//-link with template
+
+
+def view_contract_request(request, id):
+
+    contract_request = get_object_or_404(ContractReqType, pk=id)
+    tenant = get_object_or_404(Profile, pk=contract_request.tenant.pk)
+
+    form = ContractReqTypeModelForm(instance=contract_request)
+
+    context = {
+        "form": form,
+        "tenant": tenant
+    }
+
+    return render(request, 'new_door/view_contract_request.html', context)
+
+
+def view_tenant_request(request, id):
+
+    tenant_request = get_object_or_404(TenantReqType, pk=id)
+    form = TenantReqTypeModelForm(instance=tenant_request)
+
+    context = {
+        "form": form,
+        "tenant_request": tenant_request,
+    }
+
+    return render(request, 'new_door/view_tenant_request.html', context)
+
+
+def view_status_request(request, id):
+
+    status_request = get_object_or_404(StatusReqType, pk=id)
+    form = StatusReqTypeModelForm(instance=status_request)
+
+    context = {
+        "form": form,
+        "status_request": status_request
+    }
+
+    return render(request, 'new_door/view_status_request.html', context)
+
+
+def view_doc_type(request, id):
+
+    doc_type = get_object_or_404(DocumentType, pk=id)
+    form = DocumentTypeModelForm(instance=doc_type)
+
+    context = {
+        "form": form,
+        "doc_type": doc_type
+    }
+
+    return render(request, 'new_door/view_documents_type.html', context)
+
+
+def view_payment_mode(request, id):
+
+    payment_mode = get_object_or_404(PayModeType, pk=id)
+    form = PayModeTypeModelForm(instance=payment_mode)
+
+    context = {
+        "form": form,
+        "payment_mode": payment_mode
+    }
+
+    return render(request, 'new_door/view_payment_mode.html', context)
+
 
 """ Propery Unit Views """
 
 # Code refactored - 28-11-2020 11.53PM- Patrick
+
+# Check property to display
 
 
 def prepopulated_field_unit(request, id):
@@ -578,7 +1025,7 @@ def prepopulated_field_unit(request, id):
             form.save()
             messages.success(
                 request, 'Congratulations...! Unit successfully added.')
-            return redirect('property_unit_overview')
+            return redirect('property_unit_overview', _property.pk)
     else:
         data = {
             'product_id': _property
@@ -599,233 +1046,20 @@ def prepopulated_field_unit(request, id):
 def property_unit_overview(request, id):
     _property = get_object_or_404(Property, pk=id)
     units = Unit.objects.filter(property_id=_property.pk)
+    print(units)
     number_of_units = Unit.objects.filter(property_id=_property).count()
-    number_of_vacant_units = Unit.objects.filter(is_vacant=True).count()
+    number_of_vacant_units = Unit.objects.filter(
+        occupancy_type__occupancy_type__iexact="vacant", property_id=_property).count()
     units_occupied = number_of_units - number_of_vacant_units
+
+    if units_occupied is None:
+        units_occupied = 0
 
     context = {
         'property': _property,
         'units': units,
-        'number_of_units': number_of_units,
         'number_of_vacant_units': number_of_vacant_units,
         'units_occupied': units_occupied
     }
 
     return render(request, 'new_door/property_unit_overview.html', context)
-
-
-# # *********Class Documents_Type Defination Start Here---04-11-2020 10.15PM- Javed Farooqui *************************************
-# def Documents_Type(request):
-#     if request.method == 'POST':
-#         ADDOCTY = F_DocumentsType(request.POST)
-#         if ADDOCTY.is_valid():
-#             DCT = ADDOCTY.cleaned_data['DocumentsType']
-#             DCTDSC = ADDOCTY.cleaned_data['desc']
-#             ADDOCTY = DocumentsType(DocumentsType=DCT, desc=DCTDSC)
-#             ADDOCTY.save()
-#             messages.success(
-#                 request, 'Congratulations...! Documents Type successfully added.')
-#     else:
-#         ADDOCTY = F_DocumentsType()
-#     DOT = DocumentsType.objects.all()
-#     return render(request, 'Documents_Type.html', {'form': ADDOCTY, 'ADDT': DOT})
-# # *********Class Documents_Type Defination End Here---04-11-2020 10.39PM- Javed Farooqui *******
-
-# # ********** Delete Documents_Type Action button start here: 04-11-2020 10.15PM Javed Farooqui***************************
-
-
-# def Delete_DocumentsType(request, id):
-#     TRQ = DocumentsType.objects.get(pk=id)
-#     TRQ.delete()
-#     messages.success(
-#         request, 'Congratulations...! Documents Type successfully Deleted.')
-#     DOT = DocumentsType.objects.all()
-#     return render(request, 'Documents_Type.html', {'ADDT': DOT})
-# # ********** Delete Documents_Type Action button end here: 04-11-2020 10.39PM Javed Farooqui***************************
-
-# # ********** View Documents_Type Action button start here: 05-11-2020 12.30PM Javed Farooqui**********
-
-
-# def View_DocumentsType(request, id):
-#     pi = DocumentsType.objects.get(pk=id)
-#     ADDOCTY = F_DocumentsType(request.POST, instance=pi)
-#     if ADDOCTY.is_valid():
-#         ADDOCTY.save()
-#         messages.success(
-#             request, 'Congratulations...! Documents Type successfully Updated.')
-#     else:
-#         pi = DocumentsType.objects.get(pk=id)
-#         ADDOCTY = F_DocumentsType(instance=pi)
-#     return render(request, 'View_Documents_Type.html', {'pi': pi})
-# # ********** View Documents_Type Action button end here: 05-11-2020 12.39PM Javed Farooqui*********************************
-
-# # ********** Update Documents_Type Action button start here: 04-11-2020 10.15PM Javed Farooqui**********
-
-
-# def Update_DocumentsType(request, id):
-#     pi = DocumentsType.objects.get(pk=id)
-#     ADDOCTY = F_DocumentsType(request.POST, instance=pi)
-#     if ADDOCTY.is_valid():
-#         ADDOCTY.save()
-#         messages.success(
-#             request, 'Congratulations...! Documents Type successfully Updated.')
-#     else:
-#         pi = DocumentsType.objects.get(pk=id)
-#         ADDOCTY = F_DocumentsType(instance=pi)
-#     return render(request, 'Update_Documents_Type.html', {'pi': pi})
-# # ********** Update Documents_Type Action button end here: 04-11-2020 10.39PM Javed Farooqui*********************************
-
-
-# # ******************************************************************************************************************************
-
-
-# # *********Class Occupancy_Type Defination Start Here---07-11-2020 01.15PM- Javed Farooqui *************************************
-# def Occupancy_Type(request):
-#     if request.method == 'POST':
-#         OCPTYP = F_OccupancyType(request.POST)
-#         if OCPTYP.is_valid():
-#             OPT = OCPTYP.cleaned_data['OccupancyType']
-#             OPTDSC = OCPTYP.cleaned_data['desc']
-#             OCPTYP = OccupancyType(OccupancyType=OPT, desc=OPTDSC)
-#             OCPTYP.save()
-#             messages.success(
-#                 request, 'Congratulations...! Occupancy Type successfully added.')
-#     else:
-#         OCPTYP = F_OccupancyType()
-#     OPTY = OccupancyType.objects.all()
-#     return render(request, 'Occupancy_Type.html', {'form': OCPTYP, 'OPTY': OPTY})
-# # *********Class Occupancy_Type Defination End Here---04-11-2020 10.39PM- Javed Farooqui *******
-
-# # ********** Delete Occupancy_Type Action button start here: 04-11-2020 10.15PM Javed Farooqui***************************
-
-
-# def Delete_OccupancyType(request, id):
-#     TRQ = OccupancyType.objects.get(pk=id)
-#     TRQ.delete()
-#     messages.success(
-#         request, 'Congratulations...! Occupancy Type successfully Deleted.')
-#     OPTY = OccupancyType.objects.all()
-#     return render(request, 'Occupancy_Type.html', {'OPTY': OPTY})
-# # ********** Delete Occupancy_Type Action button end here: 04-11-2020 10.39PM Javed Farooqui***************************
-
-# # ********** View Occupancy_Type Action button start here: 05-11-2020 12.30PM Javed Farooqui**********
-
-
-# def View_OccupancyType(request, id):
-#     pi = OccupancyType.objects.get(pk=id)
-#     OCPTYP = F_OccupancyType(request.POST, instance=pi)
-#     if OCPTYP.is_valid():
-#         OCPTYP.save()
-#         messages.success(
-#             request, 'Congratulations...! Occupancy Type successfully Updated.')
-#     else:
-#         pi = OccupancyType.objects.get(pk=id)
-#         OCPTYP = F_OccupancyType(instance=pi)
-#     return render(request, 'View_Occupancy_Type.html', {'pi': pi})
-# # ********** View Occupancy_Type Action button end here: 05-11-2020 12.39PM Javed Farooqui*********************************
-
-# # ********** Update Occupancy_Type Action button start here: 04-11-2020 10.15PM Javed Farooqui**********
-
-
-# def Update_OccupancyType(request, id):
-#     pi = OccupancyType.objects.get(pk=id)
-#     OCPTYP = F_OccupancyType(request.POST, instance=pi)
-#     if OCPTYP.is_valid():
-#         OCPTYP.save()
-#         messages.success(
-#             request, 'Congratulations...! Occupancy Type successfully Updated.')
-#     else:
-#         pi = OccupancyType.objects.get(pk=id)
-#         OCPTYP = F_OccupancyType(instance=pi)
-#     return render(request, 'Update_Occupancy_Type.html', {'pi': pi})
-# # ********** Update Occupancy_Type Action button end here: 04-11-2020 10.39PM Javed Farooqui*********************************
-
-
-# # ************************************************************************************************************************
-
-# # ********** Update Add_Tenant Action button start here: 21-11-2020 03:10PM Javed Farooqui**********
-
-# # ********** Update Add_Tenant Action button end here: 21-11-2020 03:35PM Javed Farooqui**********
-
-# # ********** Update Tenant_Contract Action button start here: 20-11-2020 03:10PM Javed Farooqui**********
-
-
-# def Tenant_Contract(request):
-#     if request.method == 'POST':
-#         ADTNTCONTR = F_TenantContract(request.POST)
-#         if ADTNTCONTR.is_valid():
-#             PROPID = ADTNTCONTR.cleaned_data['PropID']
-#             UNITID = ADTNTCONTR.cleaned_data['UnitID']
-#             CONTRACTNO = ADTNTCONTR.cleaned_data['ContractNo']
-#             STARTDATE = ADTNTCONTR.cleaned_data['StartDate']
-#             ENDDATE = ADTNTCONTR.cleaned_data['EndDate']
-#             DISCOUNT = ADTNTCONTR.cleaned_data['Discount']
-#             ANNUALRENT = ADTNTCONTR.cleaned_data['AnnualRent']
-#             SECURITYDEP = ADTNTCONTR.cleaned_data['SecurityDep']
-#             COMMISSION = ADTNTCONTR.cleaned_data['Commission']
-#             EMI = ADTNTCONTR.cleaned_data['Installments']
-#             REMARK = ADTNTCONTR.cleaned_data['Remark']
-#             SMSNOTIFY = ADTNTCONTR.cleaned_data['SMSNotify']
-#             EMAILNOTIFY = ADTNTCONTR.cleaned_data['EmailNotify']
-#             ADTNTCONTR = TenantContract(PropID=PROPID, UnitID=UNITID, ContractNo=CONTRACTNO, StartDate=STARTDATE, EndDate=ENDDATE, Discount=DISCOUNT,
-#                                         AnnualRent=ANNUALRENT, SecurityDep=SECURITYDEP, Commission=COMMISSION, Installments=EMI, Remark=REMARK, SMSNotify=SMSNOTIFY, EmailNotify=EMAILNOTIFY)
-#             ADTNTCONTR.save()
-#             messages.success(
-#                 request, 'Congratulations...! Occupancy Type successfully added.')
-#     else:
-#         ADTNTCONTR = F_TenantContract()
-#     TNTCTRT = TenantContract.objects.all()
-#     UNT = Unit.objects.all()
-#     PRT = Property.objects.all()
-#     return render(request, 'Tenant_Contract.html', {'form': ADTNTCONTR, 'TNTCTRT': TNTCTRT, 'ADUNIT': UNT, 'ADPRPRTY': PRT})
-# # ********** Update Tenant_Contract Action button end here: 21-11-2020 03:35PM Javed Farooqui**********
-
-# # **********************************************************************************************************************
-
-
-# def Add_User(request):
-#     if request.method == "POST":
-#         OCPTYP = F_User(request.POST)
-#         if OCPTYP.is_valid():
-#             userid = OCPTYP.cleaned_data['user_id']
-#             userpwrd = OCPTYP.cleaned_data['user_password']
-#             usrfsnm = OCPTYP.cleaned_data['usr_f_name']
-#             usrmdnm = OCPTYP.cleaned_data['usr_m_name']
-#             usrlsnm = OCPTYP.cleaned_data['usr_l_name']
-#             email = OCPTYP.cleaned_data['email']
-#             pcont = OCPTYP.cleaned_data['pcontact']
-#             scont = OCPTYP.cleaned_data['scontact']
-#             marital = OCPTYP.cleaned_data['marry_status']
-#             national = OCPTYP.cleaned_data['nationality']
-#             roll = OCPTYP.cleaned_data['rollid']
-#             Usr = User(user_id=userid, user_password=userpwrd, usr_f_name=usrfsnm, usr_m_name=usrmdnm, usr_l_name=usrlsnm,
-#                        email=email, pcontact=pcont, scontact=scont, marry_status=marital, nationality=national, rollid=roll)
-#         Usr.save()
-#         messages.success(
-#             request, 'Congratulations...! User successfully added.')
-#     else:
-#         OCPTYP = F_User()
-#     OPTY = User.objects.all()
-#     return render(request, 'Add_User.html')
-
-# # ******************************************************
-
-
-# # ********** Update Review_Documents Action button start here: 20-11-2020 10.15PM Javed Farooqui**********
-# def Review_Documents(request):
-#     # pi = TenantContract.objects.get(pk=id)
-#     # ADTNTCONTR = F_TenantContract(request.POST, instance=pi)
-#     # if ADTNTCONTR.is_valid():
-#     #         ADTNTCONTR.save()
-#     #         messages.success(
-#     #         request, 'Congratulations...! Occupancy Type successfully Updated.')
-#     # else:
-#     #     pi = TenantContract.objects.get(pk=id)
-#     #     ADTNTCONTR = F_TenantContract(instance=pi)
-#     return render(request, 'Review_Documents.html')
-# # ********** Update Review_Documents Action button end here: 20-11-2020 12.39AM Javed Farooqui************
-
-# # ********** Update Upload_Documents Action button start here: 21-11-2020 04.00PM Mohd Saad**********
-
-
-# # ********** Update Upload_Documents Action button end here: 21-11-2020 12.39AM Javed Farooqui************

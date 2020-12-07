@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block title %} Add_Unit {% endblock title %} {% block body %} {% load static %}
+{% extends 'base.html' %} {% block title %} Add Unit {% endblock title %} {% block body %} {% load static %}
 <div class="col-md-12">
   <form
     id="TypeValidation"
@@ -170,10 +170,19 @@
         <br />
         <hr />
 
+        <a
+          href="{% url 'unit_overview' %}"
+          class="btn btn-info btn-round ml-4 float-right"
+        >
+          Back
+          <div class="ripple-container"></div>
+        </a>
+
         <button class="btn btn-rose btn-round float-right" type="Submit">
           <i class="material-icons">near_me </i> Submit
           <div class="ripple-container"></div>
         </button>
+
         <br />
       </div>
     </div>

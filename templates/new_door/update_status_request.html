@@ -12,27 +12,26 @@
     <div class="card">
       <br />
       <div class="row">
-        <div class="col-sm-8 offset-2">
-          <h4 class="alert alert-info">View Status Request Type</h4>
+        <div class="col-md-12">
+          <h4 class="alert alert-info">Update Status Request Type</h4>
           <form action="" method="post">
             {% csrf_token %}
             <div class="card-body">
               <br />
               {% comment %} Row1 {% endcomment %}
               <div class="row">
-                <label readonly class="col-sm-3 col-form-label" for="StRqty"
+                <label class="col-sm-3 col-form-label" for="StRqty"
                   >Status Request Type*</label
                 >
                 <div class="col-sm-6">
                   <div class="form-group bmd-form-group">
                     <input
-                      readonly
                       style="background-color: #ffffff; margin-bottom: 30px"
                       class="form-control"
-                      value="{{pi.StRqty}}"
+                      value="{{status_request.str_req}}"
                       type="text"
-                      id="StRqty"
-                      name="StRqty"
+                      id="str_req"
+                      name="str_req"
                       required="true"
                       aria-required="true"
                     />
@@ -46,10 +45,9 @@
                 <div class="col-sm-6">
                   <div class="form-group bmd-form-group">
                     <input
-                      readonly
                       style="background-color: #ffffff"
                       class="form-control"
-                      value="{{pi.desc}}"
+                      value="{{status_request.desc}}"
                       type="text"
                       id="desc"
                       name="desc"
@@ -63,8 +61,18 @@
             <br />
 
             <div class="modal-footer">
+              <input
+                type="submit"
+                class="btn btn-success btn-round float-right"
+                value="Update"
+                style="
+                  margin-right: 13px;
+                  margin-bottom: 20px;
+                  margin-top: 20px;
+                "
+              />
               <a
-                href="{% url 'StatusReq_Type'%}"
+                href="{% url 'add_status_request'%}"
                 class="btn btn-info btn-round float-right"
                 style="margin-bottom: 20px; margin-top: 20px"
               >

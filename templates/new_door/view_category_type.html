@@ -12,26 +12,24 @@
     <div class="card">
       <br />
       <div class="row">
-        <div class="col-sm-8 offset-2">
-          <h4 class="alert alert-info">Update Tenant Request Type</h4>
+        <div class="col-md-12">
+          <h4 class="alert alert-info">Update Category Type</h4>
           <form action="" method="post">
             {% csrf_token %}
             <div class="card-body">
               <br />
               {% comment %} Row1 {% endcomment %}
               <div class="row">
-                <label class="col-sm-3 col-form-label" for="TenantReqType"
-                  >Tenant Request Type*</label
-                >
+                <label class="col-sm-3 col-form-label">Category Type*</label>
                 <div class="col-sm-6">
                   <div class="form-group bmd-form-group">
                     <input
                       style="background-color: #ffffff; margin-bottom: 30px"
                       class="form-control"
-                      value="{{pi.TenantReqType}}"
+                      value="{{category_type.cat_type}}"
                       type="text"
-                      id="TenantReqType"
-                      name="TenantReqType"
+                      id="cat_type"
+                      name="cat_type"
                       required="true"
                       aria-required="true"
                     />
@@ -47,7 +45,7 @@
                     <input
                       style="background-color: #ffffff"
                       class="form-control"
-                      value="{{pi.desc}}"
+                      value="{{category_type.desc}}"
                       type="text"
                       id="desc"
                       name="desc"
@@ -70,7 +68,7 @@
                 "
               />
               <a
-                href="{% url 'TenantReq_Type'%}"
+                href="{% url 'add_category_type'%}"
                 class="btn btn-info btn-round float-right"
                 style="margin-bottom: 20px; margin-top: 20px"
               >

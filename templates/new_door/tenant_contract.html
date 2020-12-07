@@ -17,10 +17,10 @@
       >
         <div class="card-text">
           <a
-            href=" {% url 'Tenant_Contract'%} "
+            href=" "
             class="card-header card-header-rose card-header-text"
           >
-            <i class="material-icons">roofing</i> Tenant_Contract
+            <i class="material-icons">roofing</i> Tenant Contract
           </a>
         </div>
       </div>
@@ -32,14 +32,22 @@
           <label class="col-sm-2 col-form-label" for="TenantID">Tenant*</label>
           <div class="col-sm-4">
             <div class="form-group bmd-form-group">
-              <input
+                <div class="form-group bmd-form-group">
+              <select
+                input
                 class="form-control"
                 type="text"
-                id="ContractNo"
-                name="ContractNo"
+                id="UnitID"
+                name="UnitID"
                 required="true"
                 aria-required="true"
-              />
+              >
+                <option selected>Select Unit</option>
+                {% for temp in ADUNIT %}
+                <option value="{{temp.id}}">{{temp.flat}}</option>
+                {% endfor %}
+              </select>
+            </div>
             </div>
           </div>
         </div>
@@ -274,8 +282,7 @@
         </div>
         <br />
         <hr />
-        {% comment %} *** Add image *** Start Here---20-10-2020 10.00pm- Faraz &
-        Javed *** {% endcomment %} {% comment %}
+       
         <div class="row">
           <div
             class="fileinput fileinput-new text-center"
@@ -306,9 +313,7 @@
             </div>
           </div>
         </div>
-        {% endcomment %} {% comment %} *** Add image *** End Here---21-10-2020
-        01.05pm- Javed *** {% endcomment %} {% comment %} Row6 end {% endcomment
-        %}
+     
 
         <button class="btn btn-rose btn-round float-right" type="Submit">
           <i class="material-icons">near_me </i> Submit

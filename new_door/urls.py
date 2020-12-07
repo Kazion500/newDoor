@@ -19,11 +19,14 @@ urlpatterns = [
 
     # """ Propery Routes """
 
+    path('property-overview/',
+         views.property_all_overview, name='property_all_overview'),
     path('property-overview/<str:entity>',
          views.property_overview, name='property_overview'),
     path('property-unit-overview/<id>', views.property_unit_overview,
          name='property_unit_overview'),
     path('add-property/<str:entity>', views.add_property, name='add_property'),
+    path('add-property-all/', views.add_property_all, name='add_property_all'),
     path('update-property/<id>', views.update_property, name='update_property'),
     path('view-property/<id>', views.view_property, name='view_property'),
     path('delete-property/<id>', views.delete_property, name='delete_property'),
@@ -43,6 +46,10 @@ urlpatterns = [
 
     path('add-category-type/', views.add_category_type,
          name='add_category_type'),
+    path('update-category-type/<id>', views.update_category_type,
+         name='update_category_type'),
+    path('view-category-type/<id>', views.view_category_type,
+         name='view_category_type'),
     path('delete-category-type/<id>', views.delete_category_type,
          name='delete_category_type'),
 
@@ -59,7 +66,8 @@ urlpatterns = [
 
     # """ Master Routes Ownership Type """
 
-    path('add-ownership-type', views.add_ownership_type, name='add_ownership_type'),
+    path('add-ownership-type/', views.add_ownership_type,
+         name='add_ownership_type'),
     path('update-ownership-type/<id>', views.update_ownership_type,
          name='update_ownership_type'),
     path('view-ownership-type/<id>', views.view_ownership_type,
@@ -70,7 +78,8 @@ urlpatterns = [
 
     # """ Master Routes Ownership Type """
 
-    path('add-occupancy-type', views.add_occupancy_type, name='add_occupancy_type'),
+    path('add-occupancy-type/', views.add_occupancy_type,
+         name='add_occupancy_type'),
     path('update-occupancy-type/<id>', views.update_occupancy_type,
          name='update_occupancy_type'),
     path('view-occupancy-type/<id>', views.view_occupancy_type,
@@ -82,93 +91,66 @@ urlpatterns = [
     # path('payment/', views.payment, name='payment'),
 
 
+    # """ Master Routes Contract Request Type """
+    path('add-contract-request/', views.add_contract_request,
+         name='add_contract_request'),
+    path('update-contract-request/<id>', views.update_contract_request,
+         name='update_contract_request'),
+    path('delete-contract-request/<id>', views.delete_contract_request,
+         name='delete_contract_request'),
+    path('view-contract-request/<id>', views.view_contract_request,
+         name='view_contract_request'),
 
+
+    # """ Master Routes Tenant Request """
+    path('add-tenant-request/', views.add_tenant_request,
+         name='add_tenant_request'),
+    path('update-tenant-request/<id>', views.update_tenant_request,
+         name='update_tenant_request'),
+    path('delete-tenant-request/<id>', views.delete_tenant_request,
+         name='delete_tenant_request'),
+    path('view-tenant-request/<id>', views.view_tenant_request,
+         name='view_tenant_request'),
+
+
+    # """ Master Routes Status Request """
+    path('add-status-request/', views.add_status_request,
+         name='add_status_request'),
+    path('update-status-request/<id>', views.update_status_request,
+         name='update_status_request'),
+    path('delete-status-request/<id>', views.delete_status_request,
+         name='delete_status_request'),
+    path('view-status-request/<id>', views.view_status_request,
+         name='view_status_request'),
+
+
+    # """ Master Routes Document Type """
+    path('add-doc-type/', views.add_doc_type,
+         name='add_doc_type'),
+    path('update-doc-type/<id>', views.update_doc_type,
+         name='update_doc_type'),
+    path('delete-doc-type/<id>', views.delete_doc_type,
+         name='delete_doc_type'),
+    path('view-doc-type/<id>', views.view_doc_type,
+         name='view_doc_type'),
+
+
+    # """ Master Routes Payment Mode """
+    path('add-payment-mode/', views.add_payment_mode,
+         name='add_payment_mode'),
+    path('update-payment-mode/<id>', views.update_payment_mode,
+         name='update_payment_mode'),
+    path('delete-payment-mode/<id>', views.delete_payment_mode,
+         name='delete_payment_mode'),
+    path('view-payment-mode/<id>', views.view_payment_mode,
+         name='view_payment_mode'),
+
+
+    # """ TENANT SECTION """
+    path('tetant-contract', views.add_tetant_contract, name='add_tetant_contract'),
 
     # path('checklist/', views.checklist, name='checklist'),
     # path('login', views.login_User, name='login'),
     # path('logout', views.logout_User, name='logout'),
-    # path('Main_NewDoor', views.Main_NewDoor, name='Main_NewDoor'),
-    # path('Dashboard', views.Dashboard, name='Dashboard'),
-    # path('Tenant_Dashboard', views.Tenant_Dashboard, name='Tenant_Dashboard'),
 
-
-    # # *************Table User*************
-    # path('Add_User', views.Add_User, name='Add_User'),
-    # # path('Property_Overview', views.Property_Overview, name='Property_Overview'),
-
-    # # *************Master Table Category_Type*************
-    # path('Category_Type', views.Category_Type, name='Category_Type'),
-    # path('View_Category_Type-<id>/', views.View_Cattyp, name='Viewcategory'),
-    # path('Update_Category_Type-<id>/',
-    #      views.update_Cattyp, name='updatecategory'),
-    # path('Delete_Category_Type/<int:id>/',
-    #      views.delete_category, name="deletecategory"),
-
-
-
-
-
-    # # *************Master Table PayMode_Type*************
-    # path('PayMode_Type', views.PayMode_Type, name='PayMode_Type'),
-    # path('View_PayMode_Type-<id>/', views.View_PayModeType, name='ViewPayModeType'),
-    # path('Update_PayMode_Type-<id>/',
-    #      views.Update_PayModeType, name='UpdatePayModeType'),
-    # path('Delete_PayMode_Type/<int:id>/',
-    #      views.Delete_PayModeType, name="DeletePayModeType"),
-
-    # # *************Master Table StatusReq_Type*************
-    # path('StatusReq_Type', views.StatusReq_Type, name='StatusReq_Type'),
-    # path('View_StatusReqType-<id>/',
-    #      views.View_StatusReqType, name='ViewStatusReqType'),
-    # path('Update_StatusReqType-<id>/',
-    #      views.Update_StatusReqType, name='UpdateStatusReqType'),
-    # path('Delete_StatusReq_Type/<int:id>/',
-    #      views.Delete_StatusReqType, name="DeleteStatusReqType"),
-
-    # # *************Master Table Tenant_Request_Type*************
-    # path('TenantReq_Type', views.TenantReq_Type, name='TenantReq_Type'),
-    # path('View_TenantReq_Type-<id>/',
-    #      views.View_TenantReqType, name='ViewTenantReqType'),
-    # path('Update_TenantReq_Type-<id>/',
-    #      views.Update_TenantReqType, name='UpdateTenantReqType'),
-    # path('Delete_TenantReq_Type/<int:id>/',
-    #      views.Delete_TenantReqType, name="DeleteTenantReqType"),
-
-    # # *************Master Table Contract_Request_Type*************
-    # path('ContractReq_Type', views.ContractReq_Type, name='ContractReq_Type'),
-    # path('View_ContractReq_Type-<id>/',
-    #      views.View_ContractReqType, name='ViewContractReqType'),
-    # path('Update_ContractReq_Type-<id>/',
-    #      views.Update_ContractReqType, name='UpdateContractReqType'),
-    # path('Delete_ContractReq_Type/<int:id>/',
-    #      views.Delete_ContractReqType, name="DeleteContractReqType"),
-
-    # # *************Master Table Documents_Type*************
-    # path('Documents_Type', views.Documents_Type, name='Documents_Type'),
-    # path('View_Documents_Type-<id>/',
-    #      views.View_DocumentsType, name='ViewDocumentsType'),
-    # path('Update_Documents_Type-<id>/',
-    #      views.Update_DocumentsType, name='UpdateDocumentsType'),
-    # path('Delete_Documents_Type/<int:id>/',
-    #      views.Delete_DocumentsType, name="DeleteDocumentsType"),
-
-    # # *************Master Table Occupancy_Type*************
-    # path('Occupancy_Type', views.Occupancy_Type, name='Occupancy_Type'),
-    # path('View_Occupancy_Type-<id>/',
-    #      views.View_OccupancyType, name='ViewOccupancyType'),
-    # path('Update_Occupancy_Type-<id>/',
-    #      views.Update_OccupancyType, name='UpdateOccupancyType'),
-    # path('Delete_Occupancy_Type/<int:id>/',
-    #      views.Delete_OccupancyType, name="DeleteOccupancyType"),
-
-    # # *************Master Table Tenant*************
-    # path('Add_Tenant', views.Add_Tenant, name='Add_Tenant'),
-    # path('Tenant_Contract', views.Tenant_Contract, name='Tenant_Contract'),
-    # path('Review_Documents', views.Review_Documents, name='Review_Documents'),
-
-    # # *************Table Upload Documents*************
-    # path('Upload_Documents', views.Upload_Documents, name='UploadDocuments'),
-
-    # # *************Table Payment*************
-    # path('Payment', views.Payment, name='Payment'),
 ]

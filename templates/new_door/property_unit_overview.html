@@ -79,11 +79,11 @@
     <div class="card-header card-header-primary card-header-icon">
       <div class="card-icon" style="padding-left: 1px">
         <a
-          href=" {% url 'unit_overview' %} "
+          href=" {% url 'property_overview' property.entity.entity_name %} "
           class="card-header card-header-rose card-header-text"
           style="font-size: 20px"
         >
-          <i class="material-icons">house</i> Property Unit For {{ property.property_name.capitalize }}
+          <i class="material-icons">house</i> {{ property.property_name.upper }}
         </a>
       </div>
        <div class="card-icon float-right" style="padding:.5em 0; font-size: 1rem; background: rgb(224, 79, 115);">
@@ -175,7 +175,7 @@
                   href="{% url 'view_unit' unit.pk  %}"
                   class="d-inline"
                   rel="tooltip "
-                  title=" "
+                  title="View unit"
                   data-original-title="Remove "
                   >
                   <div class="ripple-container success"></div>
@@ -192,7 +192,7 @@
                 </a>
 
                 <a href="{% url 'update_unit' unit.pk %}" class="d-inline"
-                  >
+                  title="Update unit">
                   <div class="ripple-container success"></div>
                   <i
                     class="material-icons"
@@ -206,7 +206,7 @@
                   >
                 </a>
 
-                  <a href="{% url 'delete_unit' unit.pk %}" class="d-inline">
+                  <a href="{% url 'delete_unit' unit.pk %}" class="d-inline" title="Delete unit">
 
                   <i
                     class="material-icons"

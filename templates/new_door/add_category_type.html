@@ -48,14 +48,6 @@
         </button>
         <br />
       </div>
-      <hr
-        style="
-          width: 100%;
-          font-weight: bold;
-          margin-top: 1rem;
-          border-top: 5px solid rgba(145, 145, 145, 0.1);
-        "
-      />
       {% comment %} Main form send here {% endcomment %}
       <div class="row">
         <div class="col-md-12">
@@ -91,13 +83,13 @@
                       <td>{{category.desc}}</td>
                       <td class="text-right">
                         <a
-                          href=" "
+                          href=" {% url 'view_category_type' category.pk %} "
                           method="post "
                           class="d-inline"
                           rel="tooltip "
-                          title=" "
+                          title="View details"
                           data-original-title="Remove "
-                          >{% csrf_token %}
+                          >
                           <div class="ripple-container success"></div>
                           <i
                             class="material-icons"
@@ -111,8 +103,8 @@
                           >
                         </a>
 
-                        <a href=" " method="post " class="d-inline"
-                          >{% csrf_token %}
+                        <a href=" {% url 'update_category_type' category.pk %} " class="d-inline"
+                          title="Update category type" >
                           <div class="ripple-container success"></div>
                           <i
                             class="material-icons"
@@ -126,12 +118,7 @@
                           >
                         </a>
 
-                        <a
-                          href=" {% url 'delete_category_type' category.pk %}"
-                          method="post "
-                          class="d-inline"
-                        >
-                          {% csrf_token %}
+                        <a href=" {% url 'delete_category_type' category.pk %}" class="d-inline" title="Delete category type" >
                           <i
                             class="material-icons"
                             style="
@@ -144,40 +131,6 @@
                           >
                           <div class="ripple-container"></div>
                         </a>
-
-                        {% comment %}
-                        <a
-                          href=""
-                          class="btn btn-link btn-info btn-just-icon edit"
-                          data-toggle="modal"
-                          data-target="#myModal"
-                          value="Edit"
-                        >
-                          <div class="ripple-container"></div>
-                          <i class="material-icons">dvr</i>
-                        </a>
-
-                        <a
-                          href="#"
-                          class="btn btn-link btn-info btn-just-icon like"
-                          ><i class="material-icons">favorite</i></a
-                        >
-
-                        <a href="" method="post" class="d-inline"
-                          >{% csrf_token %}
-                          <div class="ripple-container success"></div>
-                          <i class="material-icons">dvr</i>
-                        </a>
-
-                        <form action="" method="post" class="d-inline">
-                          {% csrf_token %}
-                          <input
-                            type="submit"
-                            class="btn btn-danger"
-                            value="Delete"
-                          />
-                        </form>
-                        {% endcomment %}
                       </td>
                     </tr>
                     {% endfor %} {% else %} NoData {% endif %}

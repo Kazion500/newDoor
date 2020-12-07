@@ -1,0 +1,70 @@
+{% extends 'base.html' %} {% block body %}
+<div class="col-md-12">
+  {% csrf_token %}
+  <div class="card">
+    <br />
+    <div class="row">
+      <div class="col-md-12">
+        <h4 class="alert alert-info">View Tenant Request Type</h4>
+        <form id="TypeValidation" class="form-horizontal" method="post">
+          {% csrf_token %}
+          <div class="card-body">
+            <br />
+            {% comment %} Row1 {% endcomment %}
+            <div class="row">
+              <label class="col-sm-3 col-form-label" for="TenantReqType"
+                >Tenant Request Type*</label
+              >
+              <div class="col-sm-6">
+                <div class="form-group bmd-form-group">
+                  <input
+                    disabled
+                    style="background-color: #ffffff; margin-bottom: 30px"
+                    class="form-control"
+                    value="{{tenant_request.tenant_req_type}}"
+                    type="text"
+                    id="tenant_request"
+                    name="tenant_req_type"
+                    required="true"
+                    aria-required="true"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-3 col-form-label" for="desc"
+                >Description*</label
+              >
+              <div class="col-sm-6">
+                <div class="form-group bmd-form-group">
+                  <input
+                    disabled
+                    style="background-color: #ffffff"
+                    class="form-control"
+                    value="{{tenant_request.desc}}"
+                    type="text"
+                    id="desc"
+                    name="desc"
+                    required="true"
+                    aria-required="true"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+            <div class="modal-footer" style="float: right; width: 100%">
+                <a
+                  href="{% url 'add_tenant_request' %}"
+                  class="btn btn-info btn-round float-right"
+                  style="margin-bottom: 20px; margin-top: 20px"
+                >
+                  Back
+                </a>
+              </div>
+        </form>
+      </div>
+     
+    </div>
+  </div>
+</div>
+{% endblock body %}

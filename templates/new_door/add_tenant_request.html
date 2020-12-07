@@ -1,31 +1,27 @@
-{% extends 'base.html' %} {% block title %} PayMode_Type {% endblock title %} {% block body %} {% load static %}
+{% extends 'base.html' %} {% block title %} Tenant_Request_Type {% endblock title %} {% block body %} {% load static %}
 <div class="col-md-12">
     <form id="TypeValidation" class="form-horizontal" action=" " method="post" novalidate="novalidate" enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="card " >
-            <div class="card-header card-header-rose card-header-text"   style="font-size: 20px;">
+        <div class="card ">
+            <div class="card-header card-header-rose card-header-text" style="font-size: 20px;">
                 <div class="card-text" style="padding-left: 1px;">
-                    <a href=" {% url 'PayMode_Type'%} " class="card-header card-header-rose card-header-text ">
-                        <i class="material-icons ">roofing</i> Payment Mode Type </a>
+                    <a href=" {% url 'add_tenant_request'%} " class="card-header card-header-rose card-header-text ">
+                        <i class="material-icons ">roofing</i> Tenant Request Type </a>
                 </div>
             </div>
 
             <div class="card-body ">
                 <br> {% comment %} Row1 {% endcomment %}
-                
+
                 <div class="row">
-                    <label class="col-sm-2 col-form-label" for="PayType">Payment Mode Type*</label>
+                    {% for field in form %}
+                    <label class="col-sm-2 col-form-label" for="PayType">{{ field.label }}*</label>
                     <div class="col-sm-4">
                         <div class="form-group bmd-form-group">
-                            <input class="form-control" type="text" id="PayType" name="PayType" required="true" aria-required="true">
+                            <input class="form-control" type="text" id="{{ field.id }}" name="{{ field.name }}" required="true" aria-required="true">
                         </div>
                     </div>
-                    <label class="col-sm-2 col-form-label" for="desc">Description*</label>
-                    <div class="col-sm-4">
-                        <div class="form-group bmd-form-group">
-                            <input class="form-control" type="text" id="desc" name="desc" required="true" aria-required="true">
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
                 {% comment %} Row1 end here {% endcomment %}
 
@@ -34,26 +30,15 @@
                        <div class="ripple-container"></div>
                     </button>
                 <br>
-        
+
             </div>
-            <hr style="
-                    width: 1000px;
-                    border-left-width: 35‒;
-                    height: 0px;
-                    margin: 0px;
-                    margin-right: -20px;
-                    margin-left: 0px;
-                    font-weight: bold;
-                    margin-top: 1rem;
-                    margin-bottom: 1rem;
-                    border: 0;
-                    border-top: 5px solid rgba(0, 0, 0, .1);"> 
-{% comment %} Main form send here {% endcomment %}
+            
+            {% comment %} Main form send here {% endcomment %}
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header card-header-primary card-header-icon">
-                            <h4 class="card-title">Payment Mode Type Overview</h4>
+                            <h4 class="card-title">Tenant Request Type Overview</h4>
                         </div>
                         <div class="card-body">
                             <div class="toolbar">
@@ -64,38 +49,37 @@
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Payment Mode</th>
+                                            <th>Tenant Request Type</th>
                                             <th>Description</th>
                                             <th class="disabled-sorting text-right">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% if ADPMT %} 
-                                        {% for TRT in ADPMT %}
+                                        {% if tenant_requests %} 
+                                        {% for tenant_request in tenant_requests %}
                                         <tr>
-                                            <td scope="row">{{TRT.id}}</td>
-                                            <td>{{TRT.PayType}}</td>
-                                            <td>{{TRT.desc}}</td>
+                                            <td scope="row">{{tenant_request.pk}}</td>
+                                            <td>{{tenant_request.tenant_req_type}}</td>
+                                            <td>{{tenant_request.desc}}</td>
                                             <td class="text-right">
-                                               
-                                                <a href="{% url 'ViewPayModeType' TRT.id %} " method="post " class="d-inline " rel="tooltip " title=" " data-original-title="Remove ">{% csrf_token %}
+
+                                                <a href="{% url 'view_tenant_request' tenant_request.pk %}"  class="d-inline " rel="tooltip " title="View tenant request" data-original-title="Remove ">
                                                 <div class="ripple-container success "></div>
                                                 <i class="material-icons " style="margin-right: 10px; margin-top: 10px; margin-bottom: 20px; color: #ff9800;" >dvr</i>
                                                 </a>
-                                              
 
-                                                <a href="{% url 'UpdatePayModeType' TRT.id %} " method="post " class="d-inline ">{% csrf_token %}
+
+                                                <a href="{% url 'update_tenant_request' tenant_request.pk %}"  class="d-inline" title="Update tenant request">
                                                     <div class="ripple-container success "></div>
                                                     <i class="material-icons "  style="margin-right: 5px; margin-top: 10px; margin-bottom: 20px; color: #4caf50; ">create</i>
                                                 </a>
-                                               
 
-                                                <a href="{% url 'DeletePayModeType' TRT.id %} " method="post " class="d-inline ">
-                                                    {% csrf_token %}
+
+                                                <a href="{% url 'delete_tenant_request' tenant_request.pk %}" class="d-inline" title="Delete tenant request">
                                                     <i class="material-icons " style="margin-right: 5px; margin-top: 10px; margin-bottom: 20px; color: #f44336; " >delete</i>
                                                     <div class="ripple-container"></div>
                                                 </a>
-                                                
+
                                             </td>
                                         </tr>
                                         {% endfor %} {% else %} NoData {% endif %}
