@@ -1,8 +1,6 @@
 from django.urls import path
 from . import views
-from django.conf.urls import url
-
-
+from accounts import views as auth_views
 urlpatterns = [
 
     path('', views.dashboard_view, name='dashboard'),
@@ -150,7 +148,9 @@ urlpatterns = [
     path('tetant-contract', views.add_tetant_contract, name='add_tetant_contract'),
 
     # path('checklist/', views.checklist, name='checklist'),
-    # path('login', views.login_User, name='login'),
-    # path('logout', views.logout_User, name='logout'),
 
+
+    # Authentication routes
+    path('auth/login/', auth_views.login_view, name='login'),
+    path('auth/logout/', auth_views.logout_view, name='logout'),
 ]

@@ -3,6 +3,8 @@ from django.db.models import Sum, Count
 from django.contrib.auth import logout, authenticate, login
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
 
 from .forms import (
     EntityModelForm,
@@ -31,7 +33,7 @@ from .models import (
 )
 # Dashboard Rendering
 
-
+# @login_required
 def dashboard_view(request):
     return render(request, 'new_door/dashboard.html')
 
