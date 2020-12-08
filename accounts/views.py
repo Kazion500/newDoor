@@ -11,18 +11,21 @@ def signup_view(request):
         print(form.errors)
         if form.is_valid():
             user = form.save()
-            # print(dir(user))
-            # profile = Profile.objects.get(user=user)
-            # profile.email = user.email
-            # profile.first_name = user.first_name
-            # profile.mid_name = user.mid_name
-            # profile.last_name = user.last_name
-            # profile.pcontact = user.pcontact
-            # profile.scontact = user.scontact
-            # profile.marital_status = user.marital_status
-            # profile.nationality= user.nationality
-            # profile.roll_id = user.nationality
-            # profile.save()
+            print(user.profile)
+            user.refresh_from_db()
+            user.profile.email = form.cleaned_data.get('email')
+            user.profile.first_name = form.cleaned_data.get('first_name')
+            user.profile.mid_name = form.cleaned_data.get('mid_name')
+            user.profile.last_name = form.cleaned_data.get('last_name')
+            user.profile.pcontact = form.cleaned_data.get('pcontact')
+            user.profile.scontact = form.cleaned_data.get('scontact')
+            user.profile.marital_status = form.cleaned_data.get(
+                'marital_status')
+            user.profile.nationality = form.cleaned_data.get(
+                'nationality')
+            user.profile.roll_id = form.cleaned_data.get(
+                'roll_id')
+            user.save()
     else:
         form = ProfileRegistrationForm()
     context = {
@@ -33,6 +36,9 @@ def signup_view(request):
 
 
 def login_view(request):
+
+    if request.user.is_authenticated:
+        return redirect('/')
 
     if request.method == "POST":
         form = SiginInUserForm(request.POST)

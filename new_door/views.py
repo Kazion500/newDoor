@@ -33,15 +33,16 @@ from .models import (
 )
 # Dashboard Rendering
 
-# @login_required
+@login_required
 def dashboard_view(request):
     return render(request, 'new_door/dashboard.html')
 
 
+@login_required
 def tenant_dashboard(request):
     return render(request, 'new_door/tenant_dashboard.html')
 
-
+@login_required
 def entity_overview(request):
     entities = Entity.objects.all()
     context = {
@@ -50,6 +51,7 @@ def entity_overview(request):
     return render(request, 'new_door/entity_overview.html', context)
 
 
+@login_required
 def property_overview(request, entity):
     entity = get_object_or_404(Entity, entity_name=entity)
     properties = Property.objects.filter(entity__entity_name=entity)
@@ -68,7 +70,7 @@ def property_overview(request, entity):
 
     return render(request, 'new_door/property_overview.html', context)
 
-
+@login_required
 def property_all_overview(request):
     properties = Property.objects.all()
 
@@ -79,6 +81,7 @@ def property_all_overview(request):
     return render(request, 'new_door/property_all_overview.html', context)
 
 
+@login_required
 def unit_overview(request):
 
     units = Unit.objects.all()
@@ -100,21 +103,24 @@ def unit_overview(request):
     return render(request, 'new_door/unit_overview.html', context)
 
 
+@login_required
 def checklist(request):
     return render(request, 'new_door/checklist.html')
 
 
+@login_required
 def upload_documents(request):
     return render(request, 'new_door/upload_documents.html')
 
 
+@login_required
 def payment(request):
     return render(request, 'new_door/add_payment.html')
 
 
 """ Add Views  """
 
-
+@login_required
 def add_entity(request):
     entities = Entity.objects.all()
 
@@ -139,6 +145,7 @@ def add_entity(request):
     return render(request, 'new_door/add_entity.html', context)
 
 
+@login_required
 def add_property(request, entity):
     entity = get_object_or_404(Entity, entity_name=entity)
     profiles = Profile.objects.all()
@@ -163,6 +170,7 @@ def add_property(request, entity):
     return render(request, 'new_door/add_property.html', context)
 
 
+@login_required
 def add_property_all(request):
     entities = Entity.objects.all()
     profiles = Profile.objects.all()
@@ -186,6 +194,7 @@ def add_property_all(request):
     return render(request, 'new_door/add_property_all_overview.html', context)
 
 
+@login_required
 def add_unit(request):
 
     properties = Property.objects.all()
@@ -214,6 +223,7 @@ def add_unit(request):
     return render(request, 'new_door/add_unit.html', context)
 
 
+@login_required
 def add_category_type(request):
 
     categories = CategoryType.objects.all()
@@ -233,6 +243,8 @@ def add_category_type(request):
     return render(request, 'new_door/add_category_type.html', context)
 
 
+@login_required
+@login_required
 def add_property_type(request):
 
     property_types = PropertyType.objects.all()
@@ -258,6 +270,8 @@ def add_property_type(request):
     return render(request, 'new_door/property_type.html', context)
 
 
+@login_required
+@login_required
 def add_ownership_type(request):
 
     ownership_types = OwnershipType.objects.all()
@@ -280,6 +294,8 @@ def add_ownership_type(request):
     return render(request, 'new_door/add_ownership_type.html', context)
 
 
+@login_required
+@login_required
 def add_occupancy_type(request):
 
     occupancy_types = OccupancyType.objects.all()
@@ -302,6 +318,8 @@ def add_occupancy_type(request):
     return render(request, 'new_door/add_occupancy_type.html', context)
 
 
+@login_required
+@login_required
 def add_tetant_contract(request):
     # Todo: Make sure template has valid fields
 
@@ -325,6 +343,8 @@ def add_tetant_contract(request):
     return render(request, 'new_door/tenant_contract.html', context)
 
 
+@login_required
+@login_required
 def add_contract_request(request):
 
     tenants = Profile.objects.all()
@@ -349,6 +369,8 @@ def add_contract_request(request):
     return render(request, 'new_door/add_contract_request.html', context)
 
 
+@login_required
+@login_required
 def add_tenant_request(request):
 
     tenant_requests = TenantReqType.objects.all()
@@ -371,6 +393,7 @@ def add_tenant_request(request):
     return render(request, 'new_door/add_tenant_request.html', context)
 
 
+@login_required
 def add_status_request(request):
 
     statuses = StatusReqType.objects.all()
@@ -393,6 +416,7 @@ def add_status_request(request):
     return render(request, 'new_door/add_status_request.html', context)
 
 
+@login_required
 def add_doc_type(request):
 
     docs = DocumentType.objects.all()
@@ -415,6 +439,7 @@ def add_doc_type(request):
     return render(request, 'new_door/add_documents_type.html', context)
 
 
+@login_required
 def add_payment_mode(request):
 
     payment_modes = PayModeType.objects.all()
