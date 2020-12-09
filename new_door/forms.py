@@ -1,5 +1,7 @@
 from django.core import validators
 from django import forms
+from django_countries.fields import CountryField
+from django_countries.widgets import CountrySelectWidget
 from .models import (
     Property, Entity,
     Profile, Unit,
@@ -13,6 +15,11 @@ from .models import (
 
 
 class EntityModelForm(forms.ModelForm):
+    country = CountryField(blank_label='Select country').formfield(
+        widget=CountrySelectWidget(attrs={"class": "form-control"}),
+        # required=False
+    )
+
     class Meta:
         model = Entity
         fields = '__all__'
@@ -25,7 +32,7 @@ class EntityModelForm(forms.ModelForm):
             'city': forms.TextInput(attrs={'class': 'form-control'}),
             'pobox': forms.TextInput(attrs={'class': 'form-control'}),
             'state': forms.TextInput(attrs={'class': 'form-control'}),
-            'country': forms.TextInput(attrs={'class': 'form-control'}),
+            # 'country': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'desc': forms.TextInput(attrs={'class': 'form-control'}),
         }
@@ -36,7 +43,10 @@ class PropertyModelForm(forms.ModelForm):
     ), empty_label="Select owner name", widget=(forms.Select(attrs={'class': 'form-control'})))
     entity = forms.ModelChoiceField(Entity.objects.all(
     ), empty_label="Select entity name", widget=(forms.Select(attrs={'class': 'form-control'})))
-
+    country = CountryField(blank_label='Select country').formfield(
+        widget=CountrySelectWidget(attrs={"class": "form-control"}),
+        # required=False
+    )
     class Meta:
         model = Property
         fields = '__all__'
@@ -48,7 +58,7 @@ class PropertyModelForm(forms.ModelForm):
             'city': forms.TextInput(attrs={'class': 'form-control'}),
             'pobox': forms.TextInput(attrs={'class': 'form-control'}),
             'state': forms.TextInput(attrs={'class': 'form-control'}),
-            'country': forms.TextInput(attrs={'class': 'form-control'}),
+            # 'country': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.TextInput(attrs={'class': 'form-control'}),
             'contact_no': forms.TextInput(attrs={'class': 'form-control'}),
             'location': forms.TextInput(attrs={'class': 'form-control'}),

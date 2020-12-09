@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'new_door.apps.NewDoorConfig',
     'accounts.apps.AccountsConfig',
+    'django_countries'
 ]
 
 MIDDLEWARE = [

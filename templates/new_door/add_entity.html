@@ -11,11 +11,11 @@
     {% csrf_token %}
     <div class="card">
       <div class="card-header card-header-rose card-header-text">
-        <div class="card-text">
+        <a href="{% url 'add_entity' %}"><div class="card-text">
           <h4 class="card-title">
-            <i class="material-icons">person</i>Add Entity
+            <i class="material-icons">person</i> Add Entity
           </h4>
-        </div>
+        </div></a>
       </div>
 
       <div class="card-body">

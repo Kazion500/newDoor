@@ -545,7 +545,7 @@ def update_property_type(request, id):
             form.save()
             messages.success(
                 request, 'Congratulations...! Property Type successfully updated.')
-            return redirect('add_product_type')
+            return redirect('add_property_type')
     else:
         form = PropertyTypeModelForm(instance=property_type)
 
