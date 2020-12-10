@@ -85,7 +85,12 @@
         <div class="row">
           <label class="col-sm-2 col-form-label">Contact No.*</label>
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.contact_no }}</div>
+            <div class="form-group bmd-form-group">
+              {{ form.contact_no }}
+              <small style="color: #b6b6b6">
+                {{ form.contact_no.help_text }}
+              </small>
+            </div>
           </div>
           <label class="col-sm-2 col-form-label">Location*</label>
           <div class="col-sm-4">

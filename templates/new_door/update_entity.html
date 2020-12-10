@@ -5,28 +5,67 @@
     <div class="row">
       <div class="col-sm-12 offset-0">
         <h4 class="alert alert-info">Update Entity</h4>
-        <form id="TypeValidation" class="form-horizontal" action=" " method="post" novalidate="novalidate">
+        <form
+          id="TypeValidation"
+          class="form-horizontal"
+          action=" "
+          method="post"
+          novalidate="novalidate"
+        >
           {% csrf_token %}
           <div class="card-body">
             <div class="row">
-              {{ field.value}} {% for field in form %}
-              <label class="col-sm-2 col-form-label">{{field.label}}*</label>
+              <label class="col-sm-2 col-form-label">Entity name*</label>
               <div class="col-sm-4">
                 <div class="form-group bmd-form-group">
-                  <input
-                    class="form-control"
-                    value="{{ field.value}}"
-                    type="text"
-                    id="{{field.id}}"
-                    name="{{ field.name }}"
-                    required="true"
-                    aria-required="true"
-                  />
+                  {{ form.entity_name }}
                 </div>
               </div>
-              {% endfor %}
+              <label class="col-sm-2 col-form-label">City*</label>
+              <div class="col-sm-4">
+                <div class="form-group bmd-form-group">{{ form.city }}</div>
+              </div>
+              <label class="col-sm-2 col-form-label">Address one*</label>
+              <div class="col-sm-4">
+                <div class="form-group bmd-form-group">{{ form.address1 }}</div>
+              </div>
+              <label class="col-sm-2 col-form-label"
+                >Address two(Optional)</label
+              >
+              <div class="col-sm-4">
+                <div class="form-group bmd-form-group">{{ form.address2 }}</div>
+              </div>
+              <label class="col-sm-2 col-form-label">Postal Code*</label>
+              <div class="col-sm-4">
+                <div class="form-group bmd-form-group">{{ form.pobox }}</div>
+              </div>
+              <label class="col-sm-2 col-form-label">State/Province*</label>
+              <div class="col-sm-4">
+                <div class="form-group bmd-form-group">{{ form.state }}</div>
+              </div>
+              <label class="col-sm-2 col-form-label">E-mail address*</label>
+              <div class="col-sm-4">
+                <div class="form-group bmd-form-group">{{ form.email }}</div>
+              </div>
+              <label class="col-sm-2 col-form-label">Contact number*</label>
+              <div class="col-sm-4">
+                <div class="form-group bmd-form-group">
+                  {{ form.contact_no }}
+                  <small style="color: #b6b6b6">
+                    {{ form.contact_no.help_text }}
+                  </small>
+                </div>
+              </div>
+              <label class="col-sm-2 col-form-label">Country*</label>
+              <div class="col-sm-4">
+                <div class="form-group bmd-form-group">{{ form.country }}</div>
+              </div>
+              <label class="col-sm-2 col-form-label">Description*</label>
+              <div class="col-sm-4">
+                <div class="form-group bmd-form-group">{{ form.desc }}</div>
+              </div>
 
-              <div class="modal-footer"  style="float:right; width: 100%;">
+              <div class="modal-footer" style="float: right; width: 100%">
                 <input
                   type="submit"
                   class="btn btn-success btn-round"

@@ -58,12 +58,13 @@
                 <td>{{entity.contact_no}}</td>
                 <td>{{entity.city}}</td>
                 <td>{{entity.state}}</td>
-                <td>{{entity.country}}</td>
+                <td>{{entity.get_country_display }}</td>
                 <td class="text-right">
                   <a
                     href=" {% url 'property_overview' entity.entity_name %} "
-                    class="d-inline" title="View properties"
-                    >
+                    class="d-inline"
+                    title="View properties"
+                  >
                     <div class="ripple-container success"></div>
                     <i
                       class="material-icons"
@@ -82,7 +83,7 @@
                     rel="tooltip"
                     data-original-title="Remove"
                     title="View entities"
-                    >
+                  >
                     <div class="ripple-container success"></div>
                     <i
                       class="material-icons"
@@ -98,8 +99,9 @@
 
                   <a
                     href="{% url 'update_entity' entity.pk %}"
-                    class="d-inline" title="Update entity"
-                    >
+                    class="d-inline"
+                    title="Update entity"
+                  >
                     <div class="ripple-container success"></div>
                     <i
                       class="material-icons"
@@ -115,7 +117,8 @@
 
                   <a
                     href="{% url 'delete_entity' entity.pk %}"
-                    class="d-inline" title="Delete entity"
+                    class="d-inline"
+                    title="Delete entity"
                   >
                     <i
                       class="material-icons"

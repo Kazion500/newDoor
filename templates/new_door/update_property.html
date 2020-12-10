@@ -16,66 +16,79 @@
           {% csrf_token %}
           <div class="card-body">
             <div class="row">
-              {% for field in form %}
-              <label class="col-sm-2 col-form-label">{{ field.label }}*</label>
-              {% if field.name == 'owner_name'%}
+              <label class="col-sm-2 col-form-label">Owner name*</label>
               <div class="col-sm-4">
                 <div class="form-group bmd-form-group">
-                  <select
-                    input
-                    class="form-control"
-                    type="text"
-                    id="{{field.id}}"
-                    name="{{field.name}}"
-                    required="true"
-                    aria-required="true"
-                  >
-                    <option selected>Select Owner' Name</option>
-                    {% for owner in owners %}
-                    <option selected value="{{owner.id}}">
-                      {{owner.user}}
-                    </option>
-                    {% endfor %}
-                  </select>
+                  {{ form.owner_name }}
                 </div>
               </div>
-
-              {% elif field.name == 'entity' %}
+              <label class="col-sm-2 col-form-label">Entity*</label>
               <div class="col-sm-4">
                 <div class="form-group bmd-form-group">
-                  <select
-                    input
-                    class="form-control"
-                    type="text"
-                    id="{{field.id}}"
-                    name="{{field.name}}"
-                    required="true"
-                    aria-required="true"
-                  >
-                    <option selected>Select Entity</option>
-                    {% for entity in entities %}
-                    <option selected value="{{entity.id}}">
-                      {{entity.entity_name}}
-                    </option>
-                    {% endfor %}
-                  </select>
+                  {{ form.entity }}
                 </div>
               </div>
-              {% else %}
+              <label class="col-sm-2 col-form-label">Property name*</label>
               <div class="col-sm-4">
                 <div class="form-group bmd-form-group">
-                  <input
-                    class="form-control"
-                    value="{{ field.value }}"
-                    type="text"
-                    id="{{field.id}}"
-                    name="{{field.name}}"
-                    required="true"
-                    aria-required="true"
-                  />
+                  {{ form.property_name }}
                 </div>
               </div>
-              {% endif %} {% endfor %}
+              <label class="col-sm-2 col-form-label">City*</label>
+              <div class="col-sm-4">
+                <div class="form-group bmd-form-group">
+                  {{ form.city }}
+                </div>
+              </div>
+              <label class="col-sm-2 col-form-label">Address one*</label>
+              <div class="col-sm-4">
+                <div class="form-group bmd-form-group">
+                  {{ form.address1 }}
+                </div>
+              </div>
+              <label class="col-sm-2 col-form-label">Address two(Optional)</label>
+              <div class="col-sm-4">
+                <div class="form-group bmd-form-group">
+                  {{ form.address2 }}
+                </div>
+              </div>
+              <label class="col-sm-2 col-form-label">Postal Code*</label>
+              <div class="col-sm-4">
+                <div class="form-group bmd-form-group">
+                  {{ form.pobox }}
+                </div>
+              </div>
+              <label class="col-sm-2 col-form-label">State/Province*</label>
+              <div class="col-sm-4">
+                <div class="form-group bmd-form-group">
+                  {{ form.state }}
+                </div>
+              </div>
+              <label class="col-sm-2 col-form-label">E-mail address*</label>
+              <div class="col-sm-4">
+                <div class="form-group bmd-form-group">
+                  {{ form.email }}
+                </div>
+              </div>
+              <label class="col-sm-2 col-form-label">Contact number*</label>
+              <div class="col-sm-4">
+                <div class="form-group bmd-form-group">
+                  {{ form.contact_no }}
+                </div>
+              </div>
+              <label class="col-sm-2 col-form-label">Location*</label>
+              <div class="col-sm-4">
+                <div class="form-group bmd-form-group">
+                  {{ form.location }}
+                </div>
+              </div>
+                <label class="col-sm-2 col-form-label">Country*</label>
+              <div class="col-sm-4">
+                <div class="form-group bmd-form-group">
+                  {{ form.country }}
+                </div>
+              </div>
+           
 
               <div class="modal-footer" style="float: right; width: 100%">
                 <input

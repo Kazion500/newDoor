@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block title %} Add Entity {% endblock title %}
+{% extends 'base.html' %} {% block title %} Add Entity {% endblock title %} 
 {% block body %}
 
 <div class="col-md-12">
@@ -11,11 +11,13 @@
     {% csrf_token %}
     <div class="card">
       <div class="card-header card-header-rose card-header-text">
-        <a href="{% url 'add_entity' %}"><div class="card-text">
-          <h4 class="card-title">
-            <i class="material-icons">person</i> Add Entity
-          </h4>
-        </div></a>
+        <a href="{% url 'add_entity' %}"
+          ><div class="card-text">
+            <h4 class="card-title ">
+              <i class="material-icons">person</i> Add Entity
+            </h4>
+          </div></a
+        >
       </div>
 
       <div class="card-body">
@@ -27,7 +29,12 @@
           </div>
           <label class="col-sm-2 col-form-label">Contact No.*</label>
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.contact_no }}</div>
+            <div class="form-group bmd-form-group">
+              {{ form.contact_no }}
+              <small style="color: #b6b6b6">
+                {{ form.contact_no.help_text }}
+              </small>
+            </div>
           </div>
         </div>
         <div class="row">

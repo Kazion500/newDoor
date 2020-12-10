@@ -33,6 +33,7 @@ from .models import (
 )
 # Dashboard Rendering
 
+
 @login_required
 def dashboard_view(request):
     return render(request, 'new_door/dashboard.html')
@@ -41,6 +42,7 @@ def dashboard_view(request):
 @login_required
 def tenant_dashboard(request):
     return render(request, 'new_door/tenant_dashboard.html')
+
 
 @login_required
 def entity_overview(request):
@@ -69,6 +71,7 @@ def property_overview(request, entity):
     }
 
     return render(request, 'new_door/property_overview.html', context)
+
 
 @login_required
 def property_all_overview(request):
@@ -120,6 +123,7 @@ def payment(request):
 
 """ Add Views  """
 
+
 @login_required
 def add_entity(request):
     entities = Entity.objects.all()
@@ -129,11 +133,10 @@ def add_entity(request):
         if form.is_valid():
             form.save()
             messages.success(
-                request, 'Congratulations...! Document Type successfully added.')
+                request, 'Congratulations...! Entity type successfully added.')
             return redirect('add_entity')
         else:
-            messages.info(
-                request, 'Entity already exits')
+            messages.info(request, 'Entity already exits')
             return redirect('add_entity')
     else:
         form = EntityModelForm()
@@ -497,7 +500,7 @@ def update_property(request, id):
         form.save()
         messages.success(
             request, 'Congratulations...! Property successfully updated.')
-        return redirect('property_overview', _property.pk)
+        return redirect('property_overview', _property.entity.entity_name)
     else:
         form = PropertyModelForm(instance=_property)
 

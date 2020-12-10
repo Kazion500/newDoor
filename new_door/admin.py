@@ -21,9 +21,9 @@ class PropertyModelAdmin(admin.ModelAdmin):
 
 
 @admin.register(Profile)
-class PropertyModelAdmin(admin.ModelAdmin):
+class ProfileModelAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'first_name', 'mid_name', 'last_name', 'email',
-                    'pcontact', 'scontact', 'marital_status', 'nationality', 'roll_id')
+                    'pcontact', 'scontact', 'marital_status', 'nationality')
 
 
 @admin.register(Unit)
