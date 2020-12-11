@@ -25,7 +25,7 @@
       <div class="user-info">
         <a data-toggle="collapse" href="#collapseExample" class="username">
           <span>
-            Javed Farooqui
+            {{ request.user.first_name }} {{ request.user.last_name }}
             <b class="caret"></b>
           </span>
         </a>
@@ -55,16 +55,20 @@
     </div>
 
     <ul class="nav">
-      <li class="nav-item active">
+      {% if request.user.profile.is_tenant or request.user.profile.is_manager %}
+        <li class="nav-item active">
+          <a class="nav-link" href="/tenant-dashboard">
+            <i class="material-icons">dashboard</i>
+            <p>Tenant_Dashboard</p>
+          </a>
+        </li>
+      {% endif %}
+      
+      {% if request.user.profile.is_manager %}
+              <li class="nav-item active">
         <a class="nav-link" href="/">
           <i class="material-icons">dashboard</i>
           <p>Dashboard</p>
-        </a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="/tenant-dashboard">
-          <i class="material-icons">dashboard</i>
-          <p>Tenant_Dashboard</p>
         </a>
       </li>
 
@@ -212,6 +216,9 @@
           </ul>
         </div>
       </li>
+      {% endif %}
+        
+
 
       <li class="nav-item">
         <a class="nav-link" data-toggle="collapse" href="#mapsExamples">

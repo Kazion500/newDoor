@@ -38,21 +38,24 @@
       <div class="content">
         <div class="content">
           <div class="container-fluid">
-            {% if messages %} {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} success p-3">
+            {% if messages %} {% for message in messages %} {% if message.tags == 'error' %}
+            <div class="alert alert-danger mt-3 p-3">
               {{ message }}
-              <button
-                type="button"
-                class="close"
-                data-dismiss="alert"
-                aria-label="Close"
-              >
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <i class="material-icons">close</i>
               </button>
               <span> </span>
             </div>
-            {% endfor %} 
-            {% endif %} 
+            {% else %}
+
+            <div class="alert alert-{{ message.tags }}">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <i class="material-icons">close</i>
+              </button>
+              <span> </span>
+            </div>
+            {% endif %} {% endfor %} {% endif %} 
 
             {% block body %} 
             {% endblock body %}

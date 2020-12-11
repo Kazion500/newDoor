@@ -26,10 +26,10 @@ class ProfileRegistrationForm(UserCreationForm):
     last_name = forms.CharField(widget=forms.TextInput(
         attrs={"class": "form-control", 'placeholder': 'Enter last name'})
     )
-    pcontact = forms.CharField(widget=forms.TextInput(
+    pcontact = forms.CharField(widget=forms.NumberInput(
         attrs={"class": "form-control", 'placeholder': 'Enter p_contact'})
     )
-    scontact = forms.CharField(widget=forms.TextInput(
+    scontact = forms.CharField(widget=forms.NumberInput(
         attrs={"class": "form-control", 'placeholder': 'Enter s_contact'})
     )
     marital_status = forms.CharField(widget=forms.Select(
@@ -38,9 +38,6 @@ class ProfileRegistrationForm(UserCreationForm):
     nationality = forms.CharField(widget=forms.TextInput(
         attrs={"class": "form-control", 'placeholder': 'Enter nationality'})
     )
-    roll_id = forms.CharField(widget=forms.TextInput(
-        attrs={"class": "form-control", 'placeholder': 'Enter roll id'})
-    )
 
     password1 = forms.CharField(widget=forms.PasswordInput(
         attrs={"class": "form-control", 'placeholder': 'Enter Your Password'})
@@ -48,14 +45,15 @@ class ProfileRegistrationForm(UserCreationForm):
     password2 = forms.CharField(widget=forms.PasswordInput(
         attrs={"class": "form-control", 'placeholder': 'Confirm Your Password'})
     )
-    # country = CountryField(blank_label='(Select country)').formfield(
-    #     widget=CountrySelectWidget(attrs={"class": "form-auth"})
-    # ))
+    is_tenant = forms.CharField(widget=forms.CheckboxInput(
+        attrs={"class": "form-check-input"}), required=False)
+    is_owner = forms.CharField(widget=forms.CheckboxInput(
+        attrs={"class": "form-check-input"}), required=False)
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'first_name', 'mid_name',
-                  'last_name', 'pcontact', 'scontact', 'marital_status', 'nationality', 'password2']
+        fields = ['username', 'email', 'password1', 'password2', 'first_name', 'mid_name',
+                  'last_name', 'pcontact', 'scontact', 'marital_status', 'nationality', 'is_tenant', 'is_owner']
 
 
 class SiginInUserForm(forms.Form):

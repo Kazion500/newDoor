@@ -22,7 +22,12 @@
 
   <div
     class="row d-flex align-items-center justify-content-center"
-    style="height: 100vh;background-image: url('/static/img/card-3.jpg'); background-repeat: no-repeat; background-size: cover;"
+    style="
+      height: 100vh;
+      background-image: url('/static/img/card-3.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+    "
   >
     <div class="col-md-6">
       <div class="card">
@@ -41,9 +46,10 @@
             <div class="heading text-center my-4">
               <h3
                 class="my-0"
-                style="font-weight: 400; color: rgb(53, 89, 119)"
+                style="font-weight: 400; color: #355977"
               >
-                Create a <span class="text-primary text-bold">newDoor</span> account
+                Create a
+                <span class="text-primary text-bold">newDoor</span> account
               </h3>
             </div>
 
@@ -54,30 +60,52 @@
             </div>
 
             <div class="my-4 form-group d-flex">
-                <div class="col-md-6">{{ form.password1 }}</div>
-                <div class="col-md-6">{{ form.password2 }}</div>
+              <div class="col-md-6">{{ form.password1 }}</div>
+              <div class="col-md-6">{{ form.password2 }}</div>
             </div>
             <div class="my-4 form-group d-flex">
-                <div class="col-md-4">{{ form.first_name }}</div>
-                <div class="col-md-4">{{ form.mid_name }}</div>
-                <div class="col-md-4">{{ form.last_name }}</div>
+              <div class="col-md-4">{{ form.first_name }}</div>
+              <div class="col-md-4">{{ form.mid_name }}</div>
+              <div class="col-md-4">{{ form.last_name }}</div>
             </div>
             <div class="my-4 form-group d-flex">
-                <div class="col-md-6">{{ form.pcontact }}</div>
-                <div class="col-md-6">{{ form.scontact }}</div>
+              <div class="col-md-6">{{ form.pcontact }}</div>
+              <div class="col-md-6">{{ form.scontact }}</div>
             </div>
             <div class="my-4 form-group d-flex">
-                <div class="col-md-6">{{ form.nationality }}</div>
-                <div class="col-md-6">{{ form.marital_status }}</div>
+              <div class="col-md-6">{{ form.nationality }}</div>
+              <div class="col-md-6">{{ form.marital_status }}</div>
             </div>
-            <div class="my-4 form-group d-flex">
-                <div class="col-md-6">{{ form.roll_id }}</div>
-                <!-- <div class="col-md-6">{{ form.mid_name }}</div> -->
+            <div class="mb-4 form-group d-flex">
+              <div class="col-md-4 ml-3">
+                <label
+                  class="form-check-label"
+                  for="is_owner"
+                >
+                  {{ form.is_owner }}
+                  <span style="color: #a5a5a5;">Is owner</span>
+                  <span class="form-check-sign" style="left: 146px">
+                  <span class="check"></span>
+                </span>
+                </label>
+              </div>
+              <div class="col-md-4">
+                <label
+                  class="form-check-label"
+                  for="is_tenant"
+                >
+                  {{ form.is_tenant }}
+                  <span style="color: #a5a5a5;">Is tenant</span>
+                  <span class="form-check-sign" style="left: 146px">
+                  <span class="check"></span>
+                </span>
+                </label>
+              </div>
             </div>
 
             <div class="button-login form-group">
               <button class="btn btn-md btn-primary btn-block" type="submit">
-                Sign in
+                Sign up
               </button>
               <h6 class="text-muted text-center mt-3">
                 Not yet a member? <a href="{% url 'login' %}">Login</a>

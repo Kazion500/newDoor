@@ -14,18 +14,23 @@ def signup_view(request):
             print(user.profile)
             user.refresh_from_db()
             user.profile.email = form.cleaned_data.get('email')
-            user.profile.first_name = form.cleaned_data.get('first_name')
             user.profile.mid_name = form.cleaned_data.get('mid_name')
-            user.profile.last_name = form.cleaned_data.get('last_name')
             user.profile.pcontact = form.cleaned_data.get('pcontact')
             user.profile.scontact = form.cleaned_data.get('scontact')
+            user.profile.scontact = form.cleaned_data.get('scontact')
+            user.profile.is_tenant = form.cleaned_data.get('is_tenant')
+            user.profile.is_owner = form.cleaned_data.get('is_owner')
             user.profile.marital_status = form.cleaned_data.get(
                 'marital_status')
             user.profile.nationality = form.cleaned_data.get(
                 'nationality')
-            user.profile.roll_id = form.cleaned_data.get(
-                'roll_id')
             user.save()
+            messages.success(request, 'Account successfully added')
+            return redirect('login')
+        else:
+            messages.error(
+                request, 'There was a problem creating the account please check your inputs')
+            return redirect('signup')
     else:
         form = ProfileRegistrationForm()
     context = {
