@@ -1,0 +1,200 @@
+{% extends 'base.html' %} {% block title %} Add User {% endblock title %}
+{%block body %} {% load static %}
+<div class="col-md-12">
+  <form
+    id="TypeValidation"
+    class="form-horizontal"
+    method="post"
+    novalidate="novalidate"
+    enctype="multipart/form-data"
+  >
+    {% csrf_token %}
+    <div class="card">
+      <div class="card-header card-header-rose card-header-text">
+        <div class="card-text">
+          <h4 class="card-title d-flex align-items-center">
+            <i class="material-icons">roofing</i> Add User
+          </h4>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <br />
+        {% comment %} Row1 {% endcomment %}
+        <div class="row">
+          <div class="col-sm-6">
+            <label class="col-sm-6 col-form-label">Username</label>
+            <div class="col-sm-12">
+              <div class="form-group bmd-form-group">{{ form.username }}</div>
+            </div>
+            <label class="col-sm-6 col-form-label">Password</label>
+            <div class="col-sm-12">
+              <div class="form-group bmd-form-group">{{ form.password1 }}</div>
+            </div>
+            <label class="col-sm-6 col-form-label">Confirm password</label>
+            <div class="col-sm-12">
+              <div class="form-group bmd-form-group">{{ form.password2 }}</div>
+            </div>
+          </div>
+
+          <div
+            class="col-sm-6 fileinput border justify-content-center fileinput-new text-center d-flex align-items-center flex-column"
+            data-provides="fileinput"
+            style="min-height: 20vh"
+          >
+            <div
+              class="fileinput-new thumbnail img-circle float-right"
+              style="
+                width: 50px;
+                height: 50px;
+              "
+            >
+              <img src="{% static '/img/placeholder.jpg' %}" />
+            </div>
+            <!-- <div
+              class="fileinput-preview fileinput-exists img-circle"
+              id="imgUpload"
+            ></div> -->
+            <div>
+              <span class="btn btn-round btn-rose btn-file float-right">
+                <span class="fileinput-new" id="imgBtnUpload"
+                  >Select profile image</span
+                >
+                <span class="fileinput-exists">Change</span>
+                <input type="hidden" /><input
+                  type="file"
+                  id="usrimg"
+                  name="{{  }}"
+                />
+                <div class="ripple-container"></div>
+              </span>
+              <br />
+              <a
+                href="#pablo"
+                class="btn btn-danger btn-round fileinput-exists"
+                data-dismiss="fileinput"
+                ><i class="fa fa-times"></i> Remove</a
+              >
+            </div>
+          </div>
+        </div>
+        {% comment %} Row2 {% endcomment %}
+
+        <hr
+          style="
+            width: 100%;
+            margin: 4em 0;
+            border-top: 1.5px solid rgba(0, 0, 0, 0.1);
+          "
+        />
+        {% comment %} Row3 {% endcomment %}
+        <div class="row">
+          <label class="col-sm-2 col-form-label">First Name*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.first_name }}</div>
+          </div>
+          <label class="col-sm-2 col-form-label">Middle Name</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.mid_name }}</div>
+          </div>
+        </div>
+        {% comment %} Row4 {% endcomment %}
+        <div class="row">
+          <label class="col-sm-2 col-form-label">Last Name</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.last_name }}</div>
+          </div>
+          <label class="col-sm-2 col-form-label">E-mail*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.email }}</div>
+          </div>
+        </div>
+        {% comment %} Row5 {% endcomment %}
+        <div class="row">
+          <label class="col-sm-2 col-form-label">Primary Contact*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.pcontact }}</div>
+          </div>
+          <label class="col-sm-2 col-form-label">Secondary Contact*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.scontact }}</div>
+          </div>
+        </div>
+        {% comment %} Row6 {% endcomment %}
+        <div class="row">
+          <label class="col-sm-2 col-form-label">Nationality*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.nationality }}</div>
+          </div>
+
+          <label class="col-sm-2 col-form-label">Marital Status*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">
+              {{ form.marital_status }}
+            </div>
+          </div>
+        </div>
+        {% comment %} Row6 {% endcomment %}
+        <div class="mb-4 form-group d-flex">
+          <div class="col-md-4 ml-3">
+            <label class="form-check-label" for="is_owner">
+              {{ form.is_owner }}
+              <span style="color: #a5a5a5">Is owner</span>
+              <span class="form-check-sign" style="left: 146px">
+                <span class="check"></span>
+              </span>
+            </label>
+          </div>
+          <div class="col-md-4">
+            <label class="form-check-label" for="is_tenant">
+              {{ form.is_tenant }}
+              <span style="color: #a5a5a5">Is tenant</span>
+              <span class="form-check-sign" style="left: 146px">
+                <span class="check"></span>
+              </span>
+            </label>
+          </div>
+        </div>
+        <!--  <div class="row">
+          <div
+            class="fileinput fileinput-new text-center"
+            data-provides="fileinput"
+          >
+            {% comment %}
+            <div class="fileinput-new thumbnail img-circle">
+              <img src="{% static '/img/placeholder.jpg' %}" />
+            </div>
+            {% endcomment %}
+            <div class="fileinput-preview fileinput-exists thumbnail"></div>
+            <div>
+               {{ form.role }}
+              <span class="btn btn-round btn-rose btn-file">
+                <span class="fileinput-new">Add Files</span>
+                <span class="fileinput-exists">Change</span>
+                <input type="hidden" /><input
+                  type="file"
+                  id="image"
+                  name="image"
+                />
+                <div class="ripple-container"></div>
+              </span> 
+
+              <a
+                href="#pablo"
+                class="btn btn-danger btn-round fileinput-exists"
+                data-dismiss="fileinput"
+                ><i class="fa fa-times"></i> Remove</a
+              >
+            </div>
+          </div> -->
+        <!-- </div> -->
+
+        <button class="btn btn-rose btn-round w-25 float-right" type="Submit">
+          <i class="material-icons">near_me </i> Submit
+          <div class="ripple-container"></div>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock body %}

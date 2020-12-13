@@ -20,6 +20,7 @@ from .forms import (
     StatusReqTypeModelForm,
     DocumentTypeModelForm,
     PayModeTypeModelForm,
+    ProfileRegistrationForm
 )
 
 from .models import (
@@ -36,6 +37,8 @@ from .models import (
 
 @login_required
 def dashboard_view(request):
+    if request.user.profile.is_tenant:
+        return redirect('tenant_dashboard')
     return render(request, 'new_door/dashboard.html')
 
 
@@ -224,6 +227,41 @@ def add_unit(request):
     }
 
     return render(request, 'new_door/add_unit.html', context)
+
+
+@login_required
+def add_user(request):
+    if request.method == "POST":
+        form = ProfileRegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            print(user.profile)
+            user.refresh_from_db()
+            user.profile.email = form.cleaned_data.get('email')
+            user.profile.mid_name = form.cleaned_data.get('mid_name')
+            user.profile.pcontact = form.cleaned_data.get('pcontact')
+            user.profile.scontact = form.cleaned_data.get('scontact')
+            user.profile.scontact = form.cleaned_data.get('scontact')
+            user.profile.is_tenant = form.cleaned_data.get('is_tenant')
+            user.profile.is_owner = form.cleaned_data.get('is_owner')
+            user.profile.marital_status = form.cleaned_data.get(
+                'marital_status')
+            user.profile.nationality = form.cleaned_data.get(
+                'nationality')
+            user.save()
+            messages.success(request, 'Account successfully added')
+            return redirect('login')
+        else:
+            messages.error(
+                request, 'There was a problem creating the account please check your inputs')
+            return redirect('signup')
+    else:
+        form = ProfileRegistrationForm()
+    context = {
+        "form": form,
+    }
+
+    return render(request, 'new_door/add_user.html', context)
 
 
 @login_required

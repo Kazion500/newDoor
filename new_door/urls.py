@@ -40,6 +40,10 @@ urlpatterns = [
     path('view-unit/<id>', views.view_unit, name='view_unit'),
     path('delete-unit/<id>', views.delete_unit, name='delete_unit'),
 
+    # """ Add User """
+    path('add-user/', views.add_user, name='add_user'),
+
+
     # """ Master Routes Catergory Type"""
 
     path('add-category-type/', views.add_category_type,

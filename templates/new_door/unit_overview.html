@@ -74,7 +74,6 @@
     </div>
   </div>
 
-  
   <div class="card mt-5">
     <div class="card-header card-header-primary card-header-icon">
       <div class="card-icon" style="padding-left: 1px">
@@ -86,17 +85,19 @@
           <i class="material-icons">house</i> Unit Overview
         </a>
       </div>
-       <div class="card-icon float-right" style="padding:.5em 0; font-size: 1rem; background: rgb(224, 79, 115);">
-          <a
-            href=" {% url 'add_unit'%} "
-            class="card-header card-header-rose card-header-text"
-          >
-            <i class="material-icons">add</i>Add Unit
-          </a>
-         
-        </div>
+      <div
+        class="card-icon float-right"
+        style="padding: 0.5em 0; font-size: 1rem; background: rgb(224, 79, 115)"
+      >
+        <a
+          href=" {% url 'add_unit'%} "
+          class="card-header card-header-rose card-header-text"
+        >
+          <i class="material-icons">add</i>Add Unit
+        </a>
+      </div>
     </div>
-    <div class="card-body">
+    <div class="card-body" id="invite-user-modal">
       <div class="toolbar">
         <!--Here you can write extra buttons/actions for the toolbar -->
       </div>
@@ -125,23 +126,26 @@
               <td>{{unit.id}}</td>
               <td>{{unit.property_type.property_type}}</td>
               <td>
-                  <button
-                    class="btn btn-primary btn-round"
-                    style="
-                      background: linear-gradient(
-                        to bottom,
-                        #03ac0c 0%,
-                        #ffffff 150%
-                      );
-                    "
-                  >
-                    {{ unit.occupancy_type.occupancy_type }}
-                  </button>
+                
+                {% if unit.occupancy_type.occupancy_type.lower == 'invite user' %}
+                
+                <a href="{% url 'dashboard' %}"
+                  class="btn btn-primary btn-round occupancy_type"
+                >
+                  {{ unit.occupancy_type.occupancy_type }}
                 </a>
+                {% else %}
+                <a href="" class="btn btn-primary btn-round occupancy_type">
+                  {{ unit.occupancy_type.occupancy_type }}
+                </a>
+                {% endif %}
               </td>
-              <td>{{ unit.property_id.owner_name.user.username.capitalize }}</td>
+              <td>
+                {{ unit.property_id.owner_name.user.username.capitalize }}
+              </td>
               <td>{{ unit.size }}</td>
               <td>{{ unit.size }}</td>
+
               <td class="text-right">
                 <a href="#" class="d-inline" title="Renewal">
                   <i
@@ -177,7 +181,7 @@
                   rel="tooltip "
                   title="View unit"
                   data-original-title="Remove "
-                  >
+                >
                   <div class="ripple-container success"></div>
                   <i
                     class="material-icons"
@@ -191,7 +195,11 @@
                   >
                 </a>
 
-                <a href="{% url 'update_unit' unit.pk %}" class="d-inline" title="Update unit">
+                <a
+                  href="{% url 'update_unit' unit.pk %}"
+                  class="d-inline"
+                  title="Update unit"
+                >
                   <div class="ripple-container success"></div>
                   <i
                     class="material-icons"
@@ -205,8 +213,11 @@
                   >
                 </a>
 
-                  <a href="{% url 'delete_unit' unit.pk %}" class="d-inline" title="Delete unit">
-
+                <a
+                  href="{% url 'delete_unit' unit.pk %}"
+                  class="d-inline"
+                  title="Delete unit"
+                >
                   <i
                     class="material-icons"
                     style="
@@ -231,4 +242,45 @@
   <!--  end card  -->
 </div>
 <!-- end row -->
+{% endblock %} {% block occupancy_type %}
+<script>
+  const occupancyTypes = document.querySelectorAll(".occupancy_type");
+  addColorToButtons();
+
+  function addColorToButtons() {
+    occupancyTypes.forEach((occupancyType) => {
+      const occupancyTypeText = occupancyType.textContent.trim().toLowerCase();
+
+      switch (occupancyTypeText) {
+        case "vacant":
+          occupancyType.style.backgroundColor = "greenyellow";
+          occupancyType.style.color = "black";
+          break;
+
+        case "occupied":
+          occupancyType.style.backgroundColor = "red";
+          break;
+
+        case "invite user":
+          occupancyType.style.backgroundColor = "green";
+          break;
+        case "document pending":
+          occupancyType.style.backgroundColor = "yellow";
+          break;
+        case "document review":
+          occupancyType.style.backgroundColor = "#000";
+          break;
+        case "document approved":
+          occupancyType.style.backgroundColor = "#000";
+          break;
+        case "payment pending":
+          occupancyType.style.backgroundColor = "#000";
+          break;
+
+        default:
+          break;
+      }
+    });
+  }
+</script>
 {% endblock %}

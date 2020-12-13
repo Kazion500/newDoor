@@ -125,7 +125,7 @@
               <td>{{unit.id}}</td>
               <td>{{unit.property_type.property_type}}</td>
               <td>
-                  <button
+                  <button id="occupancy_type"
                     class="btn btn-primary btn-round"
                     style="
                       background: linear-gradient(
@@ -232,4 +232,13 @@
   <!--  end card  -->
 </div>
 <!-- end row -->
+{% endblock %}
+{% block occupancy_type %}
+  <script>
+
+    const occupancyType = document.getElementById('occupancy_type')
+    console.log(occupancyType.textContent);
+
+
+  </script>
 {% endblock %}
