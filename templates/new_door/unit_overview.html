@@ -129,15 +129,15 @@
                 
                 {% if unit.occupancy_type.occupancy_type.lower == 'invite user' %}
                 
-                <a href="{% url 'dashboard' %}"
+                <a href="{% url 'add_user' unit.pk %}"
                   class="btn btn-primary btn-round occupancy_type"
                 >
                   {{ unit.occupancy_type.occupancy_type }}
                 </a>
                 {% else %}
-                <a href="" class="btn btn-primary btn-round occupancy_type">
+                <button class="btn btn-primary btn-round occupancy_type">
                   {{ unit.occupancy_type.occupancy_type }}
-                </a>
+                </button>
                 {% endif %}
               </td>
               <td>
