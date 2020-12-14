@@ -39,7 +39,15 @@ from .models import (
 def dashboard_view(request):
     if request.user.profile.is_tenant:
         return redirect('tenant_dashboard')
-    return render(request, 'new_door/dashboard.html')
+
+    total_num_units = Unit.objects.all().count()
+    vacant_units = Unit.objects.filter(occupancy_type__occupancy_type__iexact="vacant").count()
+
+    context = {
+        'total_num_units':total_num_units,
+        'vacant_units':vacant_units
+    }
+    return render(request, 'new_door/dashboard.html',context)
 
 
 @login_required
@@ -235,7 +243,6 @@ def add_user(request):
         form = ProfileRegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            print(user.profile)
             user.refresh_from_db()
             user.profile.email = form.cleaned_data.get('email')
             user.profile.mid_name = form.cleaned_data.get('mid_name')
@@ -254,7 +261,40 @@ def add_user(request):
         else:
             messages.error(
                 request, 'There was a problem creating the account please check your inputs')
-            return redirect('signup')
+            return redirect('add_user')
+    else:
+        form = ProfileRegistrationForm()
+    context = {
+        "form": form,
+    }
+
+    return render(request, 'new_door/add_user.html', context)
+
+@login_required
+def add_user_to_unit(request, unit_id):
+    if request.method == "POST":
+        form = ProfileRegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            user.refresh_from_db()
+            user.profile.email = form.cleaned_data.get('email')
+            user.profile.mid_name = form.cleaned_data.get('mid_name')
+            user.profile.pcontact = form.cleaned_data.get('pcontact')
+            user.profile.scontact = form.cleaned_data.get('scontact')
+            user.profile.scontact = form.cleaned_data.get('scontact')
+            user.profile.is_tenant = form.cleaned_data.get('is_tenant')
+            user.profile.is_owner = form.cleaned_data.get('is_owner')
+            user.profile.marital_status = form.cleaned_data.get(
+                'marital_status')
+            user.profile.nationality = form.cleaned_data.get(
+                'nationality')
+            user.save()
+            messages.success(request, 'Account successfully added')
+            return redirect('login')
+        else:
+            messages.error(
+                request, 'There was a problem creating the account please check your inputs')
+            return redirect('add_user')
     else:
         form = ProfileRegistrationForm()
     context = {
