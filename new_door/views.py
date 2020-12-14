@@ -66,11 +66,18 @@ def property_overview(request, entity):
         occupancy_type__occupancy_type__iexact="vacant",
         property_id__entity__entity_name=entity).count()
 
+    number_of_occupied_units = Unit.objects.filter(
+        occupancy_type__occupancy_type__iexact="occupied",
+        property_id__entity__entity_name=entity).count()
+
+    percentage = number_of_occupied_units / number_of_units * 100
+
     context = {
         'entity': entity,
         'properties': properties,
         'number_of_units': number_of_units,
         'number_of_vacant_units': number_of_vacant_units,
+        'percentage': int(percentage),
     }
 
     return render(request, 'new_door/property_overview.html', context)
@@ -1114,20 +1121,23 @@ def prepopulated_field_unit(request, id):
 def property_unit_overview(request, id):
     _property = get_object_or_404(Property, pk=id)
     units = Unit.objects.filter(property_id=_property.pk)
-    print(units)
+
     number_of_units = Unit.objects.filter(property_id=_property).count()
+
     number_of_vacant_units = Unit.objects.filter(
         occupancy_type__occupancy_type__iexact="vacant", property_id=_property).count()
-    units_occupied = number_of_units - number_of_vacant_units
+    number_of_occupied_units = Unit.objects.filter(
+        occupancy_type__occupancy_type__iexact="occupied",
+        property_id=_property).count()
 
-    if units_occupied is None:
-        units_occupied = 0
+    if number_of_occupied_units is None:
+        number_of_occupied_units = 0
 
     context = {
         'property': _property,
         'units': units,
         'number_of_vacant_units': number_of_vacant_units,
-        'units_occupied': units_occupied
+        'number_of_occupied_units': number_of_occupied_units,
     }
 
     return render(request, 'new_door/property_unit_overview.html', context)

@@ -48,7 +48,7 @@
             <div class="card-icon">
               <i class="material-icons">home</i>
             </div>
-            <h3 class="card-title">{{ units_occupied }}</h3>
+            <h3 class="card-title">{{ number_of_occupied_units }}</h3>
             <br /><br />
             <p class="card-category">Total Occupied</p>
           </div>
@@ -125,18 +125,18 @@
               <td>{{unit.id}}</td>
               <td>{{unit.property_type.property_type}}</td>
               <td>
-                  <button id="occupancy_type"
-                    class="btn btn-primary btn-round"
-                    style="
-                      background: linear-gradient(
-                        to bottom,
-                        #03ac0c 0%,
-                        #ffffff 150%
-                      );
-                    "
-                  >
-                    {{ unit.occupancy_type.occupancy_type }}
-                  </button>
+                {% if unit.occupancy_type.occupancy_type.lower == 'invite user' %}
+                
+                <a href="{% url 'dashboard' %}"
+                  class="btn btn-primary btn-round occupancy_type"
+                >
+                  {{ unit.occupancy_type.occupancy_type }}
+                </a>
+                {% else %}
+                <a href="" class="btn btn-primary btn-round occupancy_type">
+                  {{ unit.occupancy_type.occupancy_type }}
+                </a>
+                {% endif %}
                 </a>
               </td>
               <td>{{ unit.property_id.owner_name.user.username.capitalize }}</td>
@@ -241,4 +241,47 @@
 
 
   </script>
+{% endblock %}
+
+{% block occupancy %}
+<script>
+  const occupancyTypes = document.querySelectorAll(".occupancy_type");
+  addColorToButtons();
+
+  function addColorToButtons() {
+    occupancyTypes.forEach((occupancyType) => {
+      const occupancyTypeText = occupancyType.textContent.trim().toLowerCase();
+
+      switch (occupancyTypeText) {
+        case "vacant":
+          occupancyType.style.backgroundColor = "greenyellow";
+          occupancyType.style.color = "black";
+          break;
+
+        case "occupied":
+          occupancyType.style.backgroundColor = "red";
+          break;
+
+        case "invite user":
+          occupancyType.style.backgroundColor = "green";
+          break;
+        case "document pending":
+          occupancyType.style.backgroundColor = "yellow";
+          break;
+        case "document review":
+          occupancyType.style.backgroundColor = "#000";
+          break;
+        case "document approved":
+          occupancyType.style.backgroundColor = "#000";
+          break;
+        case "payment pending":
+          occupancyType.style.backgroundColor = "#000";
+          break;
+
+        default:
+          break;
+      }
+    });
+  }
+</script>
 {% endblock %}
