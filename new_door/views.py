@@ -52,6 +52,9 @@ def dashboard_view(request):
 
 @login_required
 def tenant_dashboard(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
     return render(request, 'new_door/tenant_dashboard.html')
 
 
@@ -84,6 +87,7 @@ def property_overview(request, entity):
         'entity': entity,
         'properties': properties,
         'number_of_units': number_of_units,
+        'number_of_occupied_units': number_of_occupied_units,
         'number_of_vacant_units': number_of_vacant_units,
         'percentage': int(percentage),
     }
@@ -94,10 +98,23 @@ def property_overview(request, entity):
 @login_required
 def property_all_overview(request):
     properties = Property.objects.all()
+    number_of_units = Unit.objects.all().count()
+    number_of_vacant_units = Unit.objects.filter(
+        occupancy_type__occupancy_type__iexact="vacant").count()
+
+    number_of_occupied_units = Unit.objects.filter(
+        occupancy_type__occupancy_type__iexact="occupied").count()
+
+    percentage = number_of_occupied_units / number_of_units * 100
 
     context = {
         'properties': properties,
+        'number_of_units': number_of_units,
+        'number_of_occupied_units': number_of_occupied_units,
+        'number_of_vacant_units': number_of_vacant_units,
+        'percentage': int(percentage),
     }
+
 
     return render(request, 'new_door/property_all_overview.html', context)
 
@@ -107,17 +124,17 @@ def unit_overview(request):
 
     units = Unit.objects.all()
 
-    number_of_units = Unit.objects.all().count()
     number_of_vacant_units = Unit.objects.filter(
         occupancy_type__occupancy_type__iexact="vacant").count()
+    number_of_occupied_units = Unit.objects.filter(
+        occupancy_type__occupancy_type__iexact="occupied").count()
 
-    units_occupied = number_of_units - number_of_vacant_units
-    if units_occupied is None:
-        units_occupied = 0
+    if number_of_occupied_units is None:
+        number_of_occupied_units = 0
 
     context = {
         'units': units,
-        'units_occupied': units_occupied,
+        'number_of_occupied_units': number_of_occupied_units,
         'number_of_vacant_units': number_of_vacant_units,
     }
 
@@ -277,38 +294,38 @@ def add_user(request):
 
     return render(request, 'new_door/add_user.html', context)
 
-@login_required
-def add_user_to_unit(request, unit_id):
-    if request.method == "POST":
-        form = ProfileRegistrationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            user.refresh_from_db()
-            user.profile.email = form.cleaned_data.get('email')
-            user.profile.mid_name = form.cleaned_data.get('mid_name')
-            user.profile.pcontact = form.cleaned_data.get('pcontact')
-            user.profile.scontact = form.cleaned_data.get('scontact')
-            user.profile.scontact = form.cleaned_data.get('scontact')
-            user.profile.is_tenant = form.cleaned_data.get('is_tenant')
-            user.profile.is_owner = form.cleaned_data.get('is_owner')
-            user.profile.marital_status = form.cleaned_data.get(
-                'marital_status')
-            user.profile.nationality = form.cleaned_data.get(
-                'nationality')
-            user.save()
-            messages.success(request, 'Account successfully added')
-            return redirect('login')
-        else:
-            messages.error(
-                request, 'There was a problem creating the account please check your inputs')
-            return redirect('add_user')
-    else:
-        form = ProfileRegistrationForm()
-    context = {
-        "form": form,
-    }
+# @login_required
+# def add_user_to_unit(request, unit_id):
+#     if request.method == "POST":
+#         form = ProfileRegistrationForm(request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             user.refresh_from_db()
+#             user.profile.email = form.cleaned_data.get('email')
+#             user.profile.mid_name = form.cleaned_data.get('mid_name')
+#             user.profile.pcontact = form.cleaned_data.get('pcontact')
+#             user.profile.scontact = form.cleaned_data.get('scontact')
+#             user.profile.scontact = form.cleaned_data.get('scontact')
+#             user.profile.is_tenant = form.cleaned_data.get('is_tenant')
+#             user.profile.is_owner = form.cleaned_data.get('is_owner')
+#             user.profile.marital_status = form.cleaned_data.get(
+#                 'marital_status')
+#             user.profile.nationality = form.cleaned_data.get(
+#                 'nationality')
+#             user.save()
+#             messages.success(request, 'Account successfully added')
+#             return redirect('login')
+#         else:
+#             messages.error(
+#                 request, 'There was a problem creating the account please check your inputs')
+#             return redirect('add_user')
+#     else:
+#         form = ProfileRegistrationForm()
+#     context = {
+#         "form": form,
+#     }
 
-    return render(request, 'new_door/add_user.html', context)
+#     return render(request, 'new_door/add_user.html', context)
 
 
 @login_required
@@ -1161,8 +1178,6 @@ def prepopulated_field_unit(request, id):
 def property_unit_overview(request, id):
     _property = get_object_or_404(Property, pk=id)
     units = Unit.objects.filter(property_id=_property.pk)
-
-    number_of_units = Unit.objects.filter(property_id=_property).count()
 
     number_of_vacant_units = Unit.objects.filter(
         occupancy_type__occupancy_type__iexact="vacant", property_id=_property).count()

@@ -48,7 +48,7 @@
             <div class="card-icon">
               <i class="material-icons">home</i>
             </div>
-            <h3 class="card-title">{{ units_occupied }}</h3>
+            <h3 class="card-title">{{ number_of_occupied_units }}</h3>
             <br /><br />
             <p class="card-category">Total Occupied</p>
           </div>
@@ -129,7 +129,7 @@
                 
                 {% if unit.occupancy_type.occupancy_type.lower == 'invite user' %}
                 
-                <a href="{% url 'add_user' unit.pk %}"
+                <a href="{% url 'add_user' %}"
                   class="btn btn-primary btn-round occupancy_type"
                 >
                   {{ unit.occupancy_type.occupancy_type }}

@@ -92,7 +92,7 @@ class OccupancyType(models.Model):
     def __str__(self):
         return self.occupancy_type
 
-
+# Need to add user instance
 class Unit(models.Model):
     property_id = models.ForeignKey(
         Property, on_delete=models.CASCADE)

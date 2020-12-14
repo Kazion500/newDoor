@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block title %} Tenant_Request_Type {% endblock title %} {% block body %} {% load static %}
 <div class="col-md-12">
-    <form id="TypeValidation" class="form-horizontal" action=" " method="post" novalidate="novalidate" enctype="multipart/form-data">
+    <form id="TypeValidation" class="form-horizontal" method="post" novalidate="novalidate">
         {% csrf_token %}
         <div class="card ">
             <div class="card-header card-header-rose card-header-text" style="font-size: 20px;">
