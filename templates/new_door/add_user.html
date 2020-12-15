@@ -53,8 +53,7 @@
             </div>
             <!-- <div
               class="fileinput-preview fileinput-exists img-circle"
-              id="imgUpload"
-            ></div> -->
+              id="imgUpload"></div>
             <div>
               <span class="btn btn-round btn-rose btn-file float-right">
                 <span class="fileinput-new" id="imgBtnUpload"
@@ -64,7 +63,7 @@
                 <input type="hidden" /><input
                   type="file"
                   id="usrimg"
-                  name=""
+                  name="image"
                 />
                 <div class="ripple-container"></div>
               </span>
@@ -75,7 +74,8 @@
                 data-dismiss="fileinput"
                 ><i class="fa fa-times"></i> Remove</a
               >
-            </div>
+            </div> -->
+            {{ form.image }}
           </div>
         </div>
         {% comment %} Row2 {% endcomment %}

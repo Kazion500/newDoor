@@ -12,7 +12,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     mid_name = models.CharField(max_length=50, null=True, blank=True)
     email = models.EmailField(max_length=254)
-    image = models.FileField(upload_to="media/profile_pic",null=True,blank=True)
+    image = models.ImageField(upload_to="profile_pic",null=True,blank=True)
     pcontact = models.CharField(max_length=254)
     scontact = models.CharField(max_length=254)
     marital_status = models.CharField(choices=MARITAL_STATUS, max_length=50)

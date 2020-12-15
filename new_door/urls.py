@@ -1,6 +1,10 @@
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from . import views
 from accounts import views as auth_views
+
+
 urlpatterns = [
 
     path('', views.dashboard_view, name='dashboard'),
@@ -154,9 +158,18 @@ urlpatterns = [
 
     # path('checklist/', views.checklist, name='checklist'),
 
+     # Review Documents
+
+     path('review-documents/',views.review_documents,name='review_documents'),
+     
+
+     # Payment
+     path('payment/',views.payment,name='payment'),
 
     # Authentication routes
     path('auth/signup/', auth_views.signup_view, name='signup'),
     path('auth/login/', auth_views.login_view, name='login'),
     path('auth/logout/', auth_views.logout_view, name='logout'),
-]
+
+    
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

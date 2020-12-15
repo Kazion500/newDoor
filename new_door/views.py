@@ -264,8 +264,13 @@ def add_unit(request):
 @login_required
 def add_user(request):
     if request.method == "POST":
-        form = ProfileRegistrationForm(request.POST)
+        form = ProfileRegistrationForm(request.POST,request.FILES)
+        print(form.data)
+        print(form.errors)
+        f = form.cleaned_data.get('image')
+        print(type(f))
         if form.is_valid():
+            # pass
             user = form.save()
             user.refresh_from_db()
             user.profile.email = form.cleaned_data.get('email')
@@ -279,9 +284,13 @@ def add_user(request):
                 'marital_status')
             user.profile.nationality = form.cleaned_data.get(
                 'nationality')
+            user.profile.nationality = form.cleaned_data.get(
+                'nationality')
+            user.profile.image = form.cleaned_data.get(
+                'image')
             user.save()
             messages.success(request, 'Account successfully added')
-            return redirect('login')
+            return redirect('add_user')
         else:
             messages.error(
                 request, 'There was a problem creating the account please check your inputs')
@@ -349,7 +358,6 @@ def add_category_type(request):
 
 
 @login_required
-@login_required
 def add_property_type(request):
 
     property_types = PropertyType.objects.all()
@@ -376,7 +384,6 @@ def add_property_type(request):
 
 
 @login_required
-@login_required
 def add_ownership_type(request):
 
     ownership_types = OwnershipType.objects.all()
@@ -400,7 +407,6 @@ def add_ownership_type(request):
 
 
 @login_required
-@login_required
 def add_occupancy_type(request):
 
     occupancy_types = OccupancyType.objects.all()
@@ -423,7 +429,6 @@ def add_occupancy_type(request):
     return render(request, 'new_door/add_occupancy_type.html', context)
 
 
-@login_required
 @login_required
 def add_tetant_contract(request):
     # Todo: Make sure template has valid fields
@@ -449,7 +454,6 @@ def add_tetant_contract(request):
 
 
 @login_required
-@login_required
 def add_contract_request(request):
 
     tenants = Profile.objects.all()
@@ -474,7 +478,6 @@ def add_contract_request(request):
     return render(request, 'new_door/add_contract_request.html', context)
 
 
-@login_required
 @login_required
 def add_tenant_request(request):
 
@@ -1196,3 +1199,25 @@ def property_unit_overview(request, id):
     }
 
     return render(request, 'new_door/property_unit_overview.html', context)
+
+def review_documents(request):
+    
+    if request.method == 'POST':
+        form = TenantContractModelForm(request.POST)
+        if form.is_valid():
+            contract_no = form.cleaned_data['contract_no']
+            print(contract_no)
+            form.save()
+            messages.success(
+                request, 'Congratulations...! Contract successfully added.')
+            return redirect('add_tetant_contract')
+    else:
+        form = TenantContractModelForm()
+
+    context = {
+        'form': form,
+
+    }
+    return render(request, 'tenant/review_documents.html',context)
+
+    

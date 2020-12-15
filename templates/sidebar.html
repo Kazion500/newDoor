@@ -56,17 +56,15 @@
 
     <ul class="nav">
       {% if request.user.profile.is_tenant or request.user.profile.is_manager %}
-        <li class="nav-item active">
-          <a class="nav-link" href="/tenant-dashboard">
-            <i class="material-icons">dashboard</i>
-            <p>Tenant_Dashboard</p>
-          </a>
-        </li>
-      {% endif %}
-      
-      {% if request.user.profile.is_manager %}
-              <li class="nav-item active">
-        <a class="nav-link" href="/">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'tenant_dashboard' %} ">
+          <i class="material-icons">dashboard</i>
+          <p>Tenant_Dashboard</p>
+        </a>
+      </li>
+      {% endif %} {% if request.user.profile.is_manager %}
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'dashboard' %}">
           <i class="material-icons">dashboard</i>
           <p>Dashboard</p>
         </a>
@@ -189,12 +187,12 @@
         </a>
         <div class="collapse" id="tablesExamples">
           <ul class="nav">
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link" href="/Add_Tenant">
                 <span class="sidebar-mini"> AT </span>
                 <span class="sidebar-normal"> Add Tenant </span>
               </a>
-            </li>
+            </li> -->
             <li class="nav-item">
               <a class="nav-link" href="{% url 'add_tetant_contract' %}">
                 <span class="sidebar-mini"> TC </span>
@@ -202,13 +200,13 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/Review_Documents">
+              <a class="nav-link" href="{% url 'review_documents' %}">
                 <span class="sidebar-mini"> TC </span>
                 <span class="sidebar-normal"> Review Documents </span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/Payment">
+              <a class="nav-link" href="{% url 'payment' %}">
                 <span class="sidebar-mini"> TC </span>
                 <span class="sidebar-normal"> Payment </span>
               </a>
@@ -217,8 +215,6 @@
         </div>
       </li>
       {% endif %}
-        
-
 
       <li class="nav-item">
         <a class="nav-link" data-toggle="collapse" href="#mapsExamples">

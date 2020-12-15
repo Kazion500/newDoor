@@ -131,6 +131,9 @@ class ProfileRegistrationForm(UserCreationForm):
     nationality = forms.CharField(widget=forms.TextInput(
         attrs={"class": "form-control", 'placeholder': 'Enter nationality'})
     )
+    image = forms.ImageField(widget=forms.FileInput(
+        attrs={"class": "form-control"})
+    )
 
     password1 = forms.CharField(widget=forms.PasswordInput(
         attrs={"class": "form-control", 'placeholder': 'Enter Your Password'})
@@ -145,7 +148,7 @@ class ProfileRegistrationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2', 'first_name', 'mid_name',
+        fields = ['username', 'email', 'password1', 'password2', 'first_name', 'mid_name','image',
                   'last_name', 'pcontact', 'scontact', 'marital_status', 'nationality', 'is_tenant', 'is_owner']
 
 
