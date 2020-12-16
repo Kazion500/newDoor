@@ -170,6 +170,6 @@ urlpatterns = [
     path('auth/signup/', auth_views.signup_view, name='signup'),
     path('auth/login/', auth_views.login_view, name='login'),
     path('auth/logout/', auth_views.logout_view, name='logout'),
-
+     path('activate/<uidb64>/<token>',views.email_verification, name='activate'),
     
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

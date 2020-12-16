@@ -10,21 +10,22 @@ def signup_view(request):
         form = ProfileRegistrationForm(request.POST)
         print(form.errors)
         if form.is_valid():
-            user = form.save()
-            print(user.profile)
-            user.refresh_from_db()
-            user.profile.email = form.cleaned_data.get('email')
-            user.profile.mid_name = form.cleaned_data.get('mid_name')
-            user.profile.pcontact = form.cleaned_data.get('pcontact')
-            user.profile.scontact = form.cleaned_data.get('scontact')
-            user.profile.scontact = form.cleaned_data.get('scontact')
-            user.profile.is_tenant = form.cleaned_data.get('is_tenant')
-            user.profile.is_owner = form.cleaned_data.get('is_owner')
-            user.profile.marital_status = form.cleaned_data.get(
+            invalid_user=send_verification_email(request,form)
+            # user = form.save()
+            print(invalid_user.profile)
+            invalid_user.refresh_from_db()
+            invalid_user.profile.email = form.cleaned_data.get('email')
+            invalid_user.profile.mid_name = form.cleaned_data.get('mid_name')
+            invalid_user.profile.pcontact = form.cleaned_data.get('pcontact')
+            invalid_user.profile.scontact = form.cleaned_data.get('scontact')
+            invalid_user.profile.scontact = form.cleaned_data.get('scontact')
+            invalid_user.profile.is_tenant = form.cleaned_data.get('is_tenant')
+            invalid_user.profile.is_owner = form.cleaned_data.get('is_owner')
+            invalid_user.profile.marital_status = form.cleaned_data.get(
                 'marital_status')
-            user.profile.nationality = form.cleaned_data.get(
+            invalid_user.profile.nationality = form.cleaned_data.get(
                 'nationality')
-            user.save()
+            invalid_user.save()
             messages.success(request, 'Account successfully added')
             return redirect('login')
         else:

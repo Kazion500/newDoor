@@ -1,6 +1,6 @@
 
 from pathlib import Path
-
+from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -28,7 +28,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'new_door.apps.NewDoorConfig',
     'accounts.apps.AccountsConfig',
-    'django_countries'
+    'django_countries',
+    'verify_email',
 ]
 
 MIDDLEWARE = [
@@ -93,6 +94,15 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LOGIN_URL='login'
 LOGOUT_REDIRECT_URL= 'login'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD') 
+
+DEFAULT_FROM_EMAIL = 'noreply<no_reply@newdoor.com>'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
