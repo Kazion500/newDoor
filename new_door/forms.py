@@ -4,6 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
+from pkg_resources import require
 from .models import (
     Property, Entity,
     Profile, Unit,
@@ -114,8 +115,7 @@ class ProfileRegistrationForm(UserCreationForm):
         attrs={"class": "form-control", 'placeholder': 'Enter first name'})
     )
     mid_name = forms.CharField(widget=forms.TextInput(
-        attrs={"class": "form-control", 'placeholder': 'Enter  middle name'})
-    )
+        attrs={"class": "form-control", 'placeholder': 'Enter  middle name'}),required=False)
     last_name = forms.CharField(widget=forms.TextInput(
         attrs={"class": "form-control", 'placeholder': 'Enter last name'})
     )

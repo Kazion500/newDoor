@@ -351,16 +351,16 @@ def email_verification(request, uidb64, token):
             return redirect('login')
         user.is_active = True
         user.save()
-
-        if user.profile.is_tenant:
-            tenant = TenantContract.objects.get(tenant=user)
-            occupancy_type = OccupancyType.objects.get(occupancy_type__iexact="Document Pending")
-            tenant.unit.occupancy_type=occupancy_type
-            print('Yes i ran')
-            tenant.save()
         
         
-
+        tenant = Profile.objects.get(user=user)
+        tenant_contract = TenantContract.objects.get(tenant=tenant)
+        occupancy_type = OccupancyType.objects.get(occupancy_type__iexact="Document Pending")
+        unit = tenant_contract.unit
+        acctual_unit = Unit.objects.get(pk=unit.pk)
+        acctual_unit.occupancy_type = occupancy_type
+        acctual_unit.save()
+    
         messages.success(request, 'Account activated successfully')
         return redirect('login')
 
@@ -372,15 +372,12 @@ def email_verification(request, uidb64, token):
 # @login_required
 def add_tenant_to_unit(request, unit_id):
     unit = Unit.objects.get(pk=unit_id)
-    occupancy_type = OccupancyType.objects.get(occupancy_type='User Verification Pending')
 
     if request.method == "POST":
         form = ProfileRegistrationForm(request.POST,request.FILES)
         print(form.data)
         print(form.errors)
         if form.is_valid():
-            tenant_contract = TenantContract(unit = unit)
-            
             username= form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
             firstname = form.cleaned_data.get('first_name')
@@ -404,12 +401,14 @@ def add_tenant_to_unit(request, unit_id):
             user.profile.image = form.cleaned_data.get('image')
             user.is_active = False
             user.save()
+            occupancy_type = OccupancyType.objects.get(occupancy_type='User Verification Pending')
+           
             tenant = Profile.objects.get(user=user)
-            tenant_contract.tenant = tenant
+            print(tenant)
+            tenant_contract = TenantContract(tenant=tenant,unit = unit)
             unit.occupancy_type = occupancy_type
             unit.save()
             tenant_contract.save()
-
 
             current_site = get_current_site(request)
             
@@ -447,7 +446,7 @@ def add_tenant_to_unit(request, unit_id):
         "form":form
     }
 
-    return render(request, 'new_door/add_user.html', context)
+    return render(request, 'new_door/add_user_unit.html', context)
 
 
 @login_required
