@@ -46,7 +46,7 @@ urlpatterns = [
 
     # """ Add User """
     path('add-user/', views.add_user, name='add_user'),
-#     path('add-user/<unit_id>', views.add_user_to_unit, name='add_user_to_unit'),
+    path('add-user/<unit_id>', views.add_tenant_to_unit, name='add_tenant_to_unit'),
 
 
     # """ Master Routes Catergory Type"""

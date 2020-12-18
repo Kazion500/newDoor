@@ -146,6 +146,48 @@ class ProfileRegistrationForm(UserCreationForm):
     is_owner = forms.CharField(widget=forms.CheckboxInput(
         attrs={"class": "form-check-input"}), required=False)
 
+    def clean_email(self):
+        form_email = self.cleaned_data.get('email')
+        try:
+            user_obj = User.objects.get(email=form_email)
+
+            if form_email == user_obj.email:
+                raise forms.ValidationError('E-mail address is already in use')
+        except User.DoesNotExist:
+            return form_email
+        
+    def clean_scontact(self):
+        scontact_ = self.cleaned_data.get('scontact')
+        try:
+            profile_obj = Profile.objects.get(scontact=scontact_)
+
+            if scontact_ == profile_obj.scontact:
+                raise forms.ValidationError('Secondary contact is already in use')
+        except Profile.DoesNotExist:
+            return scontact_
+
+    def clean_pcontact(self):
+        pcontact_ = self.cleaned_data.get('pcontact')
+        try:  
+            profile_obj = Profile.objects.get(pcontact=pcontact_)
+
+            if pcontact_ == profile_obj.pcontact:
+                raise forms.ValidationError('Primary contact is already in use')
+        except Profile.DoesNotExist:
+            return pcontact_
+
+    def clean_username(self):
+        username_ = self.cleaned_data.get('username')
+        try:  
+            user_obj = User.objects.get(username=username_)
+
+            if username_ == user_obj.username:
+                raise forms.ValidationError('Username is already in use')
+        except User.DoesNotExist:
+            return username_
+       
+       
+
     class Meta:
         model = User
         fields = ['username', 'email', 'password1', 'password2', 'first_name', 'mid_name','image',

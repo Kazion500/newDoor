@@ -11,7 +11,6 @@ class Profile(models.Model):
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     mid_name = models.CharField(max_length=50, null=True, blank=True)
-    email = models.EmailField(max_length=254)
     image = models.ImageField(upload_to="profile_pic",null=True,blank=True)
     pcontact = models.CharField(max_length=254)
     scontact = models.CharField(max_length=254)
@@ -111,6 +110,9 @@ class Unit(models.Model):
     desc = models.TextField(max_length=550,  null=True, blank=True)
     # image= models.ImageField(upload_to = "pictures")
 
+    def __str__(self):
+        return str(self.pk)
+
 
 class UnitImage(models.Model):
     unit_id = models.ForeignKey(Unit, on_delete=models.CASCADE,)
@@ -144,18 +146,18 @@ class ContractReqType(models.Model):
 
 
 class TenantContract(models.Model):
-    tenant = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    tenant = models.OneToOneField(Profile, on_delete=models.CASCADE)
     property_id = models.ForeignKey(
-        Property, on_delete=models.CASCADE, )
-    unit_id = models.ForeignKey(Unit, on_delete=models.CASCADE,)
-    contract_no = models.CharField(max_length=50,unique=True)
-    start_date = models.DateField()
-    end_date = models.DateField()
-    discount = models.PositiveIntegerField()
-    annual_rent = models.PositiveIntegerField()
-    security_dep = models.CharField(max_length=50, )
-    commission = models.CharField(max_length=50, )
-    installments = models.CharField(max_length=50,)
-    remark = models.TextField(max_length=550,)
+        Property, on_delete=models.CASCADE, null=True,blank=True)
+    unit = models.OneToOneField(Unit, on_delete=models.CASCADE,)
+    contract_no = models.CharField(max_length=50,unique=True,null=True,blank=True)
+    start_date = models.DateField(null=True,blank=True)
+    end_date = models.DateField(null=True,blank=True)
+    discount = models.PositiveIntegerField(null=True,blank=True)
+    annual_rent = models.PositiveIntegerField(null=True,blank=True)
+    security_dep = models.CharField(max_length=50,null=True,blank=True )
+    commission = models.CharField(max_length=50,null=True,blank=True )
+    installments = models.CharField(max_length=50,null=True,blank=True)
+    remark = models.TextField(max_length=550,null=True,blank=True)
     sms_notify = models.BooleanField(default='False')
     email_notify = models.BooleanField(default='False')

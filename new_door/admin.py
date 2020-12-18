@@ -4,7 +4,7 @@ from .models import (
     Profile, Unit,
     UnitImage, PropertyType,
     CategoryType, OwnershipType,
-    OccupancyType
+    OccupancyType,TenantContract
 )
 
 
@@ -22,7 +22,7 @@ class PropertyModelAdmin(admin.ModelAdmin):
 
 @admin.register(Profile)
 class ProfileModelAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'mid_name', 'email', 'pcontact',
+    list_display = ('id', 'user', 'mid_name', 'pcontact',
                     'scontact', 'marital_status', 'nationality', 'is_manager', 'is_owner', 'is_tenant')
 
 
@@ -33,73 +33,33 @@ class UnitModelAdmin(admin.ModelAdmin):
 
 
 @admin.register(UnitImage)
-class A_UnitImage(admin.ModelAdmin):
+class UnitImage(admin.ModelAdmin):
     list_display = ('id', 'unit_id', 'unit_image')
 
 
 @admin.register(CategoryType)
-class A_CategoryType(admin.ModelAdmin):
+class CategoryType(admin.ModelAdmin):
     list_display = ('id', 'cat_type', 'desc')
 
 
 @admin.register(PropertyType)
-class A_PropertyType(admin.ModelAdmin):
+class PropertyType(admin.ModelAdmin):
     list_display = ('id', 'category', 'property_type', 'desc')
 
 
 @admin.register(OwnershipType)
-class A_OwnershipType(admin.ModelAdmin):
+class OwnershipType(admin.ModelAdmin):
     list_display = ('id', 'ownership_type', 'desc')
 
 
 @admin.register(OccupancyType)
-class A_OccupancyType(admin.ModelAdmin):
+class OccupancyType(admin.ModelAdmin):
     list_display = ('id', 'occupancy_type', 'desc')
 
-
-# @admin.register (DocumentType)
-# class A_DocumentType(admin.ModelAdmin):
-#     list_display = ('DocsType', 'desc')
-
-#     #*************Master Table PayMode_Type*************
-# @admin.register (PayModeType)
-# class A_PayModeType(admin.ModelAdmin):
-#     list_display = ('id', 'PayType', 'desc')
-
-#     #*************Master Table StatusReq_Type*************
-# @admin.register (StatusReqType)
-# class A_StatusReqType(admin.ModelAdmin):
-#     list_display = ('id', 'StRqty', 'desc')
-
-#     #*************Master Table Tenant_Request_Type*************
-# @admin.register (TenantReqType)
-# class A_TenantReqType(admin.ModelAdmin):
-#     list_display = ('id', 'TenantReqType', 'desc')
-
-#     #*************Master Table Contract_Request_Type*************
-# @admin.register (ContractReqType)
-# class A_ContractReqType(admin.ModelAdmin):
-#     list_display = ('id', 'ContractReqType', 'desc')
-
-#     #*************Master Table Documents_Type*************
-# @admin.register (DocumentsType)
-# class A_DocumentsType(admin.ModelAdmin):
-#     list_display = ('id', 'DocumentsType', 'desc')
-
-#     #*************Master Table Documents_Type*************
+@admin.register(TenantContract)
+class TenantContract(admin.ModelAdmin):
+    list_display = ('tenant','property_id','unit_id','contract_no','start_date',
+    'end_date','discount','annual_rent','security_dep','commission','installments',
+    'remark','sms_notify','email_notify')
 
 
-#     #*************Master Table Documents_Type*************
-# @admin.register (TenantContract)
-# class A_TenantContract(admin.ModelAdmin):
-#     list_display = ('id', 'PropID', 'UnitID', 'ContractNo', 'StartDate', 'EndDate', 'Discount', 'AnnualRent', 'SecurityDep', 'Commission', 'Installments', 'Remark', 'SMSNotify', 'EmailNotify')
-
-#     #*************Master Table User*************
-# @admin.register (User)
-# class A_User(admin.ModelAdmin):
-#     list_display = ('id', 'user_id', 'user_password', 'usr_f_name', 'usr_m_name', 'usr_l_name', 'email', 'pcontact', 'scontact', 'marry_status', 'nationality', 'rollid')
-
-#     #*************Master Table Tenant*************
-# @admin.register (Tenant)
-# class A_Tenant(admin.ModelAdmin):
-#     list_display = ('id', 'user_id', 'user_password', 'usr_f_name', 'usr_m_name', 'usr_l_name', 'email', 'pcontact', 'scontact', 'marry_status', 'nationality', 'rollid')

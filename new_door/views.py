@@ -1,16 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.db.models import Sum, Count
-from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from verify_email.email_handler import send_verification_email
-# from validate_email import validate_email
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
-from django.core.mail import send_mail
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.template.loader import render_to_string
@@ -135,7 +130,7 @@ def property_all_overview(request):
 def unit_overview(request):
 
     units = Unit.objects.all()
-
+    
     number_of_vacant_units = Unit.objects.filter(
         occupancy_type__occupancy_type__iexact="vacant").count()
     number_of_occupied_units = Unit.objects.filter(
@@ -275,24 +270,39 @@ def add_unit(request):
 
 @login_required
 def add_user(request):
+
     if request.method == "POST":
         form = ProfileRegistrationForm(request.POST,request.FILES)
         print(form.data)
         print(form.errors)
-        f = form.cleaned_data.get('image')
-        print(type(f))
         if form.is_valid():
             username= form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
+            password = form.cleaned_data.get('password1')
+            firstname = form.cleaned_data.get('first_name')
+            lastname = form.cleaned_data.get('last_name')
             email = form.cleaned_data.get('email')
-          
-            user = User.objects.create_user(username=username, email=email)
+
+            user = User.objects.create_user(
+                username=username, 
+                email=email,
+                first_name=firstname,
+                last_name=lastname
+            )
             user.set_password(password)
+            user.profile.mid_name = form.cleaned_data.get('mid_name') 
+            user.profile.pcontact = form.cleaned_data.get('pcontact')
+            user.profile.scontact = form.cleaned_data.get('scontact')
+            user.profile.is_tenant = form.cleaned_data.get('is_tenant')
+            user.profile.is_owner = form.cleaned_data.get('is_owner')
+            user.profile.marital_status = form.cleaned_data.get('marital_status')
+            user.profile.nationality = form.cleaned_data.get('nationality')
+            user.profile.image = form.cleaned_data.get('image')
             user.is_active = False
             user.save()
-            # user.refresh_from_db()
+            
 
             current_site = get_current_site(request)
+            
             email_body = {
                 'user': user,
                 'domain': current_site.domain,
@@ -305,36 +315,21 @@ def add_user(request):
             email_subject = 'Activate your account'
 
             activate_url = 'http://'+current_site.domain+link
-
-            email = EmailMessage(
+                
+            html_content_template =  render_to_string('auth/email_verification_msg.html', { "link" : activate_url, "username" : user.username.upper() })
+            email = EmailMultiAlternatives(
                 email_subject,
-                'Hi '+user.username + ', Please the link below to activate your account \n'+activate_url,
-                'noreply@semycolon.com',
+                html_content_template,
+                'noreply@newdoor.com',
                 [email],
             )
-
+            email.attach_alternative(html_content_template, "text/html")
             email.send(fail_silently=False)
-            # invalid_user.profile.email = form.cleaned_data.get('email')
-            # invalid_user.profile.mid_name = form.cleaned_data.get('mid_name')
-            # invalid_user.profile.pcontact = form.cleaned_data.get('pcontact')
-            # invalid_user.profile.scontact = form.cleaned_data.get('scontact')
-            # invalid_user.profile.scontact = form.cleaned_data.get('scontact')
-            # invalid_user.profile.is_tenant = form.cleaned_data.get('is_tenant')
-            # invalid_user.profile.is_owner = form.cleaned_data.get('is_owner')
-            # invalid_user.profile.marital_status = form.cleaned_data.get(
-            #     'marital_status')
-            # invalid_user.profile.nationality = form.cleaned_data.get(
-            #     'nationality')
-            # invalid_user.profile.image = form.cleaned_data.get(
-            #     'image')
-            # invalid_user.save()
+           
 
-            messages.success(request, 'Account successfully added')
+            messages.success(request, 'Account created successfully')
             return redirect('login')
-        else:
-            messages.error(
-                request, 'There was a problem creating the account please check your inputs')
-            return redirect('add_user')
+        
     else:
         form = ProfileRegistrationForm()
     context = {
@@ -348,7 +343,7 @@ def email_verification(request, uidb64, token):
     try:
         id = force_text(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=id)
-
+        
         if not account_activation_token.check_token(user, token):
             return redirect('login'+'?message='+'User already activated')
 
@@ -356,6 +351,15 @@ def email_verification(request, uidb64, token):
             return redirect('login')
         user.is_active = True
         user.save()
+
+        if user.profile.is_tenant:
+            tenant = TenantContract.objects.get(tenant=user)
+            occupancy_type = OccupancyType.objects.get(occupancy_type__iexact="Document Pending")
+            tenant.unit.occupancy_type=occupancy_type
+            print('Yes i ran')
+            tenant.save()
+        
+        
 
         messages.success(request, 'Account activated successfully')
         return redirect('login')
@@ -366,37 +370,84 @@ def email_verification(request, uidb64, token):
     return redirect('login')
 
 # @login_required
-# def add_user_to_unit(request, unit_id):
-#     if request.method == "POST":
-#         form = ProfileRegistrationForm(request.POST)
-#         if form.is_valid():
-#             user = form.save()
-#             user.refresh_from_db()
-#             user.profile.email = form.cleaned_data.get('email')
-#             user.profile.mid_name = form.cleaned_data.get('mid_name')
-#             user.profile.pcontact = form.cleaned_data.get('pcontact')
-#             user.profile.scontact = form.cleaned_data.get('scontact')
-#             user.profile.scontact = form.cleaned_data.get('scontact')
-#             user.profile.is_tenant = form.cleaned_data.get('is_tenant')
-#             user.profile.is_owner = form.cleaned_data.get('is_owner')
-#             user.profile.marital_status = form.cleaned_data.get(
-#                 'marital_status')
-#             user.profile.nationality = form.cleaned_data.get(
-#                 'nationality')
-#             user.save()
-#             messages.success(request, 'Account successfully added')
-#             return redirect('login')
-#         else:
-#             messages.error(
-#                 request, 'There was a problem creating the account please check your inputs')
-#             return redirect('add_user')
-#     else:
-#         form = ProfileRegistrationForm()
-#     context = {
-#         "form": form,
-#     }
+def add_tenant_to_unit(request, unit_id):
+    unit = Unit.objects.get(pk=unit_id)
+    occupancy_type = OccupancyType.objects.get(occupancy_type='User Verification Pending')
 
-#     return render(request, 'new_door/add_user.html', context)
+    if request.method == "POST":
+        form = ProfileRegistrationForm(request.POST,request.FILES)
+        print(form.data)
+        print(form.errors)
+        if form.is_valid():
+            tenant_contract = TenantContract(unit = unit)
+            
+            username= form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+            firstname = form.cleaned_data.get('first_name')
+            lastname = form.cleaned_data.get('last_name')
+            email = form.cleaned_data.get('email')
+
+            user = User.objects.create_user(
+                username=username, 
+                email=email,
+                first_name=firstname,
+                last_name=lastname
+            )
+            user.set_password(password)
+            user.profile.mid_name = form.cleaned_data.get('mid_name') 
+            user.profile.pcontact = form.cleaned_data.get('pcontact')
+            user.profile.scontact = form.cleaned_data.get('scontact')
+            user.profile.is_tenant = form.cleaned_data.get('is_tenant')
+            user.profile.is_owner = form.cleaned_data.get('is_owner')
+            user.profile.marital_status = form.cleaned_data.get('marital_status')
+            user.profile.nationality = form.cleaned_data.get('nationality')
+            user.profile.image = form.cleaned_data.get('image')
+            user.is_active = False
+            user.save()
+            tenant = Profile.objects.get(user=user)
+            tenant_contract.tenant = tenant
+            unit.occupancy_type = occupancy_type
+            unit.save()
+            tenant_contract.save()
+
+
+            current_site = get_current_site(request)
+            
+            email_body = {
+                'user': user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': account_activation_token.make_token(user),
+            }
+            link = reverse('activate', kwargs={
+                            'uidb64': email_body['uid'], 'token': email_body['token']})
+
+            email_subject = 'Activate your account'
+
+            activate_url = 'http://'+current_site.domain+link
+                
+            html_content_template =  render_to_string('auth/email_verification_msg.html', { "link" : activate_url, "username" : user.username.upper() })
+            email = EmailMultiAlternatives(
+                email_subject,
+                html_content_template,
+                'noreply@newdoor.com',
+                [email],
+            )
+            email.attach_alternative(html_content_template, "text/html")
+            email.send(fail_silently=False)
+           
+
+            messages.success(request, 'Account created successfully')
+            return redirect('login')
+
+    else:
+        form = ProfileRegistrationForm()
+
+    context = {
+        "form":form
+    }
+
+    return render(request, 'new_door/add_user.html', context)
 
 
 @login_required
