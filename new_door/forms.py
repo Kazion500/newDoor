@@ -13,7 +13,7 @@ from .models import (
     OccupancyType, TenantContract,
     ContractReqType, TenantReqType,
     StatusReqType, DocumentType,
-    PayModeType,
+    PayModeType, UploadDocument
 )
 
 
@@ -115,7 +115,7 @@ class ProfileRegistrationForm(UserCreationForm):
         attrs={"class": "form-control", 'placeholder': 'Enter first name'})
     )
     mid_name = forms.CharField(widget=forms.TextInput(
-        attrs={"class": "form-control", 'placeholder': 'Enter  middle name'}),required=False)
+        attrs={"class": "form-control", 'placeholder': 'Enter  middle name'}), required=False)
     last_name = forms.CharField(widget=forms.TextInput(
         attrs={"class": "form-control", 'placeholder': 'Enter last name'})
     )
@@ -144,7 +144,7 @@ class ProfileRegistrationForm(UserCreationForm):
     is_tenant = forms.CharField(widget=forms.CheckboxInput(
         attrs={"class": "form-check-input"}), required=False)
     is_owner = forms.CharField(widget=forms.CheckboxInput(
-        attrs={"class": "form-check-input"}), required=False)
+        attrs={"class": "form-check-input", "id": "is_owner"}), required=False)
 
     def clean_email(self):
         form_email = self.cleaned_data.get('email')
@@ -155,42 +155,42 @@ class ProfileRegistrationForm(UserCreationForm):
                 raise forms.ValidationError('E-mail address is already in use')
         except User.DoesNotExist:
             return form_email
-        
+
     def clean_scontact(self):
         scontact_ = self.cleaned_data.get('scontact')
         try:
             profile_obj = Profile.objects.get(scontact=scontact_)
 
             if scontact_ == profile_obj.scontact:
-                raise forms.ValidationError('Secondary contact is already in use')
+                raise forms.ValidationError(
+                    'Secondary contact is already in use')
         except Profile.DoesNotExist:
             return scontact_
 
     def clean_pcontact(self):
         pcontact_ = self.cleaned_data.get('pcontact')
-        try:  
+        try:
             profile_obj = Profile.objects.get(pcontact=pcontact_)
 
             if pcontact_ == profile_obj.pcontact:
-                raise forms.ValidationError('Primary contact is already in use')
+                raise forms.ValidationError(
+                    'Primary contact is already in use')
         except Profile.DoesNotExist:
             return pcontact_
 
     def clean_username(self):
         username_ = self.cleaned_data.get('username')
-        try:  
+        try:
             user_obj = User.objects.get(username=username_)
 
             if username_ == user_obj.username:
                 raise forms.ValidationError('Username is already in use')
         except User.DoesNotExist:
             return username_
-       
-       
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2', 'first_name', 'mid_name','image',
+        fields = ['username', 'email', 'password1', 'password2', 'first_name', 'mid_name', 'image',
                   'last_name', 'pcontact', 'scontact', 'marital_status', 'nationality', 'is_tenant', 'is_owner']
 
 
@@ -316,41 +316,13 @@ class PayModeTypeModelForm(forms.ModelForm):
         }
 
 
-# class TenantModelForm(forms.ModelForm):
-#     class Meta:
-#         model = Tenant
-#         fields = ('user_id', 'user_password', 'usr_f_name', 'usr_m_name', 'usr_l_name',
-#                   'email', 'pcontact', 'scontact', 'marry_status', 'nationality', 'rollid')
-#         widgets = {
-#             'user_id': forms.TextInput(attrs={'class': 'form-control'}),
-#             'user_password': forms.TextInput(attrs={'class': 'form-control'}),
-#             'usr_f_name': forms.TextInput(attrs={'class': 'form-control'}),
-#             'usr_m_name': forms.TextInput(attrs={'class': 'form-control'}),
-#             'usr_l_name': forms.TextInput(attrs={'class': 'form-control'}),
-#             'email': forms.EmailInput(attrs={'class': 'form-control'}),
-#             'pcontact': forms.TextInput(attrs={'class': 'form-control'}),
-#             'scontact': forms.TextInput(attrs={'class': 'form-control'}),
-#             'marry_status': forms.TextInput(attrs={'class': 'form-control'}),
-#             'nationality': forms.TextInput(attrs={'class': 'form-control'}),
-#             'rollid': forms.TextInput(attrs={'class': 'form-control'}),
-#         }
+class UploadDocumentModelForm(forms.ModelForm):
+    image = forms.ImageField(widget=forms.FileInput(attrs={"multiple": True}))
+    tenant = forms.ModelChoiceField(Profile.objects.all(
+    ), widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Select Tenant")
+    doc_type = forms.ModelChoiceField(DocumentType.objects.all(
+    ), widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Select document type")
 
-
-# #********Forms Tenant_Contract Defination Start Here---08-11-2020 10:50PM- Javed Farooqui *******
-# class F_User (forms.ModelForm):
-#     class Meta:
-#         model = User
-#         fields = ('user_id', 'user_password', 'usr_f_name', 'usr_m_name', 'usr_l_name', 'email', 'pcontact', 'scontact', 'marry_status', 'nationality', 'rollid')
-#         widgets = {
-#             'user_id': forms.TextInput(attrs={'class':'form-control'}),
-#             'user_password': forms.TextInput(attrs={'class':'form-control'}),
-#             'usr_f_name': forms.TextInput(attrs={'class':'form-control'}),
-#             'usr_m_name': forms.TextInput(attrs={'class':'form-control'}),
-#             'usr_l_name': forms.TextInput(attrs={'class':'form-control'}),
-#             'email': forms.TextInput(attrs={'class':'form-control'}),
-#             'pcontact': forms.TextInput(attrs={'class':'form-control'}),
-#             'scontact': forms.TextInput(attrs={'class':'form-control'}),
-#             'marry_status': forms.TextInput(attrs={'class':'form-control'}),
-#             'nationality': forms.TextInput(attrs={'class':'form-control'}),
-#             'rollid': forms.TextInput(attrs={'class':'form-control'}),
-#         }
+    class Meta:
+        model = UploadDocument
+        fields = ('tenant', 'doc_type', 'image')

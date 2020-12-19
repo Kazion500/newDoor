@@ -4,7 +4,8 @@ from .models import (
     Profile, Unit,
     UnitImage, PropertyType,
     CategoryType, OwnershipType,
-    OccupancyType,TenantContract
+    OccupancyType, TenantContract,
+    UploadDocument, DocumentType,
 )
 
 
@@ -56,10 +57,22 @@ class OwnershipType(admin.ModelAdmin):
 class OccupancyType(admin.ModelAdmin):
     list_display = ('id', 'occupancy_type', 'desc')
 
+
 @admin.register(TenantContract)
 class TenantContract(admin.ModelAdmin):
-    list_display = ('tenant','property_id','unit_id','contract_no','start_date',
-    'end_date','discount','annual_rent','security_dep','commission','installments',
-    'remark','sms_notify','email_notify')
+    list_display = ('tenant', 'property_id', 'unit_id', 'contract_status', 'contract_request', 'contract_no', 'start_date',
+                    'end_date', 'discount', 'annual_rent', 'security_dep', 'commission', 'installments',
+                    'remark', 'sms_notify', 'email_notify')
+# @admin.register(DocumentImage)
+# class DocumentImage(admin.ModelAdmin):
+#     list_display = ('doc_type','image')
 
 
+@admin.register(UploadDocument)
+class UploadDocument(admin.ModelAdmin):
+    list_display = ('tenant', 'doc_type', 'image', 'is_verified')
+
+
+@admin.register(DocumentType)
+class DocumentType(admin.ModelAdmin):
+    list_display = ('docs_type', 'desc')

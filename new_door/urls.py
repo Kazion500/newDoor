@@ -94,8 +94,13 @@ urlpatterns = [
     path('delete-occupancy-type/<id>', views.delete_occupancy_type,
          name='delete_occupancy_type'),
 
-    # path('upload-documents/', views.upload_documents, name='upload_documents'),
-    # path('payment/', views.payment, name='payment'),
+    # """ Master Routes Document upload """
+    path('upload-documents/<str:user>',
+         views.upload_documents, name='upload_documents'),
+    path('review-documents/<str:user>',
+         views.review_documents, name='review_documents'),
+    #     path('payment/', views.payment, name='payment'),
+
 
 
     # """ Master Routes Contract Request Type """
@@ -158,18 +163,13 @@ urlpatterns = [
 
     # path('checklist/', views.checklist, name='checklist'),
 
-     # Review Documents
-
-     path('review-documents/',views.review_documents,name='review_documents'),
-     
-
-     # Payment
-     path('payment/',views.payment,name='payment'),
+    # Payment
+    path('payment/', views.payment, name='payment'),
 
     # Authentication routes
     path('auth/signup/', auth_views.signup_view, name='signup'),
     path('auth/login/', auth_views.login_view, name='login'),
     path('auth/logout/', auth_views.logout_view, name='logout'),
-     path('activate/<uidb64>/<token>',views.email_verification, name='activate'),
-    
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('activate/<uidb64>/<token>', views.email_verification, name='activate'),
+
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

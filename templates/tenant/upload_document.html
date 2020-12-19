@@ -1,0 +1,122 @@
+{% extends 'base.html' %} {% block title %} Upload_Documents {% endblock title%}
+{% block body %} {% load static %}
+<div class="col-md-12">
+  <form
+    id="TypeValidation"
+    class="form-horizontal"
+    method="post"
+    novalidate="novalidate"
+    enctype="multipart/form-data"
+  >
+    {% csrf_token %}
+    <div class="card">
+      <div
+        class="card-header card-header-rose card-header-text"
+        style="font-size: 20px"
+      >
+        <div class="card-text" style="padding-left: 1px">
+          <a href="" class="card-header card-header-rose card-header-text">
+            <i class="material-icons">cloud_upload</i> Upload Documents
+          </a>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="row">
+          <label class="col-sm-2 col-form-label" for="PayType"
+            >Select Documents*</label
+          >
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.doc_type }}</div>
+          </div>
+
+          <input type="hidden" name="{{ form.tenant.name }}" value="{{ tenant.pk }}" >
+          <!-- <button
+            class="btn btn-rose btn-round"
+            type="button"
+            id="image_upload"
+          >
+            <i class="material-icons">open_in_browser </i> Browse File
+            <div class="ripple-container"></div>
+          </button> -->
+          <input type="file" name="image" id="image_upload" multiple />
+
+          <button
+            class="btn btn-rose btn-round float-right ml-auto"
+            type="Submit"
+          >
+            <i class="material-icons">near_me </i> Submit
+            <div class="ripple-container"></div>
+          </button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card-body">
+            <div class="material-datatables">
+              <table
+                id="datatables"
+                class="table table-striped table-no-bordered table-hover"
+                cellspacing="0"
+                width="100%"
+                style="width: 100%"
+              >
+                <thead>
+                  <tr>
+                    <th>Document Type</th>
+                    <th>File Name</th>
+                    <th>Size</th>
+                    <th>File Progress</th>
+                    <th class="disabled-sorting text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if uploaded_documents %} {% for uploaded_document in uploaded_documents %}
+                  <tr>
+                    <td scope="row">{{uploaded_document.doc_type}}</td>
+                    <td>{{uploaded_document.image.name}}</td>
+                    <td>{{uploaded_document.image.size}}</td>
+                    <td>100%</td>
+
+                    <td class="text-right">
+                      <a href="" class="d-inline" title="Delete file">
+                        <i
+                          class="material-icons"
+                          style="
+                            margin-right: 5px;
+                            margin-top: 10px;
+                            margin-bottom: 20px;
+                            color: #f44336;
+                          "
+                          >delete</i
+                        >
+                        <div class="ripple-container"></div>
+                      </a>
+                    </td>
+                  </tr>
+                  {% endfor %} {% else %} NoData {% endif %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          {% for uploaded_document in uploaded_documents %}
+          <div
+            class="col-md-4 ml-4"
+            style="height: 200px;
+          background-image: url('{{ uploaded_document.image.url }}'); background-size: cover;"
+          ></div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+{% endblock body %}

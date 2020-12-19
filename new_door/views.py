@@ -27,7 +27,8 @@ from .forms import (
     StatusReqTypeModelForm,
     DocumentTypeModelForm,
     PayModeTypeModelForm,
-    ProfileRegistrationForm
+    ProfileRegistrationForm,
+    UploadDocumentModelForm,
 )
 
 from .models import (
@@ -38,6 +39,8 @@ from .models import (
     DocumentType, PayModeType,
     StatusReqType, TenantReqType,
     ContractReqType, TenantContract,
+    UploadDocument,
+
 )
 # Dashboard Rendering
 
@@ -48,13 +51,14 @@ def dashboard_view(request):
         return redirect('tenant_dashboard')
 
     total_num_units = Unit.objects.all().count()
-    vacant_units = Unit.objects.filter(occupancy_type__occupancy_type__iexact="vacant").count()
+    vacant_units = Unit.objects.filter(
+        occupancy_type__occupancy_type__iexact="vacant").count()
 
     context = {
-        'total_num_units':total_num_units,
-        'vacant_units':vacant_units
+        'total_num_units': total_num_units,
+        'vacant_units': vacant_units
     }
-    return render(request, 'new_door/dashboard.html',context)
+    return render(request, 'new_door/dashboard.html', context)
 
 
 @login_required
@@ -88,7 +92,10 @@ def property_overview(request, entity):
         occupancy_type__occupancy_type__iexact="occupied",
         property_id__entity__entity_name=entity).count()
 
-    percentage = number_of_occupied_units / number_of_units * 100
+    if number_of_occupied_units:
+        percentage = number_of_occupied_units / number_of_units * 100
+    else:
+        percentage = 0
 
     context = {
         'entity': entity,
@@ -122,7 +129,6 @@ def property_all_overview(request):
         'percentage': int(percentage),
     }
 
-
     return render(request, 'new_door/property_all_overview.html', context)
 
 
@@ -130,7 +136,7 @@ def property_all_overview(request):
 def unit_overview(request):
 
     units = Unit.objects.all()
-    
+
     number_of_vacant_units = Unit.objects.filter(
         occupancy_type__occupancy_type__iexact="vacant").count()
     number_of_occupied_units = Unit.objects.filter(
@@ -154,8 +160,57 @@ def checklist(request):
 
 
 @login_required
-def upload_documents(request):
-    return render(request, 'new_door/upload_documents.html')
+def upload_documents(request, user):
+    tenant = get_object_or_404(Profile, user__username__iexact=user)
+    uploaded_documents = UploadDocument.objects.filter(tenant=tenant)
+
+    if request.method == "POST":
+        form = UploadDocumentModelForm(request.POST, request.FILES)
+        print(form.errors)
+        print(form.data)
+        print(request.FILES.getlist('image'))
+        if form.is_valid():
+            uploaded_doc = form.save(commit=False)
+            print(uploaded_doc)
+            for image in request.FILES.getlist('image'):
+                credentials = UploadDocument(
+                    tenant=uploaded_doc.tenant, image=image, doc_type=uploaded_doc.doc_type)
+                credentials.save()
+    else:
+        form = UploadDocumentModelForm()
+
+    context = {
+        "form": form,
+        "uploaded_documents": uploaded_documents,
+        "tenant": tenant
+
+    }
+    return render(request, 'tenant/upload_document.html', context)
+
+
+def review_documents(request, user):
+    print(user)
+    tenant = get_object_or_404(Profile, user__username=user)
+    tenant_contract = get_object_or_404(TenantContract, tenant=tenant)
+    tenant_docs = UploadDocument.objects.filter(tenant=tenant)
+    if request.method == 'POST':
+        form = TenantContractModelForm(request.POST, instance=tenant_contract)
+        if form.is_valid():
+            contract_no = form.cleaned_data['contract_no']
+            print(contract_no)
+            form.save()
+            messages.success(
+                request, 'Congratulations...! Contract successfully added.')
+            return redirect('add_tetant_contract')
+    else:
+        form = TenantContractModelForm()
+
+    context = {
+        'form': form,
+        "tenant_contract": tenant_contract,
+        "tenant_docs": tenant_docs
+    }
+    return render(request, 'tenant/review_documents.html', context)
 
 
 @login_required
@@ -272,37 +327,37 @@ def add_unit(request):
 def add_user(request):
 
     if request.method == "POST":
-        form = ProfileRegistrationForm(request.POST,request.FILES)
+        form = ProfileRegistrationForm(request.POST, request.FILES)
         print(form.data)
         print(form.errors)
         if form.is_valid():
-            username= form.cleaned_data.get('username')
+            username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
             firstname = form.cleaned_data.get('first_name')
             lastname = form.cleaned_data.get('last_name')
             email = form.cleaned_data.get('email')
 
             user = User.objects.create_user(
-                username=username, 
+                username=username,
                 email=email,
                 first_name=firstname,
                 last_name=lastname
             )
             user.set_password(password)
-            user.profile.mid_name = form.cleaned_data.get('mid_name') 
+            user.profile.mid_name = form.cleaned_data.get('mid_name')
             user.profile.pcontact = form.cleaned_data.get('pcontact')
             user.profile.scontact = form.cleaned_data.get('scontact')
             user.profile.is_tenant = form.cleaned_data.get('is_tenant')
             user.profile.is_owner = form.cleaned_data.get('is_owner')
-            user.profile.marital_status = form.cleaned_data.get('marital_status')
+            user.profile.marital_status = form.cleaned_data.get(
+                'marital_status')
             user.profile.nationality = form.cleaned_data.get('nationality')
             user.profile.image = form.cleaned_data.get('image')
             user.is_active = False
             user.save()
-            
 
             current_site = get_current_site(request)
-            
+
             email_body = {
                 'user': user,
                 'domain': current_site.domain,
@@ -310,13 +365,14 @@ def add_user(request):
                 'token': account_activation_token.make_token(user),
             }
             link = reverse('activate', kwargs={
-                            'uidb64': email_body['uid'], 'token': email_body['token']})
+                'uidb64': email_body['uid'], 'token': email_body['token']})
 
             email_subject = 'Activate your account'
 
             activate_url = 'http://'+current_site.domain+link
-                
-            html_content_template =  render_to_string('auth/email_verification_msg.html', { "link" : activate_url, "username" : user.username.upper() })
+
+            html_content_template = render_to_string(
+                'auth/email_verification_msg.html', {"link": activate_url, "username": user.username.upper()})
             email = EmailMultiAlternatives(
                 email_subject,
                 html_content_template,
@@ -325,11 +381,10 @@ def add_user(request):
             )
             email.attach_alternative(html_content_template, "text/html")
             email.send(fail_silently=False)
-           
 
             messages.success(request, 'Account created successfully')
             return redirect('login')
-        
+
     else:
         form = ProfileRegistrationForm()
     context = {
@@ -343,7 +398,7 @@ def email_verification(request, uidb64, token):
     try:
         id = force_text(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=id)
-        
+
         if not account_activation_token.check_token(user, token):
             return redirect('login'+'?message='+'User already activated')
 
@@ -351,16 +406,16 @@ def email_verification(request, uidb64, token):
             return redirect('login')
         user.is_active = True
         user.save()
-        
-        
+
         tenant = Profile.objects.get(user=user)
         tenant_contract = TenantContract.objects.get(tenant=tenant)
-        occupancy_type = OccupancyType.objects.get(occupancy_type__iexact="Document Pending")
+        occupancy_type = OccupancyType.objects.get(
+            occupancy_type__iexact="Document Pending")
         unit = tenant_contract.unit
         acctual_unit = Unit.objects.get(pk=unit.pk)
         acctual_unit.occupancy_type = occupancy_type
         acctual_unit.save()
-    
+
         messages.success(request, 'Account activated successfully')
         return redirect('login')
 
@@ -370,48 +425,52 @@ def email_verification(request, uidb64, token):
     return redirect('login')
 
 # @login_required
+
+
 def add_tenant_to_unit(request, unit_id):
     unit = Unit.objects.get(pk=unit_id)
 
     if request.method == "POST":
-        form = ProfileRegistrationForm(request.POST,request.FILES)
+        form = ProfileRegistrationForm(request.POST, request.FILES)
         print(form.data)
         print(form.errors)
         if form.is_valid():
-            username= form.cleaned_data.get('username')
+            username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
             firstname = form.cleaned_data.get('first_name')
             lastname = form.cleaned_data.get('last_name')
             email = form.cleaned_data.get('email')
 
             user = User.objects.create_user(
-                username=username, 
+                username=username,
                 email=email,
                 first_name=firstname,
                 last_name=lastname
             )
             user.set_password(password)
-            user.profile.mid_name = form.cleaned_data.get('mid_name') 
+            user.profile.mid_name = form.cleaned_data.get('mid_name')
             user.profile.pcontact = form.cleaned_data.get('pcontact')
             user.profile.scontact = form.cleaned_data.get('scontact')
             user.profile.is_tenant = form.cleaned_data.get('is_tenant')
             user.profile.is_owner = form.cleaned_data.get('is_owner')
-            user.profile.marital_status = form.cleaned_data.get('marital_status')
+            user.profile.marital_status = form.cleaned_data.get(
+                'marital_status')
             user.profile.nationality = form.cleaned_data.get('nationality')
             user.profile.image = form.cleaned_data.get('image')
             user.is_active = False
             user.save()
-            occupancy_type = OccupancyType.objects.get(occupancy_type='User Verification Pending')
-           
+            occupancy_type = OccupancyType.objects.get(
+                occupancy_type='User Verification Pending')
+
             tenant = Profile.objects.get(user=user)
             print(tenant)
-            tenant_contract = TenantContract(tenant=tenant,unit = unit)
+            tenant_contract = TenantContract(tenant=tenant, unit=unit)
             unit.occupancy_type = occupancy_type
             unit.save()
             tenant_contract.save()
 
             current_site = get_current_site(request)
-            
+
             email_body = {
                 'user': user,
                 'domain': current_site.domain,
@@ -419,13 +478,14 @@ def add_tenant_to_unit(request, unit_id):
                 'token': account_activation_token.make_token(user),
             }
             link = reverse('activate', kwargs={
-                            'uidb64': email_body['uid'], 'token': email_body['token']})
+                'uidb64': email_body['uid'], 'token': email_body['token']})
 
             email_subject = 'Activate your account'
 
             activate_url = 'http://'+current_site.domain+link
-                
-            html_content_template =  render_to_string('auth/email_verification_msg.html', { "link" : activate_url, "username" : user.username.upper() })
+
+            html_content_template = render_to_string(
+                'auth/email_verification_msg.html', {"link": activate_url, "username": user.username.upper()})
             email = EmailMultiAlternatives(
                 email_subject,
                 html_content_template,
@@ -434,7 +494,6 @@ def add_tenant_to_unit(request, unit_id):
             )
             email.attach_alternative(html_content_template, "text/html")
             email.send(fail_silently=False)
-           
 
             messages.success(request, 'Account created successfully')
             return redirect('login')
@@ -443,7 +502,7 @@ def add_tenant_to_unit(request, unit_id):
         form = ProfileRegistrationForm()
 
     context = {
-        "form":form
+        "form": form
     }
 
     return render(request, 'new_door/add_user_unit.html', context)
@@ -1311,25 +1370,3 @@ def property_unit_overview(request, id):
     }
 
     return render(request, 'new_door/property_unit_overview.html', context)
-
-def review_documents(request):
-    
-    if request.method == 'POST':
-        form = TenantContractModelForm(request.POST)
-        if form.is_valid():
-            contract_no = form.cleaned_data['contract_no']
-            print(contract_no)
-            form.save()
-            messages.success(
-                request, 'Congratulations...! Contract successfully added.')
-            return redirect('add_tetant_contract')
-    else:
-        form = TenantContractModelForm()
-
-    context = {
-        'form': form,
-
-    }
-    return render(request, 'tenant/review_documents.html',context)
-
-    

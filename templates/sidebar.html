@@ -200,7 +200,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'review_documents' %}">
+              <a class="nav-link" href="">
                 <span class="sidebar-mini"> TC </span>
                 <span class="sidebar-normal"> Review Documents </span>
               </a>
@@ -213,6 +213,13 @@
             </li>
           </ul>
         </div>
+      </li>
+      {% endif %} {% if request.user.profile.is_tenant %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'upload_documents' request.user %}">
+          <i class="material-icons">cloud_upload</i>
+          <span class="sidebar-normal"> Upload Documents </span>
+        </a>
       </li>
       {% endif %}
 

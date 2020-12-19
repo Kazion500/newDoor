@@ -1,193 +1,284 @@
-{% extends 'base.html' %} {% block title %} Review_Documents {% endblock title %} {% block body %} {% load static %}
+{% extends 'base.html' %} {% load static %} {% block title %} Review Documents
+{% endblock title%} {% block body %}
 <div class="col-md-12">
-    <form id="TypeValidation" class="form-horizontal" action="#" method="post" novalidate="novalidate" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="card ">
-            <div class="card-header card-header-rose card-header-text" style="font-size: 20px;">
-                <div class="card-text">
-                    <a href=" {% url 'review_documents' %} " class="card-header card-header-rose card-header-text ">
-                        <i class="material-icons ">roofing</i> Review_Documents </a>
-                </div>
-            </div>
-
-            <div class="card-body ">
-
-                <br> {% comment %} Row1 {% endcomment %}
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="card " style="background-color: rgb(249, 231, 255);">
-                            <div class="card-header ">
-                                <h4 class="card-title"><strong>User Details</strong> </h4>
-                            </div><br>
-                            <Div style="margin-left: 30px;">
-
-                                <div class="row">
-                                    <label class="col-sm-3 col-form-label" for="ContractNo">Contract No.*</label>
-                                    <div class="col-sm-8">
-                                        <div class="form-group bmd-form-group">
-                                            <input class="form-control" value="{{pi.ContractNo}}" type="text" id="ContractNo" name="ContractNo" required="true" aria-required="true">
-                                            {{form.contract_no}}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <label class="col-sm-3 col-form-label" for="StartDate">Start Date*</label>
-                                    <div class="col-sm-8">
-                                        <div class="form-group bmd-form-group">
-                                            <input class="form-control" value="{{pi.StartDate}}" type="date" id="StartDate" name="StartDate" required="true" aria-required="true">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {% comment %} Row2 {% endcomment %}
-                                <div class="row">
-                                    <label class="col-sm-3 col-form-label" for="EndDate">End Date*</label>
-                                    <div class="col-sm-8">
-                                        <div class="form-group bmd-form-group">
-                                            <input class="form-control" value="{{pi.EndDate}}" type="date" id="EndDate" name="EndDate" required="true" aria-required="true">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <label class="col-sm-3 col-form-label" for="Discount">Discount*</label>
-                                    <div class="col-sm-8">
-                                        <div class="form-group bmd-form-group">
-                                            <input class="form-control" value="{{pi.Discount}}" type="text" id="Discount" name="Discount" required="true" aria-required="true">
-                                        </div>
-                                    </div>
-                                </div>
-                                {% comment %} Row3 {% endcomment %}
-                                <div class="row">
-                                    <label class="col-sm-3 col-form-label" for="AnnualRent">Annual Rent*</label>
-                                    <div class="col-sm-8">
-                                        <div class="form-group bmd-form-group">
-                                            <input class="form-control" value="{{pi.AnnualRent}}" type="text" id="AnnualRent" name="AnnualRent" required="true" aria-required="true">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <label class="col-sm-3 col-form-label" for="SecurityDep">Security Deposit*</label>
-                                    <div class="col-sm-8">
-                                        <div class="form-group bmd-form-group">
-                                            <input class="form-control" value="{{pi.SecurityDep}}" type="text" id="SecurityDep" name="SecurityDep" required="true" aria-required="true">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {% comment %} Row4 {% endcomment %}
-                                <div class="row">
-                                    <label class="col-sm-3 col-form-label" for="Commission">Commission*</label>
-                                    <div class="col-sm-8">
-                                        <div class="form-group bmd-form-group">
-                                            <input class="form-control" value="{{pi.Commission}}" type="text" id="Commission" name="Commission" required="true" aria-required="true">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <label class="col-sm-3 col-form-label" for="Installments">Installments*</label>
-                                    <div class="col-sm-8">
-                                        <div class="form-group bmd-form-group">
-                                            <input class="form-control" value="{{pi.Installments}}" type="number" id="Installments" name="Installments" required="true" aria-required="true">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {% comment %} Row5 {% endcomment %}
-                                <div class="row">
-                                    <label class="col-sm-3 col-form-label" for="Remark">Remark*</label>
-                                    <div class="col-sm-8">
-                                        <div class="form-group bmd-form-group">
-                                            <input class="form-control" value="{{pi.Remark}}" type="text" id="Remark" name="Remark" required="true" aria-required="true">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row" style="margin-top: 20px; margin-bottom: 10px;">
-                                    <div class="row">
-                                        <div class="form-check form-check-inline" style="left: 4px;">
-                                            <label class="form-check-label" for="SMSNotify">
-                                            <input class="form-check-input" type="checkbox" value="" id="SMSNotify" name="SMSNotify" required="true" aria-required="true"> SMS Notification
-                                            <span class="form-check-sign" style="left: 146px;">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
-                                        </div>
-                                        <div class="form-check form-check-inline" style="left: 34px;">
-                                            <label class="form-check-label" for="EmailNotify">
-                                            <input class="form-check-input" type="checkbox" value="" id="EmailNotify" name="EmailNotify" required="true" aria-required="true"> Email Notification
-                                            <span class="form-check-sign" style="left: 146px;">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Div>
-                        </div>
-                    </div>
-
-                    <!-- *************************User Documents tab*************** -->
-                    <div class="col-md-6">
-                        <div class="card " style="background-color: rgb(249, 231, 255);">
-                            <div class="card-header ">
-                                <h4 class="card-title"><strong>User Documents</strong> </h4>
-                            </div>
-                            <div class="card-body ">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <ul class="nav nav-pills nav-pills-rose flex-column" role="tablist">
-                                            <li class="nav-item">
-                                                <a class="nav-link active" data-toggle="tab" href="#link4" role="tablist">
-                            Profile
-                          </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" data-toggle="tab" href="#link5" role="tablist">
-                            Settings
-                          </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" data-toggle="tab" href="#link6" role="tablist">
-                            Options
-                          </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="tab-content">
-                                            <div class="tab-pane active" id="link4">
-                                                Collaboratively administrate empowered markets via plug-and-play networks. Dynamically procrastinate B2C users after installed base benefits.
-                                                <br>
-                                                <br> Dramatically maintain clicks-and-mortar solutions without functional solutions. Dramatically visualize customer directed convergence without revolutionary ROI. Collaboratively administrate empowered
-                                                markets via plug-and-play networks. Dynamically procrastinate B2C users after installed base benefits. This is very nice.
-                                            </div>
-                                            <div class="tab-pane" id="link5">
-                                                Efficiently unleash cross-media information without cross-media value. Quickly maximize timely deliverables for real-time schemas.
-                                                <br>
-                                                <br>Dramatically maintain clicks-and-mortar solutions without functional solutions.
-                                            </div>
-                                            <div class="tab-pane" id="link6">
-                                                Completely synergize resource taxing relationships via premier niche markets. Professionally cultivate one-to-one customer service with robust ideas.
-                                                <br>
-                                                <br>Dynamically innovate resource-leveling customer service for state of the art customer service.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% comment %} *** Add image *** End Here---21-10-2020 01.05pm- Javed *** {% endcomment %} {% comment %} Row6 end {% endcomment %}
-
-            <button class="btn btn-rose btn-round float-right" type=Submit>
-                       <i class="material-icons">near_me </i>  Submit
-                       <div class="ripple-container"></div>
-                    </button>
-            <br>
-
+  <form
+    id="TypeValidation"
+    class="form-horizontal"
+    action="#"
+    method="post"
+    novalidate="novalidate"
+    enctype="multipart/form-data"
+  >
+    {% csrf_token %}
+    <div class="card">
+      <div
+        class="card-header card-header-rose card-header-text"
+        style="font-size: 20px"
+      >
+        <div class="card-text">
+          <a href="" class="card-header card-header-rose card-header-text">
+            <i class="material-icons">roofing</i> Review_Documents
+          </a>
         </div>
-</div>
-</form>
+      </div>
+
+      <div class="card-body">
+        <br />
+        {% comment %} Row1 {% endcomment %}
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card" style="background-color: rgb(249, 231, 255)">
+              <div class="card-header">
+                <h4 class="card-title"><strong>User Details</strong></h4>
+              </div>
+              <br />
+              <div style="margin-left: 30px">
+                <div class="row">
+                  <label class="col-sm-3 col-form-label" for="ContractNo"
+                    >Contract No.*</label
+                  >
+                  <div class="col-sm-8">
+                    <div class="form-group bmd-form-group">
+                      <input
+                        class="form-control"
+                        value="{{pi.ContractNo}}"
+                        type="text"
+                        id="ContractNo"
+                        name="ContractNo"
+                        required="true"
+                        aria-required="true"
+                      />
+                      {{form.contract_no}}
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <label class="col-sm-3 col-form-label" for="StartDate"
+                    >Start Date*</label
+                  >
+                  <div class="col-sm-8">
+                    <div class="form-group bmd-form-group">
+                      <input
+                        class="form-control"
+                        value="{{pi.StartDate}}"
+                        type="date"
+                        id="StartDate"
+                        name="StartDate"
+                        required="true"
+                        aria-required="true"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {% comment %} Row2 {% endcomment %}
+                <div class="row">
+                  <label class="col-sm-3 col-form-label" for="EndDate"
+                    >End Date*</label
+                  >
+                  <div class="col-sm-8">
+                    <div class="form-group bmd-form-group">
+                      <input
+                        class="form-control"
+                        value="{{pi.EndDate}}"
+                        type="date"
+                        id="EndDate"
+                        name="EndDate"
+                        required="true"
+                        aria-required="true"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <label class="col-sm-3 col-form-label" for="Discount"
+                    >Discount*</label
+                  >
+                  <div class="col-sm-8">
+                    <div class="form-group bmd-form-group">
+                      <input
+                        class="form-control"
+                        value="{{pi.Discount}}"
+                        type="text"
+                        id="Discount"
+                        name="Discount"
+                        required="true"
+                        aria-required="true"
+                      />
+                    </div>
+                  </div>
+                </div>
+                {% comment %} Row3 {% endcomment %}
+                <div class="row">
+                  <label class="col-sm-3 col-form-label" for="AnnualRent"
+                    >Annual Rent*</label
+                  >
+                  <div class="col-sm-8">
+                    <div class="form-group bmd-form-group">
+                      <input
+                        class="form-control"
+                        value="{{pi.AnnualRent}}"
+                        type="text"
+                        id="AnnualRent"
+                        name="AnnualRent"
+                        required="true"
+                        aria-required="true"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <label class="col-sm-3 col-form-label" for="SecurityDep"
+                    >Security Deposit*</label
+                  >
+                  <div class="col-sm-8">
+                    <div class="form-group bmd-form-group">
+                      <input
+                        class="form-control"
+                        value="{{pi.SecurityDep}}"
+                        type="text"
+                        id="SecurityDep"
+                        name="SecurityDep"
+                        required="true"
+                        aria-required="true"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {% comment %} Row4 {% endcomment %}
+                <div class="row">
+                  <label class="col-sm-3 col-form-label" for="Commission"
+                    >Commission*</label
+                  >
+                  <div class="col-sm-8">
+                    <div class="form-group bmd-form-group">
+                      <input
+                        class="form-control"
+                        value="{{pi.Commission}}"
+                        type="text"
+                        id="Commission"
+                        name="Commission"
+                        required="true"
+                        aria-required="true"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <label class="col-sm-3 col-form-label" for="Installments"
+                    >Installments*</label
+                  >
+                  <div class="col-sm-8">
+                    <div class="form-group bmd-form-group">
+                      <input
+                        class="form-control"
+                        value="{{pi.Installments}}"
+                        type="number"
+                        id="Installments"
+                        name="Installments"
+                        required="true"
+                        aria-required="true"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {% comment %} Row5 {% endcomment %}
+                <div class="row">
+                  <label class="col-sm-3 col-form-label" for="Remark"
+                    >Remark*</label
+                  >
+                  <div class="col-sm-8">
+                    <div class="form-group bmd-form-group">
+                      <input
+                        class="form-control"
+                        value="{{pi.Remark}}"
+                        type="text"
+                        id="Remark"
+                        name="Remark"
+                        required="true"
+                        aria-required="true"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row" style="margin-top: 20px; margin-bottom: 10px">
+                  <div class="row">
+                    <div class="form-check form-check-inline" style="left: 4px">
+                      <label class="form-check-label" for="SMSNotify">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          value=""
+                          id="SMSNotify"
+                          name="SMSNotify"
+                          required="true"
+                          aria-required="true"
+                        />
+                        SMS Notification
+                        <span class="form-check-sign" style="left: 146px">
+                          <span class="check"></span>
+                        </span>
+                      </label>
+                    </div>
+                    <div
+                      class="form-check form-check-inline"
+                      style="left: 34px"
+                    >
+                      <label class="form-check-label" for="EmailNotify">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          value=""
+                          id="EmailNotify"
+                          name="EmailNotify"
+                          required="true"
+                          aria-required="true"
+                        />
+                        Email Notification
+                        <span class="form-check-sign" style="left: 146px">
+                          <span class="check"></span>
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- *************************User Documents tab*************** -->
+          <div class="col-md-6">
+            <div class="card" style="background-color: rgb(249, 231, 255)">
+              <div class="card-header">
+                <h4 class="card-title"><strong>User Documents</strong></h4>
+              </div>
+
+              <div class="card-body" style="width: 100%">
+                {% for tenant_doc in tenant_docs %}
+                <div
+                  class="tenant-doc col-md-12 mb-4 p-0"
+                  style="border: 1px solid; width: 100%"
+                >
+                  <img
+                    src="{{ tenant_doc.image.url }}"
+                    alt=""
+                    style="object-fit: cover; height: 100%"
+                  />
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-rose btn-round float-right" type="Submit">
+        <i class="material-icons">near_me </i> Submit
+        <div class="ripple-container"></div>
+      </button>
+      <br />
+    </div>
+  </form>
 </div>
 {% endblock body %}
