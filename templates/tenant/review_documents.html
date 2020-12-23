@@ -250,7 +250,7 @@
 
           <!-- *************************User Documents tab*************** -->
           <div class="col-md-6">
-            <div class="card" style="background-color: rgb(249, 231, 255)">
+            <div class="card">
               <div class="card-header">
                 <h4 class="card-title"><strong>User Documents</strong></h4>
               </div>
@@ -259,7 +259,7 @@
                 {% for tenant_doc in tenant_docs %}
                 <div
                   class="tenant-doc col-md-12 mb-4 p-0"
-                  style="border: 1px solid; width: 100%"
+                  style=" width: 100%; height: 200px"
                 >
                   <img
                     src="{{ tenant_doc.image.url }}"

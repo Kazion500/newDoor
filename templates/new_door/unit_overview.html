@@ -1,5 +1,4 @@
-{% extends 'base.html' %} {% block title %} Unit Overview {% endblock title %}
-{% block body %}
+{% extends 'base.html' %} {% load humanize %} {% block title %} Unit Overview {% endblock title %} {% block body %}
 <div class="row">
   <div class="col-md-12">
     <div class="row">
@@ -115,6 +114,7 @@
               <th>Type</th>
               <th>Occupancy</th>
               <th>Tenant</th>
+              <th>Rental Amount</th>
               <th>Collected</th>
               <th>Due Amount</th>
               <th class="disabled-sorting text-right">Actions</th>
@@ -133,20 +133,37 @@
                 >
                   {{ unit.occupancy_type.occupancy_type }}
                 </a>
-                {% elif unit.occupancy_type.occupancy_type.lower == 'document pending' %}
+                
+                {% elif unit.occupancy_type.occupancy_type.lower == 'document pending' %} 
+                {% if unit.tenantcontract.tenant.uploaddocument_set.all.count > 0 %}
+                
                 <a
-                  href="{% url 'review_documents' unit.tenantcontract.tenant.user.username %}"
+                  href="{% url 'verify_documents' unit.tenantcontract.tenant.user.username %}"
                   class="btn btn-primary btn-round occupancy_type"
                 >
                   {{ unit.occupancy_type.occupancy_type }}
                 </a>
                 {% else %}
-                <button class="btn btn-primary btn-round occupancy_type">
+                <button
+                  class="btn btn-primary btn-round occupancy_type"
+                disabled>
+                  {{ unit.occupancy_type.occupancy_type }}
+                </button>
+                {% endif %}
+                  
+                  
+
+                {% else %}
+                <button
+                  class="btn btn-primary btn-round occupancy_type"
+                  disabled
+                >
                   {{ unit.occupancy_type.occupancy_type }}
                 </button>
                 {% endif %}
               </td>
               <td>{{ unit.tenantcontract.tenant.user.username.capitalize }}</td>
+              <td>${{ unit.rent_amount|intcomma }}</td>
               <td>{{ unit.size }}</td>
               <td>{{ unit.size }}</td>
 
@@ -271,6 +288,11 @@
 
         case "document pending":
           occupancyType.style.backgroundColor = "lightblue";
+          occupancyType.style.color = "black";
+          break;
+
+        case "payment pending":
+          occupancyType.style.backgroundColor = "#1f97c7";
           break;
 
         case "document review":

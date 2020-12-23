@@ -1,0 +1,112 @@
+{% extends 'base.html' %} {% load static %} {% block title %} Review Documents
+{% endblock title%} {% block body %}
+<div class="col-md-12">
+  <form
+    id="TypeValidation"
+    class="form-horizontal"
+    method="post"
+    novalidate="novalidate"
+    enctype="multipart/form-data"
+  >
+    {% csrf_token %}
+    <div class="card">
+      <div
+        class="card-header card-header-rose card-header-text"
+        style="font-size: 20px"
+      >
+        <div class="card-text">
+          <a href="" class="card-header card-header-rose card-header-text">
+            <i class="material-icons">roofing</i> Verify Documents
+          </a>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <br />
+        {% comment %} Row1 {% endcomment %}
+        <div class="row justify-content-center">
+          <!-- *************************User Documents tab*************** -->
+          <div class="col-md-12">
+            <div class="card p-3">
+              <div class="card-header">
+                <h4 class="card-title"><strong>User Documents</strong></h4>
+              </div>
+              <hr class="m-0" />
+              <div class="card-body row py-5" style="width: 100%">
+                {% for tenant_doc in tenant_docs %}
+                <div
+                  class="tenant-doc col-md-4 ml-4 p-0"
+                  style="width: 100%; height: 200px"
+                >
+                  <img
+                    src="{{ tenant_doc.image.url }}"
+                    alt=""
+                    class="img-fluid"
+                    style="object-fit: cover; height: 100%"
+                  />
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-check form-check-inline ml-4">
+                <label class="form-check-label" for="is_verified">
+                  {% for fields in form %} {% if fields.name == "is_verified" %}
+                  
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="is_verified"
+                    name="{{ fields.name }}"
+                  {% if  fields.value  %}
+                    checked
+                  {% endif %}
+                    />
+                  Verify documents
+                  <span class="form-check-sign">
+                    <span class="check"></span>
+                  </span>
+                </label>
+              </div>
+            </div>
+            {% elif fields.name == "desc"%}
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group bmd-form-group">
+                  <textarea
+                    name="{{fields.name}}"
+                    cols="50"
+                    rows="10"
+                    class="form-control border"
+                    placeholder="Leave a comment about the above pictures"
+                  >{{ fields.value }}</textarea
+                  >
+                </div>
+              </div>
+            </div>
+
+            {% else %}
+            <div class="row" style="display: none">
+              <div class="col-md-12">
+                <div class="form-group bmd-form-group">
+                  <input
+                    type="hidden"
+                    name="{{fields.name}}"
+                    value="{{ fields.value }}"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {% endif %} {% endfor %}
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-rose btn-round w-25 mb-5 ml-5" type="Submit">
+        <i class="material-icons">near_me </i> Verify
+      </button>
+      <br />
+    </div>
+  </form>
+</div>
+{% endblock body %}

@@ -99,7 +99,9 @@ urlpatterns = [
          views.upload_documents, name='upload_documents'),
     path('review-documents/<str:user>',
          views.review_documents, name='review_documents'),
-    #     path('payment/', views.payment, name='payment'),
+    path('verify-documents/<str:user>',
+         views.verify_documents, name='verify_documents'),
+    path('payment/<str:user>', views.payment, name='payment'),
 
 
 

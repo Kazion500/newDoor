@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.core.mail import EmailMultiAlternatives
+from django.core.mail import EmailMultiAlternatives, send_mail
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
@@ -163,6 +163,7 @@ def checklist(request):
 def upload_documents(request, user):
     tenant = get_object_or_404(Profile, user__username__iexact=user)
     uploaded_documents = UploadDocument.objects.filter(tenant=tenant)
+    # uploaded_documents = DocumentType.objects.filter(uploaddocument__doc_type=uploaded_document.doc_type)
 
     if request.method == "POST":
         form = UploadDocumentModelForm(request.POST, request.FILES)
@@ -189,7 +190,6 @@ def upload_documents(request, user):
 
 
 def review_documents(request, user):
-    print(user)
     tenant = get_object_or_404(Profile, user__username=user)
     tenant_contract = get_object_or_404(TenantContract, tenant=tenant)
     tenant_docs = UploadDocument.objects.filter(tenant=tenant)
@@ -213,9 +213,62 @@ def review_documents(request, user):
     return render(request, 'tenant/review_documents.html', context)
 
 
+def verify_documents(request, user):
+    tenant = get_object_or_404(Profile, user__username=user)
+    tenant_contract = TenantContract.objects.get(tenant__user__username=user)
+    tenant_docs = UploadDocument.objects.filter(tenant=tenant)
+    tenant_doc = UploadDocument.objects.filter(tenant=tenant)[0]
+    unit = Unit.objects.get(tenantcontract__tenant__user__username=user)
+    occupancy_type_ = OccupancyType.objects.get(
+        occupancy_type='Payment Pending')
+
+    if request.method == 'POST':
+        form = UploadDocumentModelForm(
+            request.POST, request.FILES, instance=tenant_doc)
+        print(form.errors)
+        if form.is_valid():
+
+            instance = form.save(commit=False)
+            tenant_email = tenant_doc.tenant.user.email
+
+            for d in tenant_docs:
+                d.is_verified = True
+
+                d.save()
+            instance.save()
+
+            for t in tenant_docs:
+                if not t.is_verified:
+                    return
+
+            unit.occupancy_type = occupancy_type_
+            unit.save()
+            msg = f"Hi {user} \n Your documents have been accepted. \n Kindly login to the dashboard and proceed with the making payment"
+            send_mail(
+                'Documents Approved',
+                msg,
+                'noreply@newdoor.com',
+                [tenant_email],
+                fail_silently=False,
+            )
+
+            messages.success(
+                request, 'Congratulations...! Documents verified successfully added.')
+            return redirect('unit_overview')
+    else:
+        form = UploadDocumentModelForm(instance=tenant_doc)
+
+    context = {
+        'form': form,
+        "tenant_docs": tenant_docs,
+        "tenant_doc": tenant_doc,
+    }
+    return render(request, 'tenant/verify_document.html', context)
+
+
 @login_required
-def payment(request):
-    return render(request, 'new_door/add_payment.html')
+def payment(request, user):
+    return render(request, 'payment/payment.html')
 
 
 """ Add Views  """
@@ -1369,4 +1422,4 @@ def property_unit_overview(request, id):
         'number_of_occupied_units': number_of_occupied_units,
     }
 
-    return render(request, 'new_door/property_unit_overview.html', context)
+    return render(request, 'new_door/unit_overview.html', context)

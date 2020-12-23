@@ -322,7 +322,8 @@ class UploadDocumentModelForm(forms.ModelForm):
     ), widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Select Tenant")
     doc_type = forms.ModelChoiceField(DocumentType.objects.all(
     ), widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Select document type")
+    desc = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control'}),required=False)
 
     class Meta:
         model = UploadDocument
-        fields = ('tenant', 'doc_type', 'image')
+        fields = ('tenant', 'doc_type', 'image', 'is_verified','desc')

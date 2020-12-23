@@ -102,7 +102,7 @@ class Unit(models.Model):
     flat = models.CharField(max_length=250)
     ownership_type = models.ForeignKey(
         OwnershipType, on_delete=models.CASCADE, )
-    rent_amount = models.PositiveIntegerField()
+    rent_amount = models.DecimalField(max_digits=8, decimal_places=2)
     size = models.PositiveIntegerField()
     occupancy_type = models.ForeignKey(
         OccupancyType, on_delete=models.CASCADE, )
@@ -179,6 +179,9 @@ class UploadDocument(models.Model):
     doc_type = models.ForeignKey(DocumentType, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='documents/', null=True, blank=True)
     is_verified = models.BooleanField(default=False)
+    desc = models.TextField(null=True,blank=True)
 
     def __str__(self):
         return str(self.doc_type)
+
+

@@ -1,5 +1,4 @@
-{% extends 'base.html' %} {% block title %} Payment {% endblock title %} 
-{% block body %}
+{% extends 'base.html' %} {% block title %} Payment {% endblock title %} {% block body %}
 
 <div class="col-md-12">
   <form
@@ -30,10 +29,10 @@
         <div class="col-md-12">
           <div class="card">
             <div class="card-header">
-              <h4 class="card-title">Select a payment method</h4>
+              <h4 class="card-title"><b>Select a payment method</b></h4>
             </div>
             <div class="card-body">
-              <div class="row">
+              <div class="row p-0">
                 <div class="col-md-3.5">
                   <ul
                     class="nav nav-pills nav-pills-rose flex-column"
@@ -146,37 +145,23 @@
                           </div>
                         </div>
                       </div>
-                      Valid thru*
+                      Expire date*
                       <div class="row">
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                           <div class="form-group bmd-form-group">
-                            <select
-                              input
+                            <input
                               class="form-control"
                               type="text"
-                              id="month"
-                              name="month"
+                              id="OccupancyType"
+                              placeholder="Enter date"
+                              name="OccupancyType"
                               required="true"
                               aria-required="true"
-                            >
-                              <option selected>Select Month</option>
-                              <option>January</option>
-                              <option>February</option>
-                              <option>March</option>
-                              <option>April</option>
-                              <option>May</option>
-                              <option>June</option>
-                              <option>July</option>
-                              <option>August</option>
-                              <option>September</option>
-                              <option>October</option>
-                              <option>November</option>
-                              <option>December</option>
-                            </select>
+                            />
                           </div>
                         </div>
 
-                        <div class="col-sm-2">
+                        <div class="col-sm-3">
                           <div class="form-group bmd-form-group">
                             <select
                               input

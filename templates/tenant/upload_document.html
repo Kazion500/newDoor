@@ -73,10 +73,11 @@
                 </thead>
                 <tbody>
                   {% if uploaded_documents %} {% for uploaded_document in uploaded_documents %}
+                  
                   <tr>
                     <td scope="row">{{uploaded_document.doc_type}}</td>
                     <td>{{uploaded_document.image.name}}</td>
-                    <td>{{uploaded_document.image.size}}</td>
+                    <td>{{uploaded_document.image.size}} KB</td>
                     <td>100%</td>
 
                     <td class="text-right">
