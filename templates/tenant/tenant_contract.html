@@ -1,0 +1,175 @@
+{% extends 'base.html' %} {% block title %} Tenant Contract {% endblock title %}
+{% block body %} {% load static %}
+<div class="col-md-12">
+  <form
+    id="TypeValidation"
+    class="form-horizontal"
+    method="post"
+    novalidate="novalidate"
+    enctype="multipart/form-data"
+  >
+    {% csrf_token %}
+    <div class="card">
+      <div
+        class="card-header card-header-rose card-header-text"
+        style="font-size: 20px"
+      >
+        <div class="card-text">
+          <a href=" " class="card-header card-header-rose card-header-text">
+            <i class="material-icons">roofing</i> Tenant Contract
+          </a>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <br />
+        {% comment %} Row1 {% endcomment %}
+        <div class="row">
+          <label class="col-sm-2 col-form-label" for="TenantID">Tenant*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.tenant }}</div>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-2 col-form-label" for="PropID"
+            >Property Name*</label
+          >
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.property_id }}</div>
+          </div>
+          <label class="col-sm-2 col-form-label" for="UnitID">Unit*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.unit }}</div>
+          </div>
+        </div>
+        {% comment %} Row2 {% endcomment %}
+        <div class="row">
+          <label class="col-sm-2 col-form-label" for="ContractNo"
+            >Contract No.*</label
+          >
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.contract_no }}</div>
+          </div>
+          <label class="col-sm-2 col-form-label" for="StartDate"
+            >Start Date*</label
+          >
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.start_date }}</div>
+          </div>
+        </div>
+
+        {% comment %} Row3 {% endcomment %}
+        <div class="row">
+          <label class="col-sm-2 col-form-label" for="EndDate">End Date*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.end_date }}</div>
+          </div>
+          <label class="col-sm-2 col-form-label" for="Discount"
+            >Discount*</label
+          >
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.discount }}</div>
+          </div>
+        </div>
+        {% comment %} Row4 {% endcomment %}
+        <div class="row">
+          <label class="col-sm-2 col-form-label" for="AnnualRent"
+            >Annual Rent*</label
+          >
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.annual_rent }}</div>
+          </div>
+
+          <label class="col-sm-2 col-form-label" for="SecurityDep"
+            >Security Deposit*</label
+          >
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.security_dep }}</div>
+          </div>
+        </div>
+
+        {% comment %} Row5 {% endcomment %}
+        <div class="row">
+          <label class="col-sm-2 col-form-label" for="Commission"
+            >Commission*</label
+          >
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.commission }}</div>
+          </div>
+
+          <label class="col-sm-2 col-form-label" for="Installments"
+            >Installments*</label
+          >
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.installments }}</div>
+          </div>
+        </div>
+
+        {% comment %} Row6 {% endcomment %}
+        <div class="row">
+          <label class="col-sm-2 col-form-label" for="Remark">Remark*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.remark }}</div>
+          </div>
+          <div class="col-sm-4">
+            <div class="form-check form-check-inline" style="left: 4px">
+              <label class="form-check-label" for="sms_notify">
+                {{ form.sms_notify }} SMS Notification
+                <span class="form-check-sign" style="left: 146px">
+                  <span class="check"></span>
+                </span>
+              </label>
+            </div>
+            <div class="form-check form-check-inline" style="left: 34px">
+              <label class="form-check-label" for="email_notify">
+                {{ form.email_notify }} Email Notification
+                <span class="form-check-sign" style="left: 146px">
+                  <span class="check"></span>
+                </span>
+              </label>
+            </div>
+          </div>
+          <br />
+          <hr />
+        </div>
+        <div class="row">
+          <div
+            class="fileinput fileinput-new text-center"
+            data-provides="fileinput"
+          >
+            <div class="fileinput-new thumbnail img-circle">
+              <img src="{% static '/img/placeholder.jpg' %}" />
+            </div>
+            <div class="fileinput-preview fileinput-exists thumbnail"></div>
+            <div>
+              <span class="btn btn-round btn-rose btn-file">
+                <span class="fileinput-new">Add Files</span>
+                <span class="fileinput-exists">Change</span>
+                <input type="hidden" /><input
+                  type="file"
+                  id="image"
+                  name="image"
+                />
+                <div class="ripple-container"></div>
+              </span>
+              <br />
+              <a
+                href="#pablo"
+                class="btn btn-danger btn-round fileinput-exists"
+                data-dismiss="fileinput"
+                ><i class="fa fa-times"></i> Remove</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-rose btn-round float-right" type="Submit">
+          <i class="material-icons">near_me </i> Submit
+          <div class="ripple-container"></div>
+        </button>
+        <br />
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock body %}

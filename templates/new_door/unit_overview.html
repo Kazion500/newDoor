@@ -135,24 +135,29 @@
                 </a>
                 
                 {% elif unit.occupancy_type.occupancy_type.lower == 'document pending' %} 
-                {% if unit.tenantcontract.tenant.uploaddocument_set.all.count > 0 %}
-                
-                <a
-                  href="{% url 'verify_documents' unit.tenantcontract.tenant.user.username %}"
-                  class="btn btn-primary btn-round occupancy_type"
-                >
-                  {{ unit.occupancy_type.occupancy_type }}
-                </a>
-                {% else %}
-                <button
-                  class="btn btn-primary btn-round occupancy_type"
-                disabled>
-                  {{ unit.occupancy_type.occupancy_type }}
-                </button>
-                {% endif %}
+                  {% if unit.tenantcontract.tenant.uploaddocument_set.all.count > 0 %}
                   
-                  
+                  <a
+                    href="{% url 'verify_documents' unit.tenantcontract.tenant.user.username %}"
+                    class="btn btn-primary btn-round occupancy_type"
+                  >
+                    {{ unit.occupancy_type.occupancy_type }}
+                  </a>
+                  {% else %}
+                  <button
+                    class="btn btn-primary btn-round occupancy_type"
+                  disabled>
+                    {{ unit.occupancy_type.occupancy_type }}
+                  </button>
+                  {% endif %}
 
+                {% elif unit.occupancy_type.occupancy_type.lower == 'create contract' %}
+                    <a
+                    href="{% url 'add_tetant_contract' unit.tenantcontract.tenant.user.username %}"
+                    class="btn btn-primary btn-round occupancy_type"
+                  >
+                    {{ unit.occupancy_type.occupancy_type }}
+                  </a>
                 {% else %}
                 <button
                   class="btn btn-primary btn-round occupancy_type"
@@ -295,7 +300,7 @@
           occupancyType.style.backgroundColor = "#1f97c7";
           break;
 
-        case "document review":
+        case "create contract":
           occupancyType.style.backgroundColor = "#000";
           break;
 

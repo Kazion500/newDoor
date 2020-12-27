@@ -29,8 +29,10 @@
           <div class="col-sm-4">
             <div class="form-group bmd-form-group">{{ form.doc_type }}</div>
           </div>
+          <!-- <div class="col-sm-4"> -->
+            <input type="hidden" name="{{ form.tenant.name }}" value="{{ tenant.pk }}"/>
+          <!-- </div> -->
 
-          <input type="hidden" name="{{ form.tenant.name }}" value="{{ tenant.pk }}" >
           <!-- <button
             class="btn btn-rose btn-round"
             type="button"
@@ -50,7 +52,10 @@
           </button>
         </div>
       </div>
-
+    </div>
+  </form>
+  <div class="card">
+    <div class="card-body">
       <div class="row">
         <div class="col-md-12">
           <div class="card-body">
@@ -73,7 +78,7 @@
                 </thead>
                 <tbody>
                   {% if uploaded_documents %} {% for uploaded_document in uploaded_documents %}
-                  
+
                   <tr>
                     <td scope="row">{{uploaded_document.doc_type}}</td>
                     <td>{{uploaded_document.image.name}}</td>
@@ -104,20 +109,20 @@
         </div>
       </div>
     </div>
-    <div class="card">
-      <div class="card-body">
-        <div class="row">
-          {% for uploaded_document in uploaded_documents %}
-          <div
-            class="col-md-4 ml-4"
-            style="height: 200px;
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        {% for uploaded_document in uploaded_documents %}
+        <div
+          class="col-md-4 ml-4"
+          style="height: 200px;
           background-image: url('{{ uploaded_document.image.url }}'); background-size: cover;"
-          ></div>
-          {% endfor %}
-        </div>
+        ></div>
+        {% endfor %}
       </div>
     </div>
-  </form>
+  </div>
 </div>
 
 {% endblock body %}

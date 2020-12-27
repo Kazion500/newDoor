@@ -1,10 +1,9 @@
 {% extends 'base.html' %} {% block title %} Payment {% endblock title %} {% block body %}
-
+<style></style>
 <div class="col-md-12">
   <form
-    id="TypeValidation"
+    id="payment-form"
     class="form-horizontal"
-    action="/Payment"
     method="post"
     novalidate="novalidate"
   >
@@ -16,7 +15,7 @@
       >
         <div class="card-text" style="padding-left: 1px">
           <a
-            href=" {% url 'payment'%} "
+            href=" {% url 'payment' request.user.username %} "
             class="card-header card-header-rose card-header-text"
           >
             <i class="material-icons">payment</i> Payment
@@ -116,37 +115,48 @@
                       Card Number
                       <div class="row">
                         <!-- <label class="col-sm-2 col-form-label" for="OccupancyType">Card Number*</label> -->
-                        <div class="col-sm-5">
+                        <div class="col-sm-8">
                           <div class="form-group bmd-form-group">
-                            <input
-                              class="form-control"
-                              type="text"
-                              id="OccupancyType"
-                              name="OccupancyType"
-                              required="true"
-                              aria-required="true"
-                            />
+                            <div id="card-element">
+                              <!-- A Stripe Element will be inserted here. -->
+                            </div>
                           </div>
                         </div>
                       </div>
                       Name on card*
                       <div class="row">
                         <!-- <label class="col-sm-2 col-form-label" for="OccupancyType">Card Number*</label> -->
-                        <div class="col-sm-5">
+                        <div class="col-sm-8">
                           <div class="form-group bmd-form-group">
                             <input
                               class="form-control"
                               type="text"
-                              id="OccupancyType"
-                              name="OccupancyType"
+                              id="fullname"
+                              name="fullname"
                               required="true"
                               aria-required="true"
                             />
                           </div>
                         </div>
                       </div>
-                      Expire date*
+                      Email*
                       <div class="row">
+                        <!-- <label class="col-sm-2 col-form-label" for="OccupancyType">Card Number*</label> -->
+                        <div class="col-sm-8">
+                          <div class="form-group bmd-form-group">
+                            <input
+                              class="form-control"
+                              type="text"
+                              id="email"
+                              name="email"
+                              required="true"
+                              aria-required="true"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Expire date* -->
+                      <!-- <div class="row">
                         <div class="col-sm-2">
                           <div class="form-group bmd-form-group">
                             <input
@@ -194,11 +204,11 @@
                             </select>
                           </div>
                         </div>
-                      </div>
+                      </div> -->
 
-                      CVV*
-                      <div class="row">
-                        <!-- <label class="col-sm-2 col-form-label" for="OccupancyType">Card Number*</label> -->
+                      <!-- CVV* -->
+                      <!-- <div class="row">
+                        
                         <div class="col-sm-2">
                           <div class="form-group bmd-form-group">
                             <input
@@ -215,7 +225,7 @@
                         <p>
                           Last three digits printed on the back of the card.
                         </p>
-                      </div>
+                      </div> -->
                     </div>
                     <div class="tab-pane" id="link5">
                       Efficiently unleash cross-media information without
@@ -249,4 +259,79 @@
     </div>
   </form>
 </div>
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+  // Create a Stripe client.
+  var stripe = Stripe(
+    "pk_test_51I0mEFGz8qAcurV0ilVGprW4afDNoCkqdBJTJK6Rjgyuc4WBY20GRqW8pGi21QlGsKNbq4uP8Cv8Bjs7ezTJg1ST00ABvwre5y"
+  );
+
+  // Create an instance of Elements.
+  var elements = stripe.elements();
+
+  // Custom styling can be passed to options when creating an Element.
+  // (Note that this demo uses a wider set of styles than the guide below.)
+  var style = {
+    base: {
+      color: "#32325d",
+      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+      fontSmoothing: "antialiased",
+      fontSize: "16px",
+      "::placeholder": {
+        color: "#aab7c4",
+      },
+    },
+    invalid: {
+      color: "#fa755a",
+      iconColor: "#fa755a",
+    },
+  };
+
+  // Create an instance of the card Element.
+  var card = elements.create("card", { style: style });
+
+  // Add an instance of the card Element into the `card-element` <div>.
+  card.mount("#card-element");
+
+  // Handle real-time validation errors from the card Element.
+  card.on("change", function (event) {
+    var displayError = document.getElementById("card-errors");
+    if (event.error) {
+      displayError.textContent = event.error.message;
+    } else {
+      displayError.textContent = "";
+    }
+  });
+
+  // Handle form submission.
+  var form = document.getElementById("payment-form");
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    stripe.createToken(card).then(function (result) {
+      if (result.error) {
+        // Inform the user if there was an error.
+        var errorElement = document.getElementById("card-errors");
+        errorElement.textContent = result.error.message;
+      } else {
+        // Send the token to your server.
+        stripeTokenHandler(result.token);
+      }
+    });
+  });
+
+  // Submit the form with the token ID.
+  function stripeTokenHandler(token) {
+    // Insert the token ID into the form so it gets submitted to the server
+    var form = document.getElementById("payment-form");
+    var hiddenInput = document.createElement("input");
+    hiddenInput.setAttribute("type", "hidden");
+    hiddenInput.setAttribute("name", "stripeToken");
+    hiddenInput.setAttribute("value", token.id);
+    form.appendChild(hiddenInput);
+
+    // Submit the form
+    form.submit();
+  }
+</script>
 {% endblock body %}

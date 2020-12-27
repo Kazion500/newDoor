@@ -245,9 +245,9 @@ class TenantContractModelForm(forms.ModelForm):
         exclude = ['id']
 
         widgets = {
-            'tenant': forms.Select(attrs={'class': 'form-control'}),
-            'property_id': forms.Select(attrs={'class': 'form-control'}),
-            'unit_id': forms.Select(attrs={'class': 'form-control'}),
+            'tenant': forms.TextInput(attrs={'class': 'form-control', "readonly": True}),
+            'property_id': forms.TextInput(attrs={'class': 'form-control', "readonly": True}),
+            'unit': forms.TextInput(attrs={'class': 'form-control', "readonly": True}),
             'contract_no': forms.TextInput(attrs={'class': 'form-control'}),
             'start_date': forms.TextInput(attrs={'class': 'form-control'}),
             'end_date': forms.TextInput(attrs={'class': 'form-control'}),
@@ -257,8 +257,8 @@ class TenantContractModelForm(forms.ModelForm):
             'commission': forms.TextInput(attrs={'class': 'form-control'}),
             'installments': forms.TextInput(attrs={'class': 'form-control'}),
             'remark': forms.TextInput(attrs={'class': 'form-control'}),
-            'sms_notify': forms.CheckboxInput(attrs={'class': 'form-control'},),
-            'email_notify': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'sms_notify': forms.CheckboxInput(attrs={'class': 'form-check-input', "id": "sms_notify"},),
+            'email_notify': forms.CheckboxInput(attrs={'class': 'form-check-input', "id": "email_notify"}),
         }
 
 
@@ -322,8 +322,9 @@ class UploadDocumentModelForm(forms.ModelForm):
     ), widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Select Tenant")
     doc_type = forms.ModelChoiceField(DocumentType.objects.all(
     ), widget=forms.Select(attrs={'class': 'form-control'}), empty_label="Select document type")
-    desc = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control'}),required=False)
+    desc = forms.CharField(widget=forms.Textarea(
+        attrs={'class': 'form-control'}), required=False)
 
     class Meta:
         model = UploadDocument
-        fields = ('tenant', 'doc_type', 'image', 'is_verified','desc')
+        fields = ('tenant', 'doc_type', 'image', 'is_verified', 'desc')

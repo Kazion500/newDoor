@@ -101,7 +101,6 @@ urlpatterns = [
          views.review_documents, name='review_documents'),
     path('verify-documents/<str:user>',
          views.verify_documents, name='verify_documents'),
-    path('payment/<str:user>', views.payment, name='payment'),
 
 
 
@@ -161,12 +160,12 @@ urlpatterns = [
 
 
     # """ TENANT SECTION """
-    path('tetant-contract', views.add_tetant_contract, name='add_tetant_contract'),
+    path('tetant-contract/<str:user>',
+         views.add_tetant_contract, name='add_tetant_contract'),
 
     # path('checklist/', views.checklist, name='checklist'),
 
-    # Payment
-    path('payment/', views.payment, name='payment'),
+    path('payment/<str:user>', views.payment, name='payment'),
 
     # Authentication routes
     path('auth/signup/', auth_views.signup_view, name='signup'),

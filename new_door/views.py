@@ -1,18 +1,17 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.models import User
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.core.mail import EmailMultiAlternatives, send_mail
-from django.template.loader import render_to_string
-from django.contrib.sites.shortcuts import get_current_site
-from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
-from django.contrib.sites.shortcuts import get_current_site
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from django.template.loader import render_to_string
-from .utils import account_activation_token
-from django.urls import reverse
+from os import name
 
+from stripe.api_resources import source
+from .models import (
+    Entity, Property,
+    Unit, CategoryType,
+    Profile, PropertyType,
+    OccupancyType, OwnershipType,
+    DocumentType, PayModeType,
+    StatusReqType, TenantReqType,
+    ContractReqType, TenantContract,
+    UploadDocument,
 
+)
 from .forms import (
     EntityModelForm,
     PropertyModelForm,
@@ -30,18 +29,25 @@ from .forms import (
     ProfileRegistrationForm,
     UploadDocumentModelForm,
 )
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.core.mail import EmailMultiAlternatives, send_mail
+from django.template.loader import render_to_string
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.template.loader import render_to_string
+from .utils import account_activation_token
+from django.urls import reverse
+from decouple import config
+import stripe
 
-from .models import (
-    Entity, Property,
-    Unit, CategoryType,
-    Profile, PropertyType,
-    OccupancyType, OwnershipType,
-    DocumentType, PayModeType,
-    StatusReqType, TenantReqType,
-    ContractReqType, TenantContract,
-    UploadDocument,
+stripe.api_key = config('STRIPE_SECRET_KEY')
 
-)
+
 # Dashboard Rendering
 
 
@@ -268,6 +274,30 @@ def verify_documents(request, user):
 
 @login_required
 def payment(request, user):
+    unit_amount = TenantContract.objects.get(
+        tenant__user__username=user).unit.rent_amount
+    profile = Profile.objects.get(user__username=user)
+    
+    if request.method == "POST":
+        customer = stripe.Customer.create(
+            name=request.POST.get('fullname'),
+            email=request.POST.get('email'),
+            source=request.POST.get('stripeToken')
+        )
+        rental_amount = stripe.Charge.create(
+            customer=customer,
+            amount=int(unit_amount) * 100,
+            currency="usd",
+            receipt_email=request.POST.get('email'),
+        )
+        if rental_amount.paid:
+            unit_contract = Unit.objects.get(tenantcontract__tenant=profile)
+            occupancy = OccupancyType.objects.get(occupancy_type__iexact="Create Contract")
+            unit_contract.occupancy_type = occupancy
+            unit_contract.save()
+            messages.success(
+                request, f'Payment of ${rental_amount.amount / 100} has been made successfully')
+            return redirect('payment', profile.user.username)
     return render(request, 'payment/payment.html')
 
 
@@ -654,27 +684,27 @@ def add_occupancy_type(request):
 
 
 @login_required
-def add_tetant_contract(request):
+def add_tetant_contract(request, user):
     # Todo: Make sure template has valid fields
-
+    tenant_contract = TenantContract.objects.get(tenant__user__username=user)
     occupancy_types = OccupancyType.objects.all()
 
     if request.method == 'POST':
-        form = TenantContractModelForm(request.POST)
+        form = TenantContractModelForm(request.POST, instance=tenant_contract)
         if form.is_valid():
             form.save()
             messages.success(
                 request, 'Congratulations...! Contract successfully added.')
             return redirect('add_tetant_contract')
     else:
-        form = TenantContractModelForm()
+        form = TenantContractModelForm(instance=tenant_contract)
 
     context = {
         'form': form,
         'occupancy_types': occupancy_types,
     }
 
-    return render(request, 'new_door/tenant_contract.html', context)
+    return render(request, 'tenant/tenant_contract.html', context)
 
 
 @login_required
