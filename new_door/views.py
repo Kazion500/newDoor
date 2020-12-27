@@ -695,7 +695,7 @@ def add_tetant_contract(request, user):
             form.save()
             messages.success(
                 request, 'Congratulations...! Contract successfully added.')
-            return redirect('add_tetant_contract')
+            # return redirect('add_tetant_contract')
     else:
         form = TenantContractModelForm(instance=tenant_contract)
 
