@@ -41,7 +41,7 @@ class EntityModelForm(forms.ModelForm):
 
 
 class PropertyModelForm(forms.ModelForm):
-    owner_name = forms.ModelChoiceField(Profile.objects.all(
+    owner_name = forms.ModelChoiceField(Profile.objects.filter(is_owner=True
     ), empty_label="Select owner name", widget=(forms.Select(attrs={'class': 'form-control'})))
     entity = forms.ModelChoiceField(Entity.objects.all(
     ), empty_label="Select entity name", widget=(forms.Select(attrs={'class': 'form-control'})))

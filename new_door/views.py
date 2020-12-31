@@ -1,4 +1,6 @@
+import json
 from os import name
+from django.http.response import JsonResponse
 
 from stripe.api_resources import source
 from .models import (
@@ -125,7 +127,10 @@ def property_all_overview(request):
     number_of_occupied_units = Unit.objects.filter(
         occupancy_type__occupancy_type__iexact="occupied").count()
 
-    percentage = number_of_occupied_units / number_of_units * 100
+    if number_of_occupied_units:
+        percentage = number_of_occupied_units / number_of_units * 100
+    else:
+        percentage = 0
 
     context = {
         'properties': properties,
@@ -169,26 +174,28 @@ def checklist(request):
 def upload_documents(request, user):
     tenant = get_object_or_404(Profile, user__username__iexact=user)
     uploaded_documents = UploadDocument.objects.filter(tenant=tenant)
+    doc_type = DocumentType.objects.all()
     # uploaded_documents = DocumentType.objects.filter(uploaddocument__doc_type=uploaded_document.doc_type)
 
     if request.method == "POST":
         form = UploadDocumentModelForm(request.POST, request.FILES)
-        print(form.errors)
-        print(form.data)
-        print(request.FILES.getlist('image'))
+
         if form.is_valid():
             uploaded_doc = form.save(commit=False)
-            print(uploaded_doc)
             for image in request.FILES.getlist('image'):
                 credentials = UploadDocument(
                     tenant=uploaded_doc.tenant, image=image, doc_type=uploaded_doc.doc_type)
                 credentials.save()
+            messages.success(
+                request, 'Congratulations...! Property successfully added.')
+            return redirect('upload_documents', tenant.user.username)
     else:
         form = UploadDocumentModelForm()
 
     context = {
         "form": form,
         "uploaded_documents": uploaded_documents,
+        "doc_types": doc_type,
         "tenant": tenant
 
     }
@@ -229,27 +236,43 @@ def verify_documents(request, user):
         occupancy_type='Payment Pending')
 
     if request.method == 'POST':
-        form = UploadDocumentModelForm(
-            request.POST, request.FILES, instance=tenant_doc)
-        print(form.errors)
-        if form.is_valid():
+        user = request.POST.get('user')
+        operation = request.POST.get('operation')
+        filename = request.POST.get('filename')
+        tenant_email = tenant_doc.tenant.user.email
 
-            instance = form.save(commit=False)
-            tenant_email = tenant_doc.tenant.user.email
+        if operation == 'delete':
+            tenant_imgs = UploadDocument.objects.filter(
+                tenant__user__username=user)
+            for tenant_img in tenant_imgs:
+                server_file = tenant_img.image.name
+                if server_file == filename:
+                    tenant_img.delete()
 
-            for d in tenant_docs:
-                d.is_verified = True
+            msg_error = f"Hi {user} \n document of type {filename} has been rejected because its not clear. \n "
+            send_mail(
+                'Documents Rejected',
+                msg_error,
+                'noreply@newdoor.com',
+                [tenant_email],
+                fail_silently=False,
+            )
 
-                d.save()
-            instance.save()
-
-            for t in tenant_docs:
-                if not t.is_verified:
-                    return
+        elif operation == 'save':
+            tenant_img = ''
+            tenant_imgs = UploadDocument.objects.filter(
+                tenant__user__username=user)
+            for tenant_img in tenant_imgs:
+                server_file = tenant_img.image.name
+                if server_file == filename:
+                    tenant_img.is_verified = True
+                    tenant_img.save()
 
             unit.occupancy_type = occupancy_type_
             unit.save()
-            msg = f"Hi {user} \n Your documents have been accepted. \n Kindly login to the dashboard and proceed with the making payment"
+            messages.success(request, 'Congratulations...! Documents verified successfully added.')
+            
+            msg = f"Hi {user} \n {filename} have been accepted. \n Kindly login to the dashboard and proceed with the making payment"
             send_mail(
                 'Documents Approved',
                 msg,
@@ -257,17 +280,45 @@ def verify_documents(request, user):
                 [tenant_email],
                 fail_silently=False,
             )
+            return JsonResponse({'message': 'verified', 'user': user, 'file': tenant_img.image.name})
 
-            messages.success(
-                request, 'Congratulations...! Documents verified successfully added.')
-            return redirect('unit_overview')
-    else:
-        form = UploadDocumentModelForm(instance=tenant_doc)
+        # form = UploadDocumentModelForm(
+        #     request.POST, request.FILES, instance=tenant_doc)
+        # print(form.errors)
+        # if form.is_valid():
+
+        #  instance = form.save(commit=False)
+        #   tenant_email = tenant_doc.tenant.user.email
+
+        #    for d in tenant_docs:
+        #         d.is_verified = True
+
+        #         d.save()
+        #     instance.save()
+
+        #     for t in tenant_docs:
+        #         if not t.is_verified:
+        #             return
+
+        #
+        #     msg = f"Hi {user} \n Your documents have been accepted. \n Kindly login to the dashboard and proceed with the making payment"
+        #     send_mail(
+        #         'Documents Approved',
+        #         msg,
+        #         'noreply@newdoor.com',
+        #         [tenant_email],
+        #         fail_silently=False,
+        #     )
+
+        #
+    # else:
+    #     form = UploadDocumentModelForm(instance=tenant_doc)
 
     context = {
-        'form': form,
+        # 'form': form,
         "tenant_docs": tenant_docs,
         "tenant_doc": tenant_doc,
+        'tenant': tenant
     }
     return render(request, 'tenant/verify_document.html', context)
 
@@ -277,7 +328,7 @@ def payment(request, user):
     unit_amount = TenantContract.objects.get(
         tenant__user__username=user).unit.rent_amount
     profile = Profile.objects.get(user__username=user)
-    
+
     if request.method == "POST":
         customer = stripe.Customer.create(
             name=request.POST.get('fullname'),
@@ -292,7 +343,8 @@ def payment(request, user):
         )
         if rental_amount.paid:
             unit_contract = Unit.objects.get(tenantcontract__tenant=profile)
-            occupancy = OccupancyType.objects.get(occupancy_type__iexact="Create Contract")
+            occupancy = OccupancyType.objects.get(
+                occupancy_type__iexact="Create Contract")
             unit_contract.occupancy_type = occupancy
             unit_contract.save()
             messages.success(
@@ -331,7 +383,6 @@ def add_entity(request):
 @login_required
 def add_property(request, entity):
     entity = get_object_or_404(Entity, entity_name=entity)
-    profiles = Profile.objects.all()
 
     if request.method == 'POST':
         form = PropertyModelForm(request.POST)
@@ -347,7 +398,6 @@ def add_property(request, entity):
     context = {
         'form': form,
         'entity': entity,
-        'profiles': profiles,
     }
 
     return render(request, 'new_door/add_property.html', context)
@@ -356,7 +406,6 @@ def add_property(request, entity):
 @login_required
 def add_property_all(request):
     entities = Entity.objects.all()
-    profiles = Profile.objects.all()
 
     if request.method == 'POST':
         form = PropertyModelForm(request.POST)
@@ -371,7 +420,6 @@ def add_property_all(request):
     context = {
         'form': form,
         'entities': entities,
-        'profiles': profiles,
     }
 
     return render(request, 'new_door/add_property_all_overview.html', context)
@@ -1211,6 +1259,12 @@ def delete_payment_mode(request, id):
     messages.success(
         request, 'Congratulations...! Payment mode successfully deleted.')
     return redirect('add_payment_mode')
+
+
+def upload_doc_delete(request, doc_id):
+    uploaded_document = UploadDocument.objects.filter(pk=doc_id)
+    uploaded_document.delete()
+    return redirect('upload_documents', request.user.username)
 
 
 """ Display Detail Views """

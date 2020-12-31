@@ -9,19 +9,18 @@
       type="text/css"
       href="{% static 'css/fontface.css' %}"
     />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{% static 'css/font-awesome.min.css' %}"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
     <link
       rel="stylesheet"
       type="text/css"
       href="{% static 'css/newdoor.css' %}"
     />
     <link href="{% static 'demo/demo.css" rel="stylesheet' %}" />
-    <link href=" {% static 'signin.css' %} " rel="stylesheet">
-    <title>New Door - {% block title %}{% endblock title %}</title>
+    <link href="{% static 'css/signin.css' %} " rel="stylesheet">
+    
+    {% block gallerycss %}{% endblock %}
+      
+    <title>New Door {% block title %}{% endblock title %}</title>
   </head>
 
   <body>
@@ -66,7 +65,7 @@
    
     </div>
     <!--   Core JS Files start from here   -->
-    <script src="{% static 'js/core/jquery.min.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{% static 'js/core/popper.min.js' %}"></script>
     <script src="{% static 'js/core/bootstrap-material-design.min.js' %}"></script>
     <script src="{% static 'js/plugins/perfect-scrollbar.jquery.min.js' %}"></script>
@@ -95,19 +94,19 @@
     <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
     <script src="{% static 'js/plugins/nouislider.min.js' %}"></script>
     <!-- Include a polyfill for ES6 Promises (optional) for IE11, UC Browser and Android browser support SweetAlert -->
-    <script src="../../../cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
     <!-- Library for adding dinamically elements -->
     <script src="{% static 'js/plugins/arrive.min.js' %}"></script>
     <!--  Google Maps Plugin    -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB2Yno10-YTnLjjn_Vtk0V8cdcY5lC4plU"></script>
     <!-- Place this tag in your head or just before your close body tag. -->
-    <script async defer src="../../../buttons.github.io/buttons.js"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Chartist JS -->
     <script src="{% static 'js/plugins/chartist.min.js' %}"></script>
     <!--  Notifications Plugin    -->
     <script src="{% static 'js/plugins/bootstrap-notify.js' %}"></script>
     <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
-    <script src="{% static 'js/material-dashboard.min1c51.js?v=2.1.2' %}  type="></script>
+    <script src="{% static 'js/material-dashboard.min1c51.js' %}"></script>
     <!-- Material Dashboard DEMO methods, don't include it in your project! -->
     <script src=" {% static 'demo/demo.js' %} "></script>
     <script>
@@ -364,71 +363,7 @@
             "https://demos.creative-tim.com/material-dashboard-pro/examples/dashboard.html",
         });
 
-        // Facebook Pixel Code Don't Delete
-        !(function (f, b, e, v, n, t, s) {
-          if (f.fbq) return;
-          n = f.fbq = function () {
-            n.callMethod
-              ? n.callMethod.apply(n, arguments)
-              : n.queue.push(arguments);
-          };
-          if (!f._fbq) f._fbq = n;
-          n.push = n;
-          n.loaded = !0;
-          n.version = "2.0";
-          n.queue = [];
-          t = b.createElement(e);
-          t.async = !0;
-          t.src = v;
-          s = b.getElementsByTagName(e)[0];
-          s.parentNode.insertBefore(t, s);
-        })(
-          window,
-          document,
-          "script",
-          "../../../connect.facebook.net/en_US/fbevents.html"
-        );
-
-        try {
-          fbq("init", "111649226022273");
-          fbq("track", " PageView ");
-        } catch (err) {
-          console.log("Facebook Track Error:", err);
-        }
       });
-    </script>
-    <script>
-      // Facebook Pixel Code Don't Delete
-      !(function (f, b, e, v, n, t, s) {
-        if (f.fbq) return;
-        n = f.fbq = function () {
-          n.callMethod
-            ? n.callMethod.apply(n, arguments)
-            : n.queue.push(arguments);
-        };
-        if (!f._fbq) f._fbq = n;
-        n.push = n;
-        n.loaded = !0;
-        n.version = "2.0";
-        n.queue = [];
-        t = b.createElement(e);
-        t.async = !0;
-        t.src = v;
-        s = b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t, s);
-      })(
-        window,
-        document,
-        "script",
-        "../../../connect.facebook.net/en_US/fbevents.html"
-      );
-
-      try {
-        fbq("init", "111649226022273");
-        fbq("track", " PageView ");
-      } catch (err) {
-        console.log("Facebook Track Error:", err);
-      }
     </script>
     <noscript>
       <img
@@ -439,15 +374,15 @@
         https://www.facebook.com/tr?id=111649226022273&amp;ev=PageView&amp;noscript=1 "
       />
     </noscript>
-    <script>
+    <!-- <script>
       $(document).ready(function () {
         // Javascript method's body can be found in assets/js/demos.js
         md.initDashboardPageCharts();
 
         md.initVectorMap();
       });
-    </script>
-    <script>
+    </script> -->
+    <!-- <script>
       $(document).ready(function () {
         $("#datatables").DataTable({
           " pagingType": "full_numbers",
@@ -475,7 +410,7 @@
         table.row($tr).remove().draw();
         e.preventDefault();
       }); //Like record table.on('click', '.like' , function() { alert('You clicked on Like button');
-    </script>
+    </script> -->
 
     {% comment %}This script is for form componant validation {% endcomment %}
     <script>

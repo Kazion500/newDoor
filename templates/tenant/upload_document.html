@@ -1,5 +1,7 @@
-{% extends 'base.html' %} {% block title %} Upload_Documents {% endblock title%}
-{% block body %} {% load static %}
+{% extends 'base.html' %} {% block title %} Upload_Documents {% endblock title %} {% load static %} {% block gallerycss %}
+<link href="{% static 'css/gallery.css' %}" rel="stylesheet" />
+{% endblock %} {% block body %}
+
 <div class="col-md-12">
   <form
     id="TypeValidation"
@@ -28,28 +30,49 @@
           >
           <div class="col-sm-4">
             <div class="form-group bmd-form-group">{{ form.doc_type }}</div>
+            <small class="text-muted">Upload both front and back for each document</small>
           </div>
-          <!-- <div class="col-sm-4"> -->
-            <input type="hidden" name="{{ form.tenant.name }}" value="{{ tenant.pk }}"/>
-          <!-- </div> -->
+       
+          <div class="col-sm-3" style="display: none">
+            <input
+              type="hidden"
+              name="{{ form.tenant.name }}"
+              value="{{ tenant.pk }}"
+            />
+          </div>
 
-          <!-- <button
-            class="btn btn-rose btn-round"
-            type="button"
-            id="image_upload"
-          >
-            <i class="material-icons">open_in_browser </i> Browse File
-            <div class="ripple-container"></div>
-          </button> -->
-          <input type="file" name="image" id="image_upload" multiple />
+          <div class="col-sm-3">
+            <button
+              class="btn btn-rose btn-round btn-sm"
+              type="button"
+              onclick="document.getElementById('image_upload').click()"
+            >
+              <i class="material-icons">open_in_browser </i> Browse File
+              <div class="ripple-container"></div>
+            </button>
+            <input
+              type="file"
+              name="image"
+              id="image_upload"
+              style="display: none"
+            />
+          </div>
+          <div class="col-sm-3">
+            <button
+              class="btn btn-rose btn-round btn-sm float-right ml-auto"
+              type="Submit"
+            >
+              <i class="material-icons">near_me </i> Submit
+              <div class="ripple-container"></div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-          <button
-            class="btn btn-rose btn-round float-right ml-auto"
-            type="Submit"
-          >
-            <i class="material-icons">near_me </i> Submit
-            <div class="ripple-container"></div>
-          </button>
+    <div class="card imagePreviewIcon">
+      <div class="card-body">
+        <div class="row staged-docs">
         </div>
       </div>
     </div>
@@ -73,7 +96,7 @@
                     <th>File Name</th>
                     <th>Size</th>
                     <th>File Progress</th>
-                    <th class="disabled-sorting text-right">Actions</th>
+                    <!-- <th class="disabled-sorting text-right">Actions</th> -->
                   </tr>
                 </thead>
                 <tbody>
@@ -84,7 +107,7 @@
                     <td>{{uploaded_document.image.name}}</td>
                     <td>{{uploaded_document.image.size}} KB</td>
                     <td>100%</td>
-
+<!-- 
                     <td class="text-right">
                       <a href="" class="d-inline" title="Delete file">
                         <i
@@ -99,7 +122,7 @@
                         >
                         <div class="ripple-container"></div>
                       </a>
-                    </td>
+                    </td> -->
                   </tr>
                   {% endfor %} {% else %} NoData {% endif %}
                 </tbody>
@@ -111,11 +134,12 @@
     </div>
   </div>
   <div class="card">
+    <h4 class="card-header">Uploaded Documents</h4>
     <div class="card-body">
       <div class="row">
         {% for uploaded_document in uploaded_documents %}
         <div
-          class="col-md-4 ml-4"
+          class="col-md-4 ml-4 my-2"
           style="height: 200px;
           background-image: url('{{ uploaded_document.image.url }}'); background-size: cover;"
         ></div>
@@ -124,5 +148,170 @@
     </div>
   </div>
 </div>
+
+<script>
+  let fileInput = document.getElementById("image_upload");
+  let stagedDocs = document.querySelector(".staged-docs");
+  let imagePreviewIcon = document.querySelector(".imagePreviewIcon");
+  const url = `/upload-documents/{{ tenant.user.username }}`;
+
+
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        // Does this cookie string begin with the name we want?
+        if (cookie.substring(0, name.length + 1) === name + "=") {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+  const csrftoken = getCookie("csrftoken");
+ 
+
+  uploadFile();
+
+  function removeOperation(div,input){
+    let closeBtns = document.querySelectorAll(".fa-times");
+    let upload = document.querySelector(".fa-check-circle");
+
+    console.log(input.files);
+    
+      closeBtns.forEach((closeBtn)=>{
+        closeBtn.addEventListener('click',()=>{
+          // file.remove
+          div.remove()
+          
+          console.log(stagedDocs.children);
+        
+        })
+      })
+
+    // if(upload){
+    //   upload.addEventListener('click',(e)=>{
+    //     const form = new FormData()
+    //     form.append(input.files)
+    //     $.ajax({
+    //       url: url,
+    //       method: "POST",
+    //       data: {
+    //         user: "{{ tenant.user.username }}",
+    //         operation: "save",
+    //         filename: form,
+    //       },
+    //       headers: {
+    //         "X-CSRFToken": csrftoken,
+    //       },
+    //       success(data) {
+    //         // this.classList.add('text-success')
+    //         for (let i = 0; i < iconVerify.length; i++) {
+    //           console.log(iconVerify[i].dataset.fileName);
+    //           if (iconVerify[i].dataset.fileName === data.file) {
+    //             iconVerify[i].classList.add('text-success')
+    //           }
+    //         }
+    //       },
+    //     });
+    //   })
+    // }
+  }
+
+  function uploadFile() {
+    // Multiple images preview in browser
+    var imagesPreview = function (input, placeToInsertImagePreview) {
+      if (input.files) {
+        var filesAmount = input.files.length;
+
+        if (stagedDocs.children.length > 1) {
+          alert("Only two(2) documents front and back pictures are required");
+          return false;
+        }
+
+        for (i = 0; i < filesAmount; i++) {
+          switch(input.files[i].type){
+            case "application/pdf":
+              alert("Document should be type of Png, Jpeg, Jpg only");
+              return false;
+            break
+
+            case "video/x-ms-wmv":
+              alert("Document should be type of Png, Jpeg, Jpg only");
+              return false;
+            break
+            case "video/mp4":
+              alert("Document should be type of Png, Jpeg, Jpg only");
+              return false;
+            break
+            case !"image/jpeg":
+              alert("Document should be type of Png, Jpeg, Jpg only");
+              return false;
+            break
+            case !"image/png":
+              alert("Document should be type of Png, Jpeg, Jpg only");
+              return false;
+            break
+            case !"image/jpg":
+              alert("Document should be type of Png, Jpeg, Jpg only");
+              return false;
+            break
+            case "video/x-matroska":
+              alert("Document should be type of Png, Jpeg, Jpg only");
+              return false;
+            break   
+          }
+
+
+          let reader = new FileReader();
+
+          reader.onload = function (event) {
+            imagePreviewIcon.style.display = "block";
+            let div = document.createElement("div");
+            div.classList.add("col-md-3", "gallery");
+            let img = document.createElement("img");
+            let iconWrapper = document.createElement("div");
+            let iconClose = document.createElement("span");
+            let iconUpload = document.createElement("span");
+            let closeIcon = document.createElement("i");
+            let uploadIcon = document.createElement("i");
+            iconWrapper.classList.add("icon-wrapper");
+            iconClose.setAttribute("id", "close");
+            iconUpload.setAttribute("id", "upload");
+            closeIcon.classList.add("fas", "fa-times", "text-danger");
+            uploadIcon.classList.add("fas", "fa-check-circle", "text-success");
+            // uploadIcon.setAttribute('data-file-name','');
+            iconWrapper.appendChild(iconClose);
+            iconWrapper.appendChild(iconUpload);
+            iconClose.appendChild(closeIcon);
+            iconUpload.appendChild(uploadIcon);
+            img.setAttribute("src", event.target.result);
+            img.setAttribute("alt", "imagePreview");
+            div.appendChild(img);
+            div.appendChild(iconWrapper);
+            placeToInsertImagePreview.appendChild(div);
+
+            
+            removeOperation(div,input)
+            
+          };
+          
+          reader.readAsDataURL(input.files[i]);
+        }
+      }
+    };
+
+    fileInput.addEventListener("change", () => {
+      imagesPreview(fileInput, stagedDocs);
+    });
+
+  }
+  
+
+  
+</script>
 
 {% endblock body %}

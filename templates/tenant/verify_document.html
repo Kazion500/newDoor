@@ -1,5 +1,7 @@
 {% extends 'base.html' %} {% load static %} {% block title %} Review Documents
-{% endblock title%} {% block body %}
+{% endblock title%} {% block gallerycss %}
+<link href="{% static 'css/gallery.css' %}" rel="stylesheet" />
+{% endblock %} {% block body %}
 <div class="col-md-12">
   <form
     id="TypeValidation"
@@ -27,23 +29,68 @@
         <div class="row justify-content-center">
           <!-- *************************User Documents tab*************** -->
           <div class="col-md-12">
+
+            <!-- Modal -->
+            <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Zoomed Image</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div class="card p-3">
               <div class="card-header">
                 <h4 class="card-title"><strong>User Documents</strong></h4>
               </div>
               <hr class="m-0" />
-              <div class="card-body row py-5" style="width: 100%">
+              <div class="card-body row py-5 verify-doc" style="width: 100%">
                 {% for tenant_doc in tenant_docs %}
                 <div
-                  class="tenant-doc col-md-4 ml-4 p-0"
-                  style="width: 100%; height: 200px"
+                  class="tenant-doc col-md-3 p-0 my-2"
+                  
+                  style="width: 100%; height: 140px; cursor: pointer;"
                 >
                   <img
+                    data-target="#staticBackdrop"
+                    data-toggle="modal"
                     src="{{ tenant_doc.image.url }}"
                     alt=""
-                    class="img-fluid"
+                    class="img-fluid click_img"
+                    data-image="{{ tenant_doc.image.url }}"
                     style="object-fit: cover; height: 100%"
                   />
+                  <div class="verify-wrapper-icon">
+                    <i
+                      class="fas fa-times mr-2 text-danger icon-remove"
+                      data-file-name="{{ tenant_doc.image.name }}"
+                    ></i>
+                    
+                    {% if tenant_doc.is_verified %}
+                    <i
+                      class="fas fa-check-circle icon-verify text-success"
+                      data-file-name="{{ tenant_doc.image.name }}"
+                    ></i>
+                    {% else %}
+                    <i
+                      class="fas fa-check-circle icon-verify"
+                      data-file-name="{{ tenant_doc.image.name }}"
+                    ></i>
+                    {% endif %}
+                      
+                    
+                  </div>
                 </div>
                 {% endfor %}
               </div>
@@ -52,16 +99,21 @@
               <div class="form-check form-check-inline ml-4">
                 <label class="form-check-label" for="is_verified">
                   {% for fields in form %} {% if fields.name == "is_verified" %}
-                  
+
                   <input
                     class="form-check-input"
                     type="checkbox"
                     id="is_verified"
                     name="{{ fields.name }}"
-                  {% if  fields.value  %}
+                    {%
+                    if
+                    fields.value
+                    %}
                     checked
-                  {% endif %}
-                    />
+                    {%
+                    endif
+                    %}
+                  />
                   Verify documents
                   <span class="form-check-sign">
                     <span class="check"></span>
@@ -79,7 +131,8 @@
                     rows="10"
                     class="form-control border"
                     placeholder="Leave a comment about the above pictures"
-                  >{{ fields.value }}</textarea
+                  >
+{{ fields.value }}</textarea
                   >
                 </div>
               </div>
@@ -102,11 +155,107 @@
           </div>
         </div>
       </div>
-      <button class="btn btn-rose btn-round w-25 mb-5 ml-5" type="Submit">
+      <!-- <button class="btn btn-rose btn-round w-25 mb-5 ml-4" type="Submit">
         <i class="material-icons">near_me </i> Verify
-      </button>
+      </button> -->
       <br />
     </div>
   </form>
 </div>
+<script>
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        // Does this cookie string begin with the name we want?
+        if (cookie.substring(0, name.length + 1) === name + "=") {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+  const csrftoken = getCookie("csrftoken");
+
+  const iconVerify = document.querySelectorAll(".icon-verify");
+  const iconRemove = document.querySelectorAll(".icon-remove");
+
+  const url = `/verify-documents/{{ tenant.user.username }}`;
+
+  // remove icon
+  iconRemove.forEach((icon) => {
+    icon.addEventListener("click", (e) => {
+      $.ajax({
+        url: url,
+        method: "POST",
+        data: {
+          user: "{{ tenant.user.username }}",
+          operation: "delete",
+          filename: e.target.dataset.fileName,
+        },
+        headers: {
+          "X-CSRFToken": csrftoken,
+        },
+        success(){
+          location.pathname = url
+        }
+      });
+    });
+  });
+
+  iconVerify.forEach((icon) => {
+    icon.addEventListener("click", (e) => {
+      $.ajax({
+        url: url,
+        method: "POST",
+        data: {
+          user: "{{ tenant.user.username }}",
+          operation: "save",
+          filename: e.target.dataset.fileName,
+        },
+        headers: {
+          "X-CSRFToken": csrftoken,
+        },
+        success(data) {
+          // this.classList.add('text-success')
+          for (let i = 0; i < iconVerify.length; i++) {
+            console.log(iconVerify[i].dataset.fileName);
+            if (iconVerify[i].dataset.fileName === data.file) {
+              iconVerify[i].classList.add('text-success')
+            }
+          }
+        },
+      });
+    });
+  });
+
+  let clickImg = document.querySelectorAll('.click_img')
+  let modalBody = document.querySelector('.modal-body')
+  let dismissModal = document.querySelectorAll("button[data-dismiss='modal']")
+
+  
+
+  clickImg.forEach((imgTag)=>{
+    console.log(imgTag);
+    imgTag.addEventListener('click',(e)=>{
+      let imageUrl = e.target.dataset.image
+      const img = document.createElement('img')
+      img.setAttribute('src',imageUrl)
+      img.setAttribute('alt','Document')
+      modalBody.appendChild(img)
+     
+    })
+  })
+
+  dismissModal.forEach((btn)=>{
+    btn.addEventListener('click',()=>{
+    modalBody.innerHTML = ''
+  })
+  })
+  
+
+</script>
 {% endblock body %}

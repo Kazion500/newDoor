@@ -101,6 +101,8 @@ urlpatterns = [
          views.review_documents, name='review_documents'),
     path('verify-documents/<str:user>',
          views.verify_documents, name='verify_documents'),
+    path('delete-documents/<str:doc_id>',
+         views.upload_doc_delete, name='upload_doc_delete'),
 
 
 
@@ -168,7 +170,7 @@ urlpatterns = [
     path('payment/<str:user>', views.payment, name='payment'),
 
     # Authentication routes
-    path('auth/signup/', auth_views.signup_view, name='signup'),
+#     path('auth/signup/', auth_views.signup_view, name='signup'),
     path('auth/login/', auth_views.login_view, name='login'),
     path('auth/logout/', auth_views.logout_view, name='logout'),
     path('activate/<uidb64>/<token>', views.email_verification, name='activate'),
