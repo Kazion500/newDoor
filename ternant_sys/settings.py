@@ -30,7 +30,6 @@ INSTALLED_APPS = [
     'new_door.apps.NewDoorConfig',
     'accounts.apps.AccountsConfig',
     'django_countries',
-    'verify_email',
 ]
 
 MIDDLEWARE = [

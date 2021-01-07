@@ -253,8 +253,7 @@
 
       switch (occupancyTypeText) {
         case "vacant":
-          occupancyType.style.backgroundColor = "greenyellow";
-          occupancyType.style.color = "black";
+          occupancyType.style.backgroundColor = "green";
           break;
 
         case "occupied":
@@ -265,19 +264,24 @@
           occupancyType.style.backgroundColor = "greenyellow";
           occupancyType.style.color = "black";
           break;
-          
+
         case "document pending":
-          occupancyType.style.backgroundColor = "yellow";
+          occupancyType.style.backgroundColor = "lightblue";
+          occupancyType.style.color = "black";
           break;
 
-        case "document review":
+        case "payment pending":
+          occupancyType.style.backgroundColor = "#1f97c7";
+          break;
+
+        case "create contract":
           occupancyType.style.backgroundColor = "#000";
           break;
 
         case "document approved":
           occupancyType.style.backgroundColor = "#000";
           break;
-          
+
         case "payment pending":
           occupancyType.style.backgroundColor = "#000";
           break;

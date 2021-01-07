@@ -1523,4 +1523,4 @@ def property_unit_overview(request, id):
         'number_of_occupied_units': number_of_occupied_units,
     }
 
-    return render(request, 'new_door/unit_overview.html', context)
+    return render(request, 'new_door/property_unit_overview.html', context)
