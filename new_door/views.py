@@ -216,7 +216,7 @@ def review_documents(request, user):
                 request, 'Congratulations...! Contract successfully added.')
             return redirect('add_tetant_contract')
     else:
-        form = TenantContractModelForm()
+        form = TenantContractModelForm(instance=tenant_contract)
 
     context = {
         'form': form,
@@ -270,8 +270,9 @@ def verify_documents(request, user):
 
             unit.occupancy_type = occupancy_type_
             unit.save()
-            messages.success(request, 'Congratulations...! Documents verified successfully added.')
-            
+            messages.success(
+                request, 'Congratulations...! Documents verified successfully added.')
+
             msg = f"Hi {user} \n {filename} have been accepted. \n Kindly login to the dashboard and proceed with the making payment"
             send_mail(
                 'Documents Approved',
@@ -558,6 +559,7 @@ def email_verification(request, uidb64, token):
 # @login_required
 
 
+@login_required
 def add_tenant_to_unit(request, unit_id):
     unit = Unit.objects.get(pk=unit_id)
 
@@ -596,6 +598,8 @@ def add_tenant_to_unit(request, unit_id):
             tenant = Profile.objects.get(user=user)
             print(tenant)
             tenant_contract = TenantContract(tenant=tenant, unit=unit)
+            property_ = Property.objects.get(unit=unit)
+            tenant_contract.property_id = property_
             unit.occupancy_type = occupancy_type
             unit.save()
             tenant_contract.save()
@@ -735,21 +739,34 @@ def add_occupancy_type(request):
 def add_tetant_contract(request, user):
     # Todo: Make sure template has valid fields
     tenant_contract = TenantContract.objects.get(tenant__user__username=user)
+
+    tenant = Profile.objects.get(user__username=user)
+    property_ = Property.objects.get(pk=tenant_contract.property_id.pk)
+    unit = Unit.objects.get(pk=tenant_contract.unit.pk)
+    unit_occupancy = OccupancyType.objects.get(
+        occupancy_type__iexact='Occupied')
+    unit.occupancy_type = unit_occupancy
+    unit.save()
+
     occupancy_types = OccupancyType.objects.all()
 
     if request.method == 'POST':
         form = TenantContractModelForm(request.POST, instance=tenant_contract)
+        print(form.errors)
         if form.is_valid():
             form.save()
             messages.success(
                 request, 'Congratulations...! Contract successfully added.')
-            # return redirect('add_tetant_contract')
+            return redirect('review_documents', user)
     else:
         form = TenantContractModelForm(instance=tenant_contract)
 
     context = {
         'form': form,
         'occupancy_types': occupancy_types,
+        "tenant": tenant,
+        "property": property_,
+        "unit": unit,
     }
 
     return render(request, 'tenant/tenant_contract.html', context)

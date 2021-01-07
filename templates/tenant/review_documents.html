@@ -1,284 +1,255 @@
 {% extends 'base.html' %} {% load static %} {% block title %} Review Documents
 {% endblock title%} {% block body %}
 <div class="col-md-12">
-  <form
-    id="TypeValidation"
-    class="form-horizontal"
-    action="#"
-    method="post"
-    novalidate="novalidate"
-    enctype="multipart/form-data"
-  >
-    {% csrf_token %}
-    <div class="card">
-      <div
-        class="card-header card-header-rose card-header-text"
-        style="font-size: 20px"
-      >
-        <div class="card-text">
-          <a href="" class="card-header card-header-rose card-header-text">
-            <i class="material-icons">roofing</i> Review_Documents
-          </a>
-        </div>
+  {% csrf_token %}
+  <div class="card">
+    <div
+      class="card-header card-header-rose card-header-text"
+      style="font-size: 20px"
+    >
+      <div class="card-text">
+        <a href="" class="card-header card-header-rose card-header-text">
+          <i class="material-icons">roofing</i> Review Documents
+        </a>
       </div>
+    </div>
 
-      <div class="card-body">
-        <br />
-        {% comment %} Row1 {% endcomment %}
-        <div class="row">
-          <div class="col-md-6">
-            <div class="card" style="background-color: rgb(249, 231, 255)">
-              <div class="card-header">
-                <h4 class="card-title"><strong>User Details</strong></h4>
-              </div>
-              <br />
-              <div style="margin-left: 30px">
-                <div class="row">
-                  <label class="col-sm-3 col-form-label" for="ContractNo"
-                    >Contract No.*</label
-                  >
-                  <div class="col-sm-8">
-                    <div class="form-group bmd-form-group">
-                      <input
-                        class="form-control"
-                        value="{{pi.ContractNo}}"
-                        type="text"
-                        id="ContractNo"
-                        name="ContractNo"
-                        required="true"
-                        aria-required="true"
-                      />
-                      {{form.contract_no}}
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <label class="col-sm-3 col-form-label" for="StartDate"
-                    >Start Date*</label
-                  >
-                  <div class="col-sm-8">
-                    <div class="form-group bmd-form-group">
-                      <input
-                        class="form-control"
-                        value="{{pi.StartDate}}"
-                        type="date"
-                        id="StartDate"
-                        name="StartDate"
-                        required="true"
-                        aria-required="true"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {% comment %} Row2 {% endcomment %}
-                <div class="row">
-                  <label class="col-sm-3 col-form-label" for="EndDate"
-                    >End Date*</label
-                  >
-                  <div class="col-sm-8">
-                    <div class="form-group bmd-form-group">
-                      <input
-                        class="form-control"
-                        value="{{pi.EndDate}}"
-                        type="date"
-                        id="EndDate"
-                        name="EndDate"
-                        required="true"
-                        aria-required="true"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <label class="col-sm-3 col-form-label" for="Discount"
-                    >Discount*</label
-                  >
-                  <div class="col-sm-8">
-                    <div class="form-group bmd-form-group">
-                      <input
-                        class="form-control"
-                        value="{{pi.Discount}}"
-                        type="text"
-                        id="Discount"
-                        name="Discount"
-                        required="true"
-                        aria-required="true"
-                      />
-                    </div>
-                  </div>
-                </div>
-                {% comment %} Row3 {% endcomment %}
-                <div class="row">
-                  <label class="col-sm-3 col-form-label" for="AnnualRent"
-                    >Annual Rent*</label
-                  >
-                  <div class="col-sm-8">
-                    <div class="form-group bmd-form-group">
-                      <input
-                        class="form-control"
-                        value="{{pi.AnnualRent}}"
-                        type="text"
-                        id="AnnualRent"
-                        name="AnnualRent"
-                        required="true"
-                        aria-required="true"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <label class="col-sm-3 col-form-label" for="SecurityDep"
-                    >Security Deposit*</label
-                  >
-                  <div class="col-sm-8">
-                    <div class="form-group bmd-form-group">
-                      <input
-                        class="form-control"
-                        value="{{pi.SecurityDep}}"
-                        type="text"
-                        id="SecurityDep"
-                        name="SecurityDep"
-                        required="true"
-                        aria-required="true"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {% comment %} Row4 {% endcomment %}
-                <div class="row">
-                  <label class="col-sm-3 col-form-label" for="Commission"
-                    >Commission*</label
-                  >
-                  <div class="col-sm-8">
-                    <div class="form-group bmd-form-group">
-                      <input
-                        class="form-control"
-                        value="{{pi.Commission}}"
-                        type="text"
-                        id="Commission"
-                        name="Commission"
-                        required="true"
-                        aria-required="true"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <label class="col-sm-3 col-form-label" for="Installments"
-                    >Installments*</label
-                  >
-                  <div class="col-sm-8">
-                    <div class="form-group bmd-form-group">
-                      <input
-                        class="form-control"
-                        value="{{pi.Installments}}"
-                        type="number"
-                        id="Installments"
-                        name="Installments"
-                        required="true"
-                        aria-required="true"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {% comment %} Row5 {% endcomment %}
-                <div class="row">
-                  <label class="col-sm-3 col-form-label" for="Remark"
-                    >Remark*</label
-                  >
-                  <div class="col-sm-8">
-                    <div class="form-group bmd-form-group">
-                      <input
-                        class="form-control"
-                        value="{{pi.Remark}}"
-                        type="text"
-                        id="Remark"
-                        name="Remark"
-                        required="true"
-                        aria-required="true"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div class="row" style="margin-top: 20px; margin-bottom: 10px">
-                  <div class="row">
-                    <div class="form-check form-check-inline" style="left: 4px">
-                      <label class="form-check-label" for="SMSNotify">
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          value=""
-                          id="SMSNotify"
-                          name="SMSNotify"
-                          required="true"
-                          aria-required="true"
-                        />
-                        SMS Notification
-                        <span class="form-check-sign" style="left: 146px">
-                          <span class="check"></span>
-                        </span>
-                      </label>
-                    </div>
-                    <div
-                      class="form-check form-check-inline"
-                      style="left: 34px"
-                    >
-                      <label class="form-check-label" for="EmailNotify">
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          value=""
-                          id="EmailNotify"
-                          name="EmailNotify"
-                          required="true"
-                          aria-required="true"
-                        />
-                        Email Notification
-                        <span class="form-check-sign" style="left: 146px">
-                          <span class="check"></span>
-                        </span>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
+    <div class="card-body">
+      <br />
+      {% comment %} Row1 {% endcomment %}
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card" style="background-color: rgb(249, 231, 255)">
+            <div class="card-header">
+              <h4 class="card-title"><strong>User Details</strong></h4>
             </div>
-          </div>
-
-          <!-- *************************User Documents tab*************** -->
-          <div class="col-md-6">
-            <div class="card">
-              <div class="card-header">
-                <h4 class="card-title"><strong>User Documents</strong></h4>
-              </div>
-
-              <div class="card-body" style="width: 100%">
-                {% for tenant_doc in tenant_docs %}
-                <div
-                  class="tenant-doc col-md-12 mb-4 p-0"
-                  style=" width: 100%; height: 200px"
+            <br />
+            <div style="margin-left: 30px">
+              <div class="row">
+                <label class="col-sm-3 col-form-label" for="ContractNo"
+                  >Contract No.*</label
                 >
-                  <img
-                    src="{{ tenant_doc.image.url }}"
-                    alt=""
-                    style="object-fit: cover; height: 100%"
-                  />
+                <div class="col-sm-8">
+                  <div class="form-group bmd-form-group">
+                    <input
+                      class="form-control"
+                      id="contract_no"
+                      value="{{form.contract_no.value}}"
+                      disabled
+                    />
+                  </div>
                 </div>
-                {% endfor %}
+              </div>
+              <div class="row">
+                <label class="col-sm-3 col-form-label" for="start_date"
+                  >Start Date*</label
+                >
+                <div class="col-sm-8">
+                  <div class="form-group bmd-form-group">
+                    <input
+                      class="form-control"
+                      id="start_date"
+                      value="{{form.start_date.value}}"
+                      disabled
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {% comment %} Row2 {% endcomment %}
+              <div class="row">
+                <label class="col-sm-3 col-form-label" for="end_date"
+                  >End Date*</label
+                >
+                <div class="col-sm-8">
+                  <div class="form-group bmd-form-group">
+                    <input
+                      class="form-control"
+                      id="end_date"
+                      value="{{form.end_date.value}}"
+                      disabled
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <label class="col-sm-3 col-form-label" for="discount"
+                  >Discount*</label
+                >
+                <div class="col-sm-8">
+                  <div class="form-group bmd-form-group">
+                    <input
+                      class="form-control"
+                      id="discount"
+                      value="{{form.discount.value}}"
+                      disabled
+                    />
+                  </div>
+                </div>
+              </div>
+              {% comment %} Row3 {% endcomment %}
+              <div class="row">
+                <label class="col-sm-3 col-form-label" for="annual_rent"
+                  >Annual Rent*</label
+                >
+                <div class="col-sm-8">
+                  <div class="form-group bmd-form-group">
+                    <input
+                      class="form-control"
+                      id="annual_rent"
+                      value="{{form.annual_rent.value}}"
+                      disabled
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <label class="col-sm-3 col-form-label" for="security_dep"
+                  >Security Deposit*</label
+                >
+                <div class="col-sm-8">
+                  <div class="form-group bmd-form-group">
+                    <input
+                      class="form-control"
+                      id="security_dep"
+                      value="{{form.security_dep.value}}"
+                      disabled
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {% comment %} Row4 {% endcomment %}
+              <div class="row">
+                <label class="col-sm-3 col-form-label" for="commission"
+                  >Commission*</label
+                >
+                <div class="col-sm-8">
+                  <div class="form-group bmd-form-group">
+                    <input
+                      class="form-control"
+                      id="commission"
+                      value="{{form.commission.value}}"
+                      disabled
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <label class="col-sm-3 col-form-label" for="installments"
+                  >Installments*</label
+                >
+                <div class="col-sm-8">
+                  <div class="form-group bmd-form-group">
+                    <input
+                      class="form-control"
+                      id="installments"
+                      value="{{form.installments.value}}"
+                      disabled
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {% comment %} Row5 {% endcomment %}
+              <div class="row">
+                <label class="col-sm-3 col-form-label" for="remark"
+                  >Remark*</label
+                >
+                <div class="col-sm-8">
+                  <div class="form-group bmd-form-group">
+                    <input
+                      class="form-control"
+                      id="remark"
+                      value="{{form.remark.value}}"
+                      disabled
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row" style="margin-top: 20px; margin-bottom: 10px">
+                <div class="row">
+                  <div class="form-check form-check-inline" style="left: 4px">
+                    <label class="form-check-label" for="sms_notify">
+                      <input
+                        type="checkbox"
+                        class="form-check-input"
+                        id="sms_notify"
+                        {%
+                        if
+                        form.sms_notify.value
+                        %}
+                        checked
+                        {%
+                        endif
+                        %}
+                        disabled
+                      />
+                      SMS Notification
+                      <span class="form-check-sign" style="left: 146px">
+                        <span class="check"></span>
+                      </span>
+                    </label>
+                  </div>
+                  <div class="form-check form-check-inline" style="left: 34px">
+                    <label class="form-check-label" for="email_notify">
+                      <input
+                        type="checkbox"
+                        class="form-check-input"
+                        id="email_notify"
+                        {%
+                        if
+                        form.email_notify.value
+                        %}
+                        checked
+                        {%
+                        endif
+                        %}
+                        disabled
+                      />
+                      Email Notification
+                      <span class="form-check-sign" style="left: 146px">
+                        <span class="check"></span>
+                      </span>
+                    </label>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
+
+        <!-- *************************User Documents tab*************** -->
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="card-title"><strong>User Documents</strong></h4>
+            </div>
+
+            <div class="card-body" style="width: 100%">
+              {% for tenant_doc in tenant_docs %}
+              <div
+                class="tenant-doc col-md-12 mb-4 p-0"
+                style="width: 100%; height: 200px"
+              >
+                <img
+                  src="{{ tenant_doc.image.url }}"
+                  alt=""
+                  style="object-fit: cover; height: 100%"
+                />
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
       </div>
-      <button class="btn btn-rose btn-round float-right" type="Submit">
-        <i class="material-icons">near_me </i> Submit
+    </div>
+    <div class="card-footer">
+      <button class="btn btn-rose btn-round float-right" onclick="print()">
+        <i class="material-icons">near_me </i> Send Contract to Tenant
         <div class="ripple-container"></div>
       </button>
-      <br />
     </div>
-  </form>
+  </div>
 </div>
 {% endblock body %}

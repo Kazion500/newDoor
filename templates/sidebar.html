@@ -20,7 +20,14 @@
   <div class="sidebar-wrapper ps ps--active-y">
     <div class="user">
       <div class="photo">
-        <img src="{% static '/img/faces/Javed.jpg' %}" />
+        
+        {% if request.user.profile.image %}
+        <img src="{{request.user.profile.image.url}}" />
+        {% else %}
+        <img src="{% static 'img/faces/avatar.png' %}" />
+        {% endif %}
+          
+       
       </div>
       <div class="user-info">
         <a data-toggle="collapse" href="#collapseExample" class="username">

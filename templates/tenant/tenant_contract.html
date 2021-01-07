@@ -27,7 +27,10 @@
         <div class="row">
           <label class="col-sm-2 col-form-label" for="TenantID">Tenant*</label>
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.tenant }}</div>
+            <div class="form-group bmd-form-group">
+              <input class="form-control" value="{{ tenant }}" disabled />
+              <small style="display: none">{{ form.tenant }}</small>
+            </div>
           </div>
         </div>
         <div class="row">
@@ -35,11 +38,16 @@
             >Property Name*</label
           >
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.property_id }}</div>
+            <div class="form-group bmd-form-group">
+              <input value="{{ property }}" class="form-control" disabled>
+              <small style="display: none">{{ form.property_id }}</small>
+            </div>
           </div>
           <label class="col-sm-2 col-form-label" for="UnitID">Unit*</label>
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.unit }}</div>
+            <div class="form-group bmd-form-group">
+              {{ form.unit }}
+            </div>
           </div>
         </div>
         {% comment %} Row2 {% endcomment %}
@@ -111,8 +119,8 @@
           <div class="col-sm-4">
             <div class="form-group bmd-form-group">{{ form.remark }}</div>
           </div>
-          <div class="col-sm-4">
-            <div class="form-check form-check-inline" style="left: 4px">
+          <div class="col-sm-4 mt-4">
+            <div class="form-check form-check-inline">
               <label class="form-check-label" for="sms_notify">
                 {{ form.sms_notify }} SMS Notification
                 <span class="form-check-sign" style="left: 146px">
@@ -132,7 +140,7 @@
           <br />
           <hr />
         </div>
-        <div class="row">
+        <!-- <div class="row">
           <div
             class="fileinput fileinput-new text-center"
             data-provides="fileinput"
@@ -161,9 +169,9 @@
               >
             </div>
           </div>
-        </div>
+        </div> -->
 
-        <button class="btn btn-rose btn-round float-right" type="Submit">
+        <button class="btn btn-rose btn-round float-right mt-5" type="Submit">
           <i class="material-icons">near_me </i> Submit
           <div class="ripple-container"></div>
         </button>
