@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block title %} Unit Overview {% endblock title %}
+{% extends 'base.html' %}{% load humanize %} {% block title %} Unit Overview {% endblock title %}
 {% block body %}
 <div class="row">
   <div class="col-md-12">
@@ -125,24 +125,54 @@
               <td>{{unit.id}}</td>
               <td>{{unit.property_type.property_type}}</td>
               <td>
-                {% if unit.occupancy_type.occupancy_type.lower == 'invite user' %}                
-                <a href="{% url 'add_tenant_to_unit' unit.pk %}"
+                {% if unit.occupancy_type.occupancy_type.lower == 'vacant' %}
+                <a
+                  href="{% url 'add_tenant_to_unit' unit.pk %}"
                   class="btn btn-primary btn-round occupancy_type"
                 >
                   {{ unit.occupancy_type.occupancy_type }}
                 </a>
+                
+                {% elif unit.occupancy_type.occupancy_type.lower == 'document pending' %} 
+                  {% if unit.tenantcontract.tenant.uploaddocument_set.all.count > 0 %}
+                  
+                  <a
+                    href="{% url 'verify_documents' unit.tenantcontract.tenant.user.username %}"
+                    class="btn btn-primary btn-round occupancy_type"
+                  >
+                    {{ unit.occupancy_type.occupancy_type }}
+                  </a>
+                  {% else %}
+                  <button
+                    class="btn btn-primary btn-round occupancy_type"
+                  disabled>
+                    {{ unit.occupancy_type.occupancy_type }}
+                  </button>
+                  {% endif %}
+
+                {% elif unit.occupancy_type.occupancy_type.lower == 'create contract' %}
+                    <a
+                    href="{% url 'add_tetant_contract' unit.tenantcontract.tenant.user.username %}"
+                    class="btn btn-primary btn-round occupancy_type"
+                  >
+                    {{ unit.occupancy_type.occupancy_type }}
+                  </a>
                 {% else %}
-                <a href="" class="btn btn-primary btn-round occupancy_type">
+                <button
+                  class="btn btn-primary btn-round occupancy_type"
+                  disabled
+                >
                   {{ unit.occupancy_type.occupancy_type }}
-                </a>
+                </button>
                 {% endif %}
-                </a>
               </td>
-              <td>{{ unit.property_id.owner_name.user.username.capitalize }}</td>
+              <td>{{ unit.tenantcontract.tenant.user.username.capitalize }}</td>
+              <td>${{ unit.rent_amount|intcomma }}</td>
               <td>{{ unit.size }}</td>
               <td>{{ unit.size }}</td>
+
               <td class="text-right">
-                 <a href="#" class="d-inline" title="Renewal">
+                <a href="#" class="d-inline" title="Renewal">
                   <i
                     class="material-icons"
                     style="
@@ -176,7 +206,7 @@
                   rel="tooltip "
                   title="View unit"
                   data-original-title="Remove "
-                  >
+                >
                   <div class="ripple-container success"></div>
                   <i
                     class="material-icons"
@@ -190,8 +220,11 @@
                   >
                 </a>
 
-                <a href="{% url 'update_unit' unit.pk %}" class="d-inline"
-                  title="Update unit">
+                <a
+                  href="{% url 'update_unit' unit.pk %}"
+                  class="d-inline"
+                  title="Update unit"
+                >
                   <div class="ripple-container success"></div>
                   <i
                     class="material-icons"
@@ -205,8 +238,11 @@
                   >
                 </a>
 
-                  <a href="{% url 'delete_unit' unit.pk %}" class="d-inline" title="Delete unit">
-
+                <a
+                  href="{% url 'delete_unit' unit.pk %}"
+                  class="d-inline"
+                  title="Delete unit"
+                >
                   <i
                     class="material-icons"
                     style="

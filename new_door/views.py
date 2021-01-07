@@ -210,7 +210,6 @@ def review_documents(request, user):
         form = TenantContractModelForm(request.POST, instance=tenant_contract)
         if form.is_valid():
             contract_no = form.cleaned_data['contract_no']
-            print(contract_no)
             form.save()
             messages.success(
                 request, 'Congratulations...! Contract successfully added.')
@@ -249,14 +248,14 @@ def verify_documents(request, user):
                 if server_file == filename:
                     tenant_img.delete()
 
-            msg_error = f"Hi {user} \n document of type {filename} has been rejected because its not clear. \n "
-            send_mail(
-                'Documents Rejected',
-                msg_error,
-                'noreply@newdoor.com',
-                [tenant_email],
-                fail_silently=False,
-            )
+            # msg_error = f"Hi {user} \n document of type {filename} has been rejected because its not clear. \n "
+            # send_mail(
+            #     'Documents Rejected',
+            #     msg_error,
+            #     'noreply@newdoor.com',
+            #     [tenant_email],
+            #     fail_silently=False,
+            # )
 
         elif operation == 'save':
             tenant_img = ''
@@ -273,14 +272,14 @@ def verify_documents(request, user):
             messages.success(
                 request, 'Congratulations...! Documents verified successfully added.')
 
-            msg = f"Hi {user} \n {filename} have been accepted. \n Kindly login to the dashboard and proceed with the making payment"
-            send_mail(
-                'Documents Approved',
-                msg,
-                'noreply@newdoor.com',
-                [tenant_email],
-                fail_silently=False,
-            )
+            # msg = f"Hi {user} \n {filename} have been accepted. \n Kindly login to the dashboard and proceed with the making payment"
+            # send_mail(
+            #     'Documents Approved',
+            #     msg,
+            #     'noreply@newdoor.com',
+            #     [tenant_email],
+            #     fail_silently=False,
+            # )
             return JsonResponse({'message': 'verified', 'user': user, 'file': tenant_img.image.name})
 
         # form = UploadDocumentModelForm(
@@ -350,6 +349,15 @@ def payment(request, user):
             unit_contract.save()
             messages.success(
                 request, f'Payment of ${rental_amount.amount / 100} has been made successfully')
+
+            msg_error = f"Hi {user} \n You have made a payment of ${unit_contract.rent_amount} to new door real estate"
+            send_mail(
+                f'Payment Done for unit flat number {unit_contract.flat}',
+                msg_error,
+                'noreply@newdoor.com',
+                [profile.user.email],
+                fail_silently=False,
+            )
             return redirect('payment', profile.user.username)
     return render(request, 'payment/payment.html')
 
@@ -460,8 +468,6 @@ def add_user(request):
 
     if request.method == "POST":
         form = ProfileRegistrationForm(request.POST, request.FILES)
-        print(form.data)
-        print(form.errors)
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
@@ -596,7 +602,6 @@ def add_tenant_to_unit(request, unit_id):
                 occupancy_type='User Verification Pending')
 
             tenant = Profile.objects.get(user=user)
-            print(tenant)
             tenant_contract = TenantContract(tenant=tenant, unit=unit)
             property_ = Property.objects.get(unit=unit)
             tenant_contract.property_id = property_
@@ -752,11 +757,20 @@ def add_tetant_contract(request, user):
 
     if request.method == 'POST':
         form = TenantContractModelForm(request.POST, instance=tenant_contract)
-        print(form.errors)
         if form.is_valid():
             form.save()
             messages.success(
                 request, 'Congratulations...! Contract successfully added.')
+
+            msg = f"Hi {user} \n Your contract has been generated"
+            tenant.user.email
+            send_mail(
+                'Your Contract',
+                msg,
+                'noreply@newdoor.com',
+                [tenant.user.email],
+                fail_silently=False,
+            )
             return redirect('review_documents', user)
     else:
         form = TenantContractModelForm(instance=tenant_contract)
