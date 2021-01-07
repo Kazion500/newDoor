@@ -57,12 +57,21 @@
           >
           <div class="col-sm-4">
             <div class="form-group bmd-form-group">{{ form.contract_no }}</div>
+              <small style="color: red">{{ form.tenant.error }}</small>
           </div>
           <label class="col-sm-2 col-form-label" for="StartDate"
             >Start Date*</label
           >
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.start_date }}</div>
+            <div class="form-group bmd-form-group">
+              {{ form.start_date }}
+              
+              {% for error in form.start_date.errors %}
+                <small style="color: red;">{{ error }}</small>
+              {% endfor %}
+                
+            </div>
+            
           </div>
         </div>
 
@@ -71,12 +80,19 @@
           <label class="col-sm-2 col-form-label" for="EndDate">End Date*</label>
           <div class="col-sm-4">
             <div class="form-group bmd-form-group">{{ form.end_date }}</div>
+            {% for error in form.end_date.errors %}
+                <small style="color: red">{{ error }}</small>
+              {% endfor %}
           </div>
           <label class="col-sm-2 col-form-label" for="Discount"
             >Discount*</label
           >
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.discount }}</div>
+            <div class="form-group bmd-form-group">{{ form.discount }}
+              {% for error in form.discount.errors %}
+                <small style="color: red">{{ error }}</small>
+              {% endfor %}
+            </div>
           </div>
         </div>
         {% comment %} Row4 {% endcomment %}
@@ -85,14 +101,24 @@
             >Annual Rent*</label
           >
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.annual_rent }}</div>
+            <div class="form-group bmd-form-group">
+              {{ form.annual_rent }}
+              {% for error in form.annual_rent.errors %}
+                <small style="color: red">{{ error }}</small>
+              {% endfor %}
+            </div>
           </div>
 
           <label class="col-sm-2 col-form-label" for="SecurityDep"
             >Security Deposit*</label
           >
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.security_dep }}</div>
+            <div class="form-group bmd-form-group">
+              {{ form.security_dep }}
+             {% for error in form.security_dep.errors %}
+                <small style="color: red">{{ error }}</small>
+              {% endfor %}
+            </div>
           </div>
         </div>
 
@@ -102,14 +128,24 @@
             >Commission*</label
           >
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.commission }}</div>
+            <div class="form-group bmd-form-group">
+              {{ form.commission }}
+               {% for error in form.commission.errors %}
+                <small style="color: red">{{ error }}</small>
+              {% endfor %}
+            </div>
           </div>
 
           <label class="col-sm-2 col-form-label" for="Installments"
             >Installments*</label
           >
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.installments }}</div>
+            <div class="form-group bmd-form-group">
+              {{ form.installments }}
+            {% for error in form.installments.errors %}
+                <small style="color: red">{{ error }}</small>
+              {% endfor %}
+            </div>
           </div>
         </div>
 
