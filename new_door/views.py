@@ -47,7 +47,9 @@ from django.urls import reverse
 from decouple import config
 import stripe
 
-stripe.api_key = config('STRIPE_SECRET_KEY')
+# stripe.api_key = config('STRIPE_SECRET_KEY')
+stripe.api_key = 'sk_test_51I0mEFGz8qAcurV0PCi7DH9LM4fx9QghxgAxnV9eWAP1gmllKeSzmSIbDvU0THz6i0HzP7EdXHxBTVtbo1HHYd8u00lnHS3VYg'
+
 
 
 # Dashboard Rendering
