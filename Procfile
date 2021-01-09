@@ -1,0 +1,1 @@
+web: gunicorn ternant_sys.wsgi
