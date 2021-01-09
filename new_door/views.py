@@ -573,8 +573,6 @@ def add_tenant_to_unit(request, unit_id):
 
     if request.method == "POST":
         form = ProfileRegistrationForm(request.POST, request.FILES)
-        print(form.data)
-        print(form.errors)
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
