@@ -14,7 +14,7 @@ SECRET_KEY = 'zyj^8_&xxatsg-yc(fsg0w5iwe95^3a-5n8j%q2r733awf=qbk'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','https://newdoor.herokuapp.com/']
+ALLOWED_HOSTS = ['127.0.0.1','newdoor.herokuapp.com']
 
 
 # Application definition
