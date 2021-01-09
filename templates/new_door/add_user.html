@@ -33,11 +33,19 @@
             </div>
             <label class="col-sm-6 col-form-label">Password</label>
             <div class="col-sm-12">
-              <div class="form-group bmd-form-group">{{ form.password1 }}</div>
+              <div class="form-group bmd-form-group">
+                {{ form.password1 }} {% for error in form.password1.errors %}
+                <small style="color: red">{{ error }}</small>
+                {% endfor %}
+              </div>
             </div>
             <label class="col-sm-6 col-form-label">Confirm password</label>
             <div class="col-sm-12">
-              <div class="form-group bmd-form-group">{{ form.password2 }}</div>
+              <div class="form-group bmd-form-group">
+                {{ form.password2 }}{% for error in form.password2.errors %}
+                <small style="color: red">{{ error }}</small>
+                {% endfor %}
+              </div>
             </div>
           </div>
 
@@ -52,7 +60,25 @@
             >
               <img src="{% static '/img/placeholder.jpg' %}" />
             </div>
-            {{ form.image }}
+
+              <button
+                class="btn btn-rose btn-round btn-sm"
+                type="button"
+                onclick="document.getElementById('image_upload').click()"
+              >
+                <i class="material-icons">open_in_browser </i> Browse File
+                <div class="ripple-container"></div>
+              </button>
+              <input
+                type="file"
+                name="image"
+                id="image_upload"
+                style="display: none"
+              />
+              {% for error in form.image.errors %}
+              <small style="color: red">{{ error }}</small>
+              {% endfor %}
+              
           </div>
         </div>
         {% comment %} Row2 {% endcomment %}
@@ -126,18 +152,17 @@
         {% comment %} Row6 {% endcomment %}
         <div class="mb-4 form-group d-flex">
           <div class="form-check form-check-inline">
-            <label class="form-check-label" for="{{ form.is_owner.name }}">
+            <label class="form-check-label" for="is_owner">
               <input
                 class="form-check-input"
                 type="checkbox"
                 value=""
-                id="SMSNotify"
-                name="SMSNotify"
+                id="is_owner"
+                name="is_owner"
                 required="true"
                 aria-required="true"
               />
-              {{ form.is_owner }}
-              Is owner
+              {{ form.is_owner }} Is owner
               <span class="form-check-sign" style="left: 146px">
                 <span class="check"></span>
               </span>
