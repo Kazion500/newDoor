@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'zyj^8_&xxatsg-yc(fsg0w5iwe95^3a-5n8j%q2r733awf=qbk'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1','https://newdoor.herokuapp.com/']
 
@@ -103,13 +103,13 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'noreply<no_reply@newdoor.com>'
 
-if DEBUG:
-    EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-    EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+# if DEBUG:
+#     EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+#     EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
     
-else:
-    EMAIL_HOST_USER = 'patrickckabwe@gmail.com'
-    EMAIL_HOST_PASSWORD = 'yxvcsnyzmiirkwlm'
+# else:
+EMAIL_HOST_USER = 'patrickckabwe@gmail.com'
+EMAIL_HOST_PASSWORD = 'yxvcsnyzmiirkwlm'
 
 
 # Internationalization
