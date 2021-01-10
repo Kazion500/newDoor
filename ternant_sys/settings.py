@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'zyj^8_&xxatsg-yc(fsg0w5iwe95^3a-5n8j%q2r733awf=qbk'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'newdoor.herokuapp.com']
 
@@ -32,9 +32,6 @@ INSTALLED_APPS = [
     'new_door.apps.NewDoorConfig',
     'accounts.apps.AccountsConfig',
     'django_countries',
-
-
-
 ]
 
 MIDDLEWARE = [
