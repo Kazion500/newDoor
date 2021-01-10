@@ -199,7 +199,7 @@
         headers: {
           "X-CSRFToken": csrftoken,
         },
-        success(){
+        success(data){
           location.pathname = url
         }
       });
@@ -226,6 +226,7 @@
             if (iconVerify[i].dataset.fileName === data.file) {
               iconVerify[i].classList.add('text-success')
             }
+            location.pathname = url
           }
         },
       });
@@ -239,7 +240,6 @@
   
 
   clickImg.forEach((imgTag)=>{
-    console.log(imgTag);
     imgTag.addEventListener('click',(e)=>{
       let imageUrl = e.target.dataset.image
       const img = document.createElement('img')

@@ -26,10 +26,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary_storage',
+    'cloudinary',
     'django.contrib.humanize',
     'new_door.apps.NewDoorConfig',
     'accounts.apps.AccountsConfig',
     'django_countries',
+
+
+
 ]
 
 MIDDLEWARE = [
@@ -159,3 +164,12 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'newdoor',
+    'API_KEY': '982439747771776',
+    'API_SECRET': 'FkyOf_ZGMeDpJsg_i2BFx0lyECc'
+}

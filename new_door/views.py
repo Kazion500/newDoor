@@ -272,7 +272,7 @@ def verify_documents(request, user):
             unit.occupancy_type = occupancy_type_
             unit.save()
             messages.success(
-                request, 'Congratulations...! Documents verified successfully added.')
+                request, 'Congratulations...! Documents verified successfully')
 
             # msg = f"Hi {user} \n {filename} have been accepted. \n Kindly login to the dashboard and proceed with the making payment"
             # send_mail(
@@ -284,37 +284,6 @@ def verify_documents(request, user):
             # )
             return JsonResponse({'message': 'verified', 'user': user, 'file': tenant_img.image.name})
 
-        # form = UploadDocumentModelForm(
-        #     request.POST, request.FILES, instance=tenant_doc)
-        # print(form.errors)
-        # if form.is_valid():
-
-        #  instance = form.save(commit=False)
-        #   tenant_email = tenant_doc.tenant.user.email
-
-        #    for d in tenant_docs:
-        #         d.is_verified = True
-
-        #         d.save()
-        #     instance.save()
-
-        #     for t in tenant_docs:
-        #         if not t.is_verified:
-        #             return
-
-        #
-        #     msg = f"Hi {user} \n Your documents have been accepted. \n Kindly login to the dashboard and proceed with the making payment"
-        #     send_mail(
-        #         'Documents Approved',
-        #         msg,
-        #         'noreply@newdoor.com',
-        #         [tenant_email],
-        #         fail_silently=False,
-        #     )
-
-        #
-    # else:
-    #     form = UploadDocumentModelForm(instance=tenant_doc)
 
     context = {
         # 'form': form,
@@ -376,7 +345,7 @@ def add_entity(request):
         if form.is_valid():
             form.save()
             messages.success(
-                request, 'Congratulations...! Entity type successfully added.')
+                request, 'Congratulations...! Entity successfully added.')
             return redirect('add_entity')
         else:
             messages.info(request, 'Entity already exits')
@@ -727,7 +696,7 @@ def add_occupancy_type(request):
         if form.is_valid():
             form.save()
             messages.success(
-                request, 'Congratulations...! Ownership type successfully added.')
+                request, 'Congratulations...! Occupancy type successfully added.')
             return redirect('add_occupancy_type')
     else:
         form = OccupancyTypeModelForm()
