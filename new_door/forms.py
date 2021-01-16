@@ -88,13 +88,14 @@ class UnitModelForm(forms.ModelForm):
         exclude = ['id']
         widgets = {
             'flat': forms.TextInput(attrs={'class': 'form-control'}),
-            'rent_amount': forms.TextInput(attrs={'class': 'form-control'}),
-            'size': forms.TextInput(attrs={'class': 'form-control'}),
-            'bedrooms': forms.TextInput(attrs={'class': 'form-control'}),
-            'bathrooms': forms.TextInput(attrs={'class': 'form-control'}),
+            'rent_amount': forms.NumberInput(attrs={'class': 'form-control'}),
+            'size': forms.NumberInput(attrs={'class': 'form-control'}),
+            'bedrooms': forms.NumberInput(attrs={'class': 'form-control'}),
+            'bathrooms': forms.NumberInput(attrs={'class': 'form-control'}),
             'parking': forms.TextInput(attrs={'class': 'form-control'}),
             'desc': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
 
 # Code refactored - 26-11-2020 8.32PM- Patrick
 

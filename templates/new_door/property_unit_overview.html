@@ -77,7 +77,7 @@
   
   <div class="card mt-5">
     <div class="card-header card-header-primary card-header-icon">
-      <div class="card-icon" style="padding-left: 1px">
+      <div class="card-icon" style="padding:.8em 0; font-size: 1rem; background: rgb(126, 32, 214);">
         <a
           href=" {% url 'property_overview' property.entity.entity_name %} "
           class="card-header card-header-rose card-header-text"
@@ -86,7 +86,7 @@
           <i class="material-icons">house</i> {{ property.property_name.upper }}
         </a>
       </div>
-       <div class="card-icon float-right" style="padding:.5em 0; font-size: 1rem; background: rgb(224, 79, 115);">
+       <div class="card-icon float-right" style="padding:.5em 0; font-size: 1rem; background: rgb(126, 32, 214);">
           <a
             href=" {% url 'prepopulated_field_unit' property.id  %} "
             class="card-header card-header-rose card-header-text"
@@ -169,8 +169,6 @@
               <td>{{ unit.tenantcontract.tenant.user.username.capitalize }}</td>
               <td>${{ unit.rent_amount|intcomma }}</td>
               <td>{{ unit.size }}</td>
-              <td>{{ unit.size }}</td>
-
               <td class="text-right">
                 <a href="#" class="d-inline" title="Renewal">
                   <i

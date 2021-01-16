@@ -51,7 +51,6 @@ import stripe
 stripe.api_key = 'sk_test_51I0mEFGz8qAcurV0PCi7DH9LM4fx9QghxgAxnV9eWAP1gmllKeSzmSIbDvU0THz6i0HzP7EdXHxBTVtbo1HHYd8u00lnHS3VYg'
 
 
-
 # Dashboard Rendering
 
 
@@ -189,7 +188,7 @@ def upload_documents(request, user):
                     tenant=uploaded_doc.tenant, image=image, doc_type=uploaded_doc.doc_type)
                 credentials.save()
             messages.success(
-                request, 'Congratulations...! Property successfully added.')
+                request, 'Congratulations...! Documents uploaded successfully.')
             return redirect('upload_documents', tenant.user.username)
     else:
         form = UploadDocumentModelForm()
@@ -214,7 +213,7 @@ def review_documents(request, user):
             contract_no = form.cleaned_data['contract_no']
             form.save()
             messages.success(
-                request, 'Congratulations...! Contract successfully added.')
+                request, 'Congratulations...! Documents uploaded successfully.')
             return redirect('add_tetant_contract')
     else:
         form = TenantContractModelForm(instance=tenant_contract)
@@ -283,7 +282,6 @@ def verify_documents(request, user):
             #     fail_silently=False,
             # )
             return JsonResponse({'message': 'verified', 'user': user, 'file': tenant_img.image.name})
-
 
     context = {
         # 'form': form,
@@ -560,7 +558,6 @@ def add_tenant_to_unit(request, unit_id):
             user.profile.pcontact = form.cleaned_data.get('pcontact')
             user.profile.scontact = form.cleaned_data.get('scontact')
             user.profile.is_tenant = form.cleaned_data.get('is_tenant')
-            user.profile.is_owner = form.cleaned_data.get('is_owner')
             user.profile.marital_status = form.cleaned_data.get(
                 'marital_status')
             user.profile.nationality = form.cleaned_data.get('nationality')
@@ -571,6 +568,10 @@ def add_tenant_to_unit(request, unit_id):
                 occupancy_type='User Verification Pending')
 
             tenant = Profile.objects.get(user=user)
+            if not tenant.is_tenant:
+                messages.error(
+                    request, 'User is not a tenant please make sure the user is a tenant')
+                return redirect(add_tenant_to_unit, unit_id)
             tenant_contract = TenantContract(tenant=tenant, unit=unit)
             property_ = Property.objects.get(unit=unit)
             tenant_contract.property_id = property_
@@ -727,14 +728,19 @@ def add_tetant_contract(request, user):
     if request.method == 'POST':
         form = TenantContractModelForm(request.POST, instance=tenant_contract)
         if form.is_valid():
+            if not tenant.is_tenant:
+                messages.error(
+                    request, 'User is not a tenant please make sure the user is a tenant')
+                return redirect('add_tetant_contract', user)
+
             form.save()
             messages.success(
                 request, 'Congratulations...! Contract successfully added.')
 
-            msg = f"Hi {user} \n Your contract has been generated"
+            msg = f"Hi {user}\n Your contract has been generated"
             tenant.user.email
             send_mail(
-                'Your Contract',
+                'New Door Contract',
                 msg,
                 'noreply@newdoor.com',
                 [tenant.user.email],

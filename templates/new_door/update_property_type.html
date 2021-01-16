@@ -4,7 +4,7 @@
       <br />
       <div class="row">
         <div class="col-sm-12">
-          <h4 class="alert alert-info">Update Property Type</h4>
+          <h4 class="alert alert-info">Property Type</h4>
             <form id="TypeValidation" class="form-horizontal" action=" " method="post" novalidate="novalidate">
    
             {% csrf_token %}
@@ -44,8 +44,6 @@
                       type="text"
                       id="{{ field.id }}"
                       name="{{ field.name }}"
-                      required="true"
-                      aria-required="true"
                     />
                   </div>
                 </div>

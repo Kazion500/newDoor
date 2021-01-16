@@ -26,7 +26,9 @@
         <div class="row">
           <label class="col-sm-2 col-form-label">Owner Name*</label>
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.owner_name }}</div>
+            <div class="form-group bmd-form-group">
+              {{ form.owner_name }}
+            </div>
           </div>
           <label class="col-sm-2 col-form-label">Property Name*</label>
           <div class="col-sm-4">
@@ -93,7 +95,12 @@
           </div>
           <label class="col-sm-2 col-form-label">Email*</label>
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.email }}</div>
+            <div class="form-group bmd-form-group">
+              {{ form.email }}
+              {% for error in form.email.errors %}
+                <small style="color: red;">{{ error }}</small>
+              {% endfor %} 
+            </div>
           </div>
         </div>
 
@@ -106,6 +113,14 @@
               <small style="color: #b6b6b6">
                 {{ form.contact_no.help_text }}
               </small>
+              
+              {% if form.email.errors %}
+                  
+                {% for error in form.email.errors %}
+                <small style="color: red;">{{ error }}</small>
+                {% endfor %} 
+              {% endif %}
+              
             </div>
           </div>
           <label class="col-sm-2 col-form-label">Location*</label>
