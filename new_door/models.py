@@ -128,10 +128,16 @@ class PayModeType(models.Model):
     pay_type = models.CharField(max_length=50)
     desc = models.TextField(max_length=550,  null=True, blank=True)
 
+    def __str__(self):
+        return str(self.pay_type)
+
 
 class StatusReqType(models.Model):
     str_req = models.CharField(max_length=50, )
     desc = models.TextField(max_length=550,  null=True, blank=True)
+
+    def __str__(self):
+        return str(self.str_req)
 
 
 class TenantReqType(models.Model):
@@ -167,6 +173,9 @@ class TenantContract(models.Model):
     sms_notify = models.BooleanField(default='False')
     email_notify = models.BooleanField(default='False')
 
+    def __str__(self) -> str:
+        return f'{self.tenant}'
+
 
 # Image models
 class UnitImage(models.Model):
@@ -187,9 +196,13 @@ class UploadDocument(models.Model):
 
 class Payment(models.Model):
     contract = models.ForeignKey(TenantContract, on_delete=models.CASCADE)
-    pay_mode = models.ForeignKey(PayModeType, on_delete=models.CASCADE)
-    paid_date = models.DateTimeField()
+    pay_mode = models.ForeignKey(
+        PayModeType, on_delete=models.CASCADE, null=True, blank=True)
+    paid_date = models.DateTimeField(auto_now_add=True)
     amount = models.PositiveIntegerField()
     status = models.CharField(max_length=50)
     remain_amount = models.PositiveIntegerField()
     remarks = models.TextField()
+
+    def __str__(self) -> str:
+        return str(self.amount)

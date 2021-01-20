@@ -1,8 +1,22 @@
-import json
-from os import name
 from django.http.response import JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.core.mail import EmailMultiAlternatives, send_mail
+from django.template.loader import render_to_string
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.encoding import force_bytes, force_text
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.template.loader import render_to_string
+from .utils import account_activation_token
+from django.urls import reverse
+import stripe
+import datetime
+from datetime import timezone, date
 
-from stripe.api_resources import source
+
 from .models import (
     Entity, Property,
     Unit, CategoryType,
@@ -11,7 +25,7 @@ from .models import (
     DocumentType, PayModeType,
     StatusReqType, TenantReqType,
     ContractReqType, TenantContract,
-    UploadDocument,
+    UploadDocument, Payment
 
 )
 from .forms import (
@@ -31,21 +45,7 @@ from .forms import (
     ProfileRegistrationForm,
     UploadDocumentModelForm,
 )
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.models import User
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.core.mail import EmailMultiAlternatives, send_mail
-from django.template.loader import render_to_string
-from django.contrib.sites.shortcuts import get_current_site
-from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
-from django.contrib.sites.shortcuts import get_current_site
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from django.template.loader import render_to_string
-from .utils import account_activation_token
-from django.urls import reverse
-from decouple import config
-import stripe
+
 
 # stripe.api_key = config('STRIPE_SECRET_KEY')
 stripe.api_key = 'sk_test_51I0mEFGz8qAcurV0PCi7DH9LM4fx9QghxgAxnV9eWAP1gmllKeSzmSIbDvU0THz6i0HzP7EdXHxBTVtbo1HHYd8u00lnHS3VYg'
@@ -232,8 +232,10 @@ def verify_documents(request, user):
     tenant_docs = UploadDocument.objects.filter(tenant=tenant)
     tenant_doc = UploadDocument.objects.filter(tenant=tenant)[0]
     unit = Unit.objects.get(tenantcontract__tenant__user__username=user)
+    # occupancy_type_ = OccupancyType.objects.get(
+    #     occupancy_type='Payment Pending')
     occupancy_type_ = OccupancyType.objects.get(
-        occupancy_type='Payment Pending')
+        occupancy_type='Create Contract')
 
     if request.method == 'POST':
         user = request.POST.get('user')
@@ -296,6 +298,19 @@ def verify_documents(request, user):
 def payment(request, user):
     unit_amount = TenantContract.objects.get(
         tenant__user__username=user).unit.rent_amount
+    security_dep = TenantContract.objects.get(
+        tenant__user__username=user).security_dep
+    commission = TenantContract.objects.get(
+        tenant__user__username=user).commission
+    installment = TenantContract.objects.get(
+        tenant__user__username=user).installments
+    
+    final_amount = int(security_dep) + int(commission) + int(unit_amount)
+
+    tenant_contract = TenantContract.objects.get(
+        tenant__user__username=user)
+    print(final_amount)
+
     profile = Profile.objects.get(user__username=user)
 
     if request.method == "POST":
@@ -306,20 +321,35 @@ def payment(request, user):
         )
         rental_amount = stripe.Charge.create(
             customer=customer,
-            amount=int(unit_amount) * 100,
+            amount=int(final_amount) * 100 // int(installment),
             currency="usd",
             receipt_email=request.POST.get('email'),
         )
         if rental_amount.paid:
             unit_contract = Unit.objects.get(tenantcontract__tenant=profile)
             occupancy = OccupancyType.objects.get(
-                occupancy_type__iexact="Create Contract")
+                occupancy_type__iexact="Occupied")
+            # occupancy = OccupancyType.objects.get(
+            #     occupancy_type__iexact="Create Contract")
             unit_contract.occupancy_type = occupancy
             unit_contract.save()
+
             messages.success(
                 request, f'Payment of ${rental_amount.amount / 100} has been made successfully')
+            paid_amount = rental_amount.amount / 100
+            remain_amount = int(unit_amount) - rental_amount.amount / 100
 
-            msg_error = f"Hi {user} \n You have made a payment of ${unit_contract.rent_amount} to new door real estate"
+            payment_obj = Payment(
+                contract=tenant_contract,
+                amount=paid_amount,
+                status='Completed',
+                remain_amount=remain_amount,
+                remarks='Paid'
+            )
+
+            payment_obj.save()
+
+            msg_error = f"Hi {user} \n You have made a payment of ${rental_amount.amount // 100} to new door real estate"
             send_mail(
                 f'Payment Done for unit flat number {unit_contract.flat}',
                 msg_error,
@@ -327,6 +357,7 @@ def payment(request, user):
                 [profile.user.email],
                 fail_silently=False,
             )
+
             return redirect('payment', profile.user.username)
     return render(request, 'payment/payment.html')
 
@@ -719,7 +750,7 @@ def add_tetant_contract(request, user):
     property_ = Property.objects.get(pk=tenant_contract.property_id.pk)
     unit = Unit.objects.get(pk=tenant_contract.unit.pk)
     unit_occupancy = OccupancyType.objects.get(
-        occupancy_type__iexact='Occupied')
+        occupancy_type__iexact='Payment Pending')
     unit.occupancy_type = unit_occupancy
     unit.save()
 
