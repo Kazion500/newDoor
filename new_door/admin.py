@@ -6,6 +6,7 @@ from .models import (
     CategoryType, OwnershipType,
     OccupancyType, TenantContract,
     UploadDocument, DocumentType,
+    Payment,
 )
 
 
@@ -31,6 +32,11 @@ class ProfileModelAdmin(admin.ModelAdmin):
 class UnitModelAdmin(admin.ModelAdmin):
     list_display = ('id', 'property_id', 'property_type', 'flat', 'ownership_type', 'rent_amount',
                     'size', 'occupancy_type', 'bedrooms', 'bathrooms', 'parking', 'desc')
+
+
+@admin.register(Payment)
+class PaymentModelAdmin(admin.ModelAdmin):
+    list_display = ('contract', 'pay_mode','paid_date','amount', 'status','remain_amount','remarks')
 
 
 @admin.register(UnitImage)

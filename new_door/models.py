@@ -160,9 +160,9 @@ class TenantContract(models.Model):
     end_date = models.DateField(null=True, blank=True)
     discount = models.PositiveIntegerField(null=True, blank=True)
     annual_rent = models.PositiveIntegerField(null=True, blank=True)
-    security_dep = models.CharField(max_length=50, null=True, blank=True)
-    commission = models.CharField(max_length=50, null=True, blank=True)
-    installments = models.CharField(max_length=50, null=True, blank=True)
+    security_dep = models.PositiveIntegerField(null=True, blank=True)
+    commission = models.PositiveIntegerField(null=True, blank=True)
+    installments = models.PositiveIntegerField(null=True, blank=True)
     remark = models.TextField(max_length=550, null=True, blank=True)
     sms_notify = models.BooleanField(default='False')
     email_notify = models.BooleanField(default='False')
@@ -179,9 +179,17 @@ class UploadDocument(models.Model):
     doc_type = models.ForeignKey(DocumentType, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='documents/', null=True, blank=True)
     is_verified = models.BooleanField(default=False)
-    desc = models.TextField(null=True,blank=True)
+    desc = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return str(self.doc_type)
 
 
+class Payment(models.Model):
+    contract = models.ForeignKey(TenantContract, on_delete=models.CASCADE)
+    pay_mode = models.ForeignKey(PayModeType, on_delete=models.CASCADE)
+    paid_date = models.DateTimeField()
+    amount = models.PositiveIntegerField()
+    status = models.CharField(max_length=50)
+    remain_amount = models.PositiveIntegerField()
+    remarks = models.TextField()
