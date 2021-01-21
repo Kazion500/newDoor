@@ -127,13 +127,13 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'noreply<no_reply@newdoor.com>'
 
-if DEBUG:
-    EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-    EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+# if DEBUG:
+#     EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+#     EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
-else:
-    EMAIL_HOST_USER = 'patrickckabwe@gmail.com'
-    EMAIL_HOST_PASSWORD = 'yxvcsnyzmiirkwlm'
+# else:
+EMAIL_HOST_USER = 'patrickckabwe@gmail.com'
+EMAIL_HOST_PASSWORD = 'yxvcsnyzmiirkwlm'
 
 
 # Internationalization
