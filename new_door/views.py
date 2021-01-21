@@ -164,7 +164,6 @@ def unit_overview(request):
         except:
             pass
 
-
     if number_of_occupied_units is None:
         number_of_occupied_units = 0
 
@@ -311,15 +310,22 @@ def verify_documents(request, user):
 def payment(request, user):
     unit_amount = TenantContract.objects.get(
         tenant__user__username=user).unit.rent_amount
-    security_dep = TenantContract.objects.get(
-        tenant__user__username=user).security_dep
-    commission = TenantContract.objects.get(
-        tenant__user__username=user).commission
-    installment = TenantContract.objects.get(
-        tenant__user__username=user).installments
 
-    # Sum of the amount to be paid
-    final_amount = int(security_dep) + int(commission) + int(unit_amount)
+    security_dep = 0
+    commission = 0
+    installment = 0
+    final_amount = 0
+
+    try:
+        security_dep = TenantContract.objects.get(
+            tenant__user__username=user).security_dep
+        commission = TenantContract.objects.get(
+            tenant__user__username=user).commission
+        installment = TenantContract.objects.get(
+            tenant__user__username=user).installments
+        final_amount = int(security_dep) + int(commission) + int(unit_amount)
+    except:
+        pass
 
     tenant_contract = TenantContract.objects.get(
         tenant__user__username=user)
