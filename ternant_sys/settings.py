@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'zyj^8_&xxatsg-yc(fsg0w5iwe95^3a-5n8j%q2r733awf=qbk'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'newdoor.herokuapp.com']
 
@@ -69,34 +69,34 @@ WSGI_APPLICATION = 'ternant_sys.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-if DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+# if DEBUG:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': BASE_DIR / 'db.sqlite3',
+#         }
+#     }
 
-else:
-    DATABASES = {
+# else:
+DATABASES = {
 
-        'default': {
+    'default': {
 
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
 
-            'NAME': 'd9m124ebjt71ee',
+        'NAME': 'd9m124ebjt71ee',
 
-            'USER': 'fuirtbiyreiaky',
+        'USER': 'fuirtbiyreiaky',
 
-            'PASSWORD': '0b42de5655a434b8225a7d1380a9b5b540869402f07fe5c9411a57699586693a',
+        'PASSWORD': '0b42de5655a434b8225a7d1380a9b5b540869402f07fe5c9411a57699586693a',
 
-            'HOST': 'ec2-3-231-241-17.compute-1.amazonaws.com',
+        'HOST': 'ec2-3-231-241-17.compute-1.amazonaws.com',
 
-            'PORT': '5432',
-
-        }
+        'PORT': '5432',
 
     }
+
+}
 
 
 # Password validation
@@ -127,13 +127,13 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'noreply<no_reply@newdoor.com>'
 
-if DEBUG:
-    EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-    EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+# if DEBUG:
+#     EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+#     EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
-else:
-    EMAIL_HOST_USER = 'patrickckabwe@gmail.com'
-    EMAIL_HOST_PASSWORD = 'yxvcsnyzmiirkwlm'
+# else:
+EMAIL_HOST_USER = 'patrickckabwe@gmail.com'
+EMAIL_HOST_PASSWORD = 'yxvcsnyzmiirkwlm'
 
 
 # Internationalization
