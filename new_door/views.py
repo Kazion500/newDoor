@@ -157,9 +157,12 @@ def unit_overview(request):
         occupancy_type__occupancy_type__iexact="occupied").count()
 
     for unit in units:
-        for payment in unit.tenantcontract.payment_set.all():
-            collected_amount += payment.amount
-            remain_amount = payment.remain_amount
+        try:
+            for payment in unit.tenantcontract.payment_set.all():
+                collected_amount += payment.amount
+                remain_amount = payment.remain_amount
+        except:
+            pass
 
 
     if number_of_occupied_units is None:
