@@ -147,18 +147,28 @@ def property_all_overview(request):
 @login_required
 def unit_overview(request):
 
-    units = Unit.objects.all()
+    collected_amount = 0
+    remain_amount = 0
 
+    units = Unit.objects.all()
     number_of_vacant_units = Unit.objects.filter(
         occupancy_type__occupancy_type__iexact="vacant").count()
     number_of_occupied_units = Unit.objects.filter(
         occupancy_type__occupancy_type__iexact="occupied").count()
+
+    for unit in units:
+        for payment in unit.tenantcontract.payment_set.all():
+            collected_amount += payment.amount
+            remain_amount = payment.remain_amount
+
 
     if number_of_occupied_units is None:
         number_of_occupied_units = 0
 
     context = {
         'units': units,
+        "collected_amount": collected_amount,
+        "remain_amount": remain_amount,
         'number_of_occupied_units': number_of_occupied_units,
         'number_of_vacant_units': number_of_vacant_units,
     }
@@ -304,12 +314,12 @@ def payment(request, user):
         tenant__user__username=user).commission
     installment = TenantContract.objects.get(
         tenant__user__username=user).installments
-    
+
+    # Sum of the amount to be paid
     final_amount = int(security_dep) + int(commission) + int(unit_amount)
 
     tenant_contract = TenantContract.objects.get(
         tenant__user__username=user)
-    print(final_amount)
 
     profile = Profile.objects.get(user__username=user)
 
@@ -337,28 +347,52 @@ def payment(request, user):
             messages.success(
                 request, f'Payment of ${rental_amount.amount / 100} has been made successfully')
             paid_amount = rental_amount.amount / 100
-            remain_amount = int(unit_amount) - rental_amount.amount / 100
+            remain_amount = int(final_amount) - paid_amount
 
-            payment_obj = Payment(
-                contract=tenant_contract,
-                amount=paid_amount,
-                status='Completed',
-                remain_amount=remain_amount,
-                remarks='Paid'
-            )
+            try:
+                payments = Payment.objects.filter(contract=tenant_contract)
+                for payment in payments:
+                    print(dir(payment))
+                    r_amount = payment.remain_amount
+                    p_amount = payment.amount
+                    remain_amount = r_amount - p_amount
 
-            payment_obj.save()
+                Payment.objects.create(
+                    contract=tenant_contract,
+                    amount=paid_amount,
+                    status='Completed',
+                    remain_amount=remain_amount,
+                    remarks='Paid'
+                )
+            except Payment.DoesNotExist:
+                intial_payment = Payment(
+                    contract=tenant_contract,
+                    amount=paid_amount,
+                    status='Completed',
+                    remain_amount=remain_amount,
+                    remarks='Paid'
+                )
+                intial_payment.save()
 
-            msg_error = f"Hi {user} \n You have made a payment of ${rental_amount.amount // 100} to new door real estate"
+                # print(intial_payment.amount)
+                # if intial_payment.remain_amount == 0:
+                #     messages.info(request, 'Payment completed')
+
+            msg_success = f"Hi {user} \n You have made a payment of ${rental_amount.amount // 100} to new door real estate"
             send_mail(
                 f'Payment Done for unit flat number {unit_contract.flat}',
-                msg_error,
+                msg_success,
                 'noreply@newdoor.com',
                 [profile.user.email],
                 fail_silently=False,
             )
 
             return redirect('payment', profile.user.username)
+
+        else:
+            messages.error(
+                request, 'There was a problem  making your payment make sure you details are correct')
+
     return render(request, 'payment/payment.html')
 
 

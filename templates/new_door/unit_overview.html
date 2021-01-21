@@ -167,14 +167,17 @@
                 {% endif %}
               </td>
               <td>{{ unit.tenantcontract.tenant.user.username.capitalize }}</td>
-              <td id="unit_amount">${{ unit.rent_amount }}</td>
-              <td id="collected_amount">{% if unit.tenantcontract.payment_set.all %}
-                {% for collected_amount in unit.tenantcontract.payment_set.all %}
+              <td>${{ unit.rent_amount }}</td>
+              <td>
+                {% if unit.tenantcontract.payment_set.all %}
                   ${{ collected_amount }}
-                {% endfor %}
                 {% endif %}
                </td>
-              <td id="amount_due"></td>
+              <td>
+                {% if unit.tenantcontract.payment_set.all %}
+                    ${{ remain_amount }}
+                {% endif %}
+              </td>
 
               <td class="text-right">
                 <a href="#" class="d-inline" title="Renewal">
@@ -321,20 +324,6 @@
       }
     });
   }
-  calDueAmount()
 
-  function calDueAmount() {
-    const unitAmount = document.getElementById("unit_amount").textContent.replace('$','');
-    const amountDue = document.getElementById("amount_due");
-    const collectedAmount = document.getElementById("collected_amount").textContent.replace('$','');
-    const amountPaid = parseInt(collectedAmount)
-
-    // document.addEventListener("DOMContentLoaded", () => {
-      
-      if (unitAmount !== "" ) {
-        amountDue.textContent += parseInt(unitAmount) - amountPaid ;
-      }
-    // });
-  }
 </script>
 {% endblock %}
