@@ -308,31 +308,53 @@ def verify_documents(request, user):
 
 @login_required
 def payment(request, user):
+    tenant_contract = TenantContract.objects.get(
+        tenant__user__username=user)
+    user_docs = UploadDocument.objects.filter(tenant__user__username=user)
+
+    if user_docs.count() == 0:
+        messages.info(
+            request, f"Please upload your documents")
+        return redirect('tenant_dashboard')
+
+    if not user_docs[0].is_verified:
+        messages.info(
+            request, f"Waiting for your documents to be verified")
+        return redirect('tenant_dashboard')
+
+    if tenant_contract.security_dep == None and tenant_contract.commission == None:
+        messages.info(
+            request, f"Sorry, you don't have a contract generated yet")
+        return redirect('tenant_dashboard')
+
+    # get variables
     unit_amount = TenantContract.objects.get(
         tenant__user__username=user).unit.rent_amount
 
-    security_dep = 0
-    commission = 0
-    installment = 0
-    final_amount = 0
+    security_dep = TenantContract.objects.get(
+        tenant__user__username=user).security_dep
+    commission = TenantContract.objects.get(
+        tenant__user__username=user).commission
+    installment = TenantContract.objects.get(
+        tenant__user__username=user).installments
+    discount = TenantContract.objects.get(
+        tenant__user__username=user).discount
 
-    try:
-        security_dep = TenantContract.objects.get(
-            tenant__user__username=user).security_dep
-        commission = TenantContract.objects.get(
-            tenant__user__username=user).commission
-        installment = TenantContract.objects.get(
-            tenant__user__username=user).installments
-        final_amount = int(security_dep) + int(commission) + int(unit_amount)
-    except:
-        pass
-
-    tenant_contract = TenantContract.objects.get(
-        tenant__user__username=user)
+    # get full amount
+    final_amount = int(security_dep) + int(commission) + int(unit_amount) - int(discount)
 
     profile = Profile.objects.get(user__username=user)
 
     if request.method == "POST":
+        # No charge at 0
+        try:
+            payments = Payment.objects.filter(contract=tenant_contract)
+            for payment in payments:
+                if payment.remain_amount == 0:
+                    messages.success(request, 'Payment completed')
+                    return redirect("payment", user)
+        except:
+            pass
         customer = stripe.Customer.create(
             name=request.POST.get('fullname'),
             email=request.POST.get('email'),
@@ -344,6 +366,8 @@ def payment(request, user):
             currency="usd",
             receipt_email=request.POST.get('email'),
         )
+       
+
         if rental_amount.paid:
             unit_contract = Unit.objects.get(tenantcontract__tenant=profile)
             occupancy = OccupancyType.objects.get(
@@ -361,7 +385,6 @@ def payment(request, user):
             try:
                 payments = Payment.objects.filter(contract=tenant_contract)
                 for payment in payments:
-                    print(dir(payment))
                     r_amount = payment.remain_amount
                     p_amount = payment.amount
                     remain_amount = r_amount - p_amount

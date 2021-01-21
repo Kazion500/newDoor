@@ -164,7 +164,7 @@ class TenantContract(models.Model):
         max_length=50, unique=True, null=True, blank=True)
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
-    discount = models.PositiveIntegerField(null=True, blank=True)
+    discount = models.PositiveIntegerField(null=True, blank=True,default=0)
     annual_rent = models.PositiveIntegerField(null=True, blank=True)
     security_dep = models.PositiveIntegerField(null=True, blank=True)
     commission = models.PositiveIntegerField(null=True, blank=True)

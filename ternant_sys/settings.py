@@ -69,34 +69,34 @@ WSGI_APPLICATION = 'ternant_sys.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-# if DEBUG:
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.sqlite3',
-#             'NAME': BASE_DIR / 'db.sqlite3',
-#         }
-#     }
-
-# else:
-DATABASES = {
-
-    'default': {
-
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-
-        'NAME': 'd9m124ebjt71ee',
-
-        'USER': 'fuirtbiyreiaky',
-
-        'PASSWORD': '0b42de5655a434b8225a7d1380a9b5b540869402f07fe5c9411a57699586693a',
-
-        'HOST': 'ec2-3-231-241-17.compute-1.amazonaws.com',
-
-        'PORT': '5432',
-
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
 
-}
+else:
+    DATABASES = {
+
+        'default': {
+
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+
+            'NAME': 'd9m124ebjt71ee',
+
+            'USER': 'fuirtbiyreiaky',
+
+            'PASSWORD': '0b42de5655a434b8225a7d1380a9b5b540869402f07fe5c9411a57699586693a',
+
+            'HOST': 'ec2-3-231-241-17.compute-1.amazonaws.com',
+
+            'PORT': '5432',
+
+        }
+
+    }
 
 
 # Password validation
