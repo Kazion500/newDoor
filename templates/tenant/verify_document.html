@@ -57,39 +57,48 @@
               <hr class="m-0" />
               <div class="card-body row py-5 verify-doc" style="width: 100%">
                 {% for tenant_doc in tenant_docs %}
-                <div
-                  class="tenant-doc col-md-3 p-0 my-2"
+                  <div class="tenant-doc col-md-3">
+
+                  <div class="header-verify">
+                    <h4><b>{{ tenant_doc.doc_type.docs_type.upper }}</b></h4>
+                  </div>
+                  <div
+                    class="body-verify"
+                    style="width: 100%; height: 140px; cursor: pointer; box-shadow: 0 0 6px rgb(156, 156, 156);"
+                  >
+                    <div class="verify-card-img"  style="object-fit: cover; height: 100%; overflow: hidden;  border-radius: 4px;">
+                      <img
+                      data-target="#staticBackdrop"
+                      data-toggle="modal"
+                      src="{{ tenant_doc.image.url }}"
+                      alt=""
+                      class="img-fluid click_img"
+                      data-image="{{ tenant_doc.image.url }}"
+                      style="object-fit: cover; height: 100%"
+                    />
+                    </div>
                   
-                  style="width: 100%; height: 140px; cursor: pointer;"
-                >
-                  <img
-                    data-target="#staticBackdrop"
-                    data-toggle="modal"
-                    src="{{ tenant_doc.image.url }}"
-                    alt=""
-                    class="img-fluid click_img"
-                    data-image="{{ tenant_doc.image.url }}"
-                    style="object-fit: cover; height: 100%"
-                  />
-                  <div class="verify-wrapper-icon">
-                    <i
-                      class="fas fa-times mr-2 text-danger icon-remove"
-                      data-file-name="{{ tenant_doc.image.name }}"
-                    ></i>
-                    
-                    {% if tenant_doc.is_verified %}
-                    <i
-                      class="fas fa-check-circle icon-verify text-success"
-                      data-file-name="{{ tenant_doc.image.name }}"
-                    ></i>
-                    {% else %}
-                    <i
-                      class="fas fa-check-circle icon-verify"
-                      data-file-name="{{ tenant_doc.image.name }}"
-                    ></i>
-                    {% endif %}
+
+                    <div class="verify-wrapper-icon">
+                      <i
+                        class="fas fa-times mr-2 text-danger icon-remove"
+                        data-file-name="{{ tenant_doc.image.name }}"
+                      ></i>
                       
-                    
+                      {% if tenant_doc.is_verified %}
+                      <i
+                        class="fas fa-check-circle icon-verify text-success"
+                        data-file-name="{{ tenant_doc.image.name }}"
+                      ></i>
+                      {% else %}
+                      <i
+                        class="fas fa-check-circle icon-verify"
+                        data-file-name="{{ tenant_doc.image.name }}"
+                      ></i>
+                      {% endif %}
+                        
+                      
+                    </div>
                   </div>
                 </div>
                 {% endfor %}

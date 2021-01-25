@@ -33,6 +33,14 @@
 .verify-doc{
     gap: 1em !important;
 }
+.verify-wrapper-icon{
+  position: absolute;
+  z-index: 4000;
+}
 .verify-wrapper-icon i{
     margin-top: .7em;
+}
+
+.body-verify{
+  position: relative;
 }

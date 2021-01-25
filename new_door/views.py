@@ -1,5 +1,6 @@
 from django.http.response import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Sum, Max
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -74,8 +75,37 @@ def dashboard_view(request):
 def tenant_dashboard(request):
     if not request.user.is_authenticated:
         return redirect('login')
+    if not request.user.profile.is_tenant:
+        return redirect('dashboard')
 
-    return render(request, 'new_door/tenant_dashboard.html')
+    logged_user = request.user.username
+    payments = 0
+    amount = 0
+    due_amount = 0
+    unit_rental = 0
+    try:
+        payments = Payment.objects.filter(
+            contract__tenant__user__username=logged_user).order_by('paid_date')[:5]
+        amount = Payment.objects.filter(
+            contract__tenant__user__username=logged_user).aggregate(paid=Sum('amount'))
+        due_amount = Payment.objects.filter(
+            contract__tenant__user__username=logged_user).aggregate(remain=Max('remain_amount'))
+        units = Unit.objects.filter(
+            tenantcontract__tenant__user__username=logged_user)
+
+        for unit in units:
+            unit_rental += unit.rent_amount
+    except:
+        pass
+
+    context = {
+        "payments": payments,
+        "unit_rental": unit_rental,
+        'amount': amount,
+        'due_amount': due_amount,
+    }
+
+    return render(request, 'tenant/tenant_dashboard.html', context)
 
 
 @login_required
@@ -120,6 +150,7 @@ def property_overview(request, entity):
 
 @login_required
 def property_all_overview(request):
+
     properties = Property.objects.all()
     number_of_units = Unit.objects.all().count()
     number_of_vacant_units = Unit.objects.filter(
@@ -186,6 +217,8 @@ def checklist(request):
 @login_required
 def upload_documents(request, user):
     tenant = get_object_or_404(Profile, user__username__iexact=user)
+    tenant_contract = TenantContract.objects.get(tenant__user__username=user)
+    property_owner = Property.objects.get(pk=tenant_contract.property_id_id)
     uploaded_documents = UploadDocument.objects.filter(tenant=tenant)
     doc_type = DocumentType.objects.all()
     # uploaded_documents = DocumentType.objects.filter(uploaddocument__doc_type=uploaded_document.doc_type)
@@ -201,6 +234,17 @@ def upload_documents(request, user):
                 credentials.save()
             messages.success(
                 request, 'Congratulations...! Documents uploaded successfully.')
+
+            msg_to_owner = f"Hello Admin,\nDocuments for {user} are ready make sure you verify them"
+
+            if property_owner.owner_name.user.email:
+                send_mail(
+                    'New Door Contract',
+                    msg_to_owner,
+                    'noreply@newdoor.com',
+                    [property_owner.owner_name.user.email],
+                    fail_silently=False,
+                )
             return redirect('upload_documents', tenant.user.username)
     else:
         form = UploadDocumentModelForm()
@@ -312,6 +356,8 @@ def payment(request, user):
         tenant__user__username=user)
     user_docs = UploadDocument.objects.filter(tenant__user__username=user)
 
+    property_owner = Property.objects.get(pk=tenant_contract.property_id_id)
+
     if user_docs.count() == 0:
         messages.info(
             request, f"Please upload your documents")
@@ -341,7 +387,8 @@ def payment(request, user):
         tenant__user__username=user).discount
 
     # get full amount
-    final_amount = int(security_dep) + int(commission) + int(unit_amount) - int(discount)
+    final_amount = int(security_dep) + int(commission) + \
+        int(unit_amount) - int(discount)
 
     profile = Profile.objects.get(user__username=user)
 
@@ -366,7 +413,6 @@ def payment(request, user):
             currency="usd",
             receipt_email=request.POST.get('email'),
         )
-       
 
         if rental_amount.paid:
             unit_contract = Unit.objects.get(tenantcontract__tenant=profile)
@@ -410,14 +456,27 @@ def payment(request, user):
                 # if intial_payment.remain_amount == 0:
                 #     messages.info(request, 'Payment completed')
 
-            msg_success = f"Hi {user} \n You have made a payment of ${rental_amount.amount // 100} to new door real estate"
+            tenant_msg_success = f"Hi { user }, \n You have made a payment of ${ rental_amount.amount // 100 } to new door real estate \n your next payment is due on 3 March 2021"
+            owner_msg_success = f"Hi { property_owner.owner_name.user.username }, \n { user.capitalize() } has made a payment of ${ rental_amount.amount // 100 } to unit flat number {unit_contract.flat}. \n next payment is due on 3 March 2021"
+
             send_mail(
                 f'Payment Done for unit flat number {unit_contract.flat}',
-                msg_success,
+                tenant_msg_success,
                 'noreply@newdoor.com',
                 [profile.user.email],
                 fail_silently=False,
             )
+
+            if property_owner.owner_name.user.email:
+                send_mail(
+                    f'Payment Done for unit flat number {unit_contract.flat}',
+                    owner_msg_success,
+                    'noreply@newdoor.com',
+                    [property_owner.owner_name.user.email],
+                    fail_silently=False,
+                )
+            else:
+                pass
 
             return redirect('payment', profile.user.username)
 
@@ -425,7 +484,11 @@ def payment(request, user):
             messages.error(
                 request, 'There was a problem  making your payment make sure you details are correct')
 
-    return render(request, 'payment/payment.html')
+    context = {
+        'final_amount': final_amount / int(installment),
+    }
+
+    return render(request, 'payment/payment.html', context)
 
 
 """ Add Views  """
@@ -834,11 +897,11 @@ def add_tetant_contract(request, user):
             messages.success(
                 request, 'Congratulations...! Contract successfully added.')
 
-            msg = f"Hi {user}\n Your contract has been generated"
-            tenant.user.email
+            msg_to_tenant = f"Hi {user},\n Your contract has been generated. Kindly proceed with making your first payment.\n NOTE: Your First Payment should be done within the first 5 days following contract generation \n\n Best Regard\n Faraz\n New Door Manager."
+
             send_mail(
                 'New Door Contract',
-                msg,
+                msg_to_tenant,
                 'noreply@newdoor.com',
                 [tenant.user.email],
                 fail_silently=False,
@@ -1590,6 +1653,9 @@ def prepopulated_field_unit(request, id):
 
 
 def property_unit_overview(request, id):
+    collected_amount = 0
+    remain_amount = 0
+    due_amount = 0
     _property = get_object_or_404(Property, pk=id)
     units = Unit.objects.filter(property_id=_property.pk)
 
@@ -1599,6 +1665,15 @@ def property_unit_overview(request, id):
         occupancy_type__occupancy_type__iexact="occupied",
         property_id=_property).count()
 
+    for unit in units:
+        try:
+            for payment in unit.tenantcontract.payment_set.all():
+                collected_amount += payment.amount
+                remain_amount = payment.remain_amount
+        except:
+            pass
+    due_amount += remain_amount
+
     if number_of_occupied_units is None:
         number_of_occupied_units = 0
 
@@ -1607,6 +1682,9 @@ def property_unit_overview(request, id):
         'units': units,
         'number_of_vacant_units': number_of_vacant_units,
         'number_of_occupied_units': number_of_occupied_units,
+        "collected_amount": collected_amount,
+        "remain_amount": remain_amount,
+        "due_amount": due_amount
     }
 
     return render(request, 'new_door/property_unit_overview.html', context)

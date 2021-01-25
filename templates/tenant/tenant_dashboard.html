@@ -1,5 +1,4 @@
-{% extends 'base.html' %} {% block title %} Tenant Dashboard {% endblock title %} 
-{% block body %} 
+{% extends 'base.html' %} {% load humanize %} {% block title %} Tenant Dashboard {% endblock title %} {% block body %}
 <p>Tenant Dashboard</p>
 <div class="row">
   <div class="col-lg-3 col-md-6 col-sm-6">
@@ -8,7 +7,9 @@
         <div class="card-icon">
           <i class="material-icons">account_balance_wallet</i>
         </div>
-        <h3 class="card-title">$15184</h3>
+        <h3 class="card-title">
+          ${{ unit_rental|intcomma }}
+        </h3>
         <br /><br />
         <p class="card-category"><strong>Total Rent Amount</strong></p>
       </div>
@@ -20,7 +21,13 @@
         <div class="card-icon">
           <i class="material-icons">money</i>
         </div>
-        <h3 class="card-title">$10150</h3>
+        <h3 class="card-title">
+          {% if amount.paid %}
+            ${{ amount.paid|intcomma }}
+          {% else %}
+            $0
+          {% endif %}
+        </h3>
         <br /><br />
         <p class="card-category"><strong>Total Paid Amount</strong></p>
       </div>
@@ -32,7 +39,13 @@
         <div class="card-icon">
           <i class="material-icons">account_balance_wallet</i>
         </div>
-        <h3 class="card-title">$5034</h3>
+        <h3 class="card-title">
+          {% if due_amount.remain %}
+            ${{ due_amount.remain|intcomma }}
+          {% else %}
+            $0
+          {% endif %}
+        </h3>
         <br /><br />
         <p class="card-category"><strong>Total Dues Amount</strong></p>
       </div>
@@ -57,7 +70,7 @@
     <div class="card">
       <div class="card-header card-header-primary card-header-icon">
         <div class="card-icon">
-          <i class="material-icons">assignment</i>
+          <i class="material-icons" style="width: initial">assignment</i>
         </div>
         <h4 class="card-title">Latest 5 Paid Invoices</h4>
       </div>
@@ -81,24 +94,12 @@
                   <thead>
                     <tr role="row">
                       <th
-                        class="sorting_asc"
-                        tabindex="0"
-                        aria-controls="datatables"
-                        rowspan="1"
-                        colspan="1"
-                        style="width: 175px"
-                        aria-sort="ascending"
-                        aria-label="Name: activate to sort column descending"
-                      >
-                        Date
-                      </th>
-                      <th
                         class="sorting"
                         tabindex="0"
                         aria-controls="datatables"
                         rowspan="1"
                         colspan="1"
-                        style="width: 258px"
+                        style="width: 90px"
                         aria-label="Position: activate to sort column ascending"
                       >
                         Amount
@@ -114,7 +115,7 @@
                       >
                         Payment Mode
                       </th>
-                      <th
+                      <!-- <th
                         class="sorting"
                         tabindex="0"
                         aria-controls="datatables"
@@ -124,6 +125,18 @@
                         aria-label="Age: activate to sort column ascending"
                       >
                         Age
+                      </th> -->
+                      <th
+                        class="sorting_asc"
+                        tabindex="0"
+                        aria-controls="datatables"
+                        rowspan="1"
+                        colspan="1"
+                        style="width: 120px"
+                        aria-sort="ascending"
+                        aria-label="Name: activate to sort column descending"
+                      >
+                        Date Paid
                       </th>
                       <th
                         class="sorting"
@@ -131,12 +144,23 @@
                         aria-controls="datatables"
                         rowspan="1"
                         colspan="1"
-                        style="width: 113px"
+                        style="width: 153px"
                         aria-label="Date: activate to sort column ascending"
                       >
-                        Date
+                        Next Payment Date
                       </th>
                       <th
+                        class="sorting text-center"
+                        tabindex="0"
+                        aria-controls="datatables"
+                        rowspan="1"
+                        colspan="1"
+                        style="width: 90px"
+                        aria-label="Date: activate to sort column ascending"
+                      >
+                        Status
+                      </th>
+                      <!-- <th
                         class="disabled-sorting text-right sorting"
                         tabindex="0"
                         aria-controls="datatables"
@@ -146,41 +170,21 @@
                         aria-label="Actions: activate to sort column ascending"
                       >
                         Actions
-                      </th>
+                      </th> -->
                     </tr>
                   </thead>
                   <tbody>
+                    {% if not payments.count == 0 %} 
+                    {% for payment in payments %}
                     <tr role="row" class="odd">
-                      <td tabindex="0" class="sorting_1">05.10.2012</td>
-                      <td>6150</td>
-                      <td>Cash</td>
-                      <td>33</td>
-                      <td>2008/11/28</td>
-                      <td class="text-right">
-                        <a
-                          href="#"
-                          class="btn btn-link btn-info btn-just-icon like"
-                          ><i class="material-icons">favorite</i></a
-                        >
-                        <a
-                          href="#"
-                          class="btn btn-link btn-warning btn-just-icon edit"
-                          ><i class="material-icons">dvr</i></a
-                        >
-                        <a
-                          href="#"
-                          class="btn btn-link btn-danger btn-just-icon remove"
-                          ><i class="material-icons">close</i></a
-                        >
-                      </td>
-                    </tr>
-                    <tr role="row" class="even">
-                      <td class="sorting_1" tabindex="0">08.02.2014</td>
-                      <td>2600</td>
+                      <td>${{ payment.amount|intcomma }}</td>
                       <td>Online</td>
-                      <td>47</td>
-                      <td>2009/10/09</td>
-                      <td class="text-right">
+                      <td tabindex="0" class="sorting_1">
+                        {{ payment.paid_date|date:"d F, Y" }}
+                      </td>
+                      <td>{{ payment.paid_date|date:"d F, Y" }}</td>
+                      <td class="text-center"><span class="badge badge-pill badge-success ">{{ payment.status }}</span></td>
+                      <!-- <td class="text-right">
                         <a
                           href="#"
                           class="btn btn-link btn-info btn-just-icon like"
@@ -196,80 +200,14 @@
                           class="btn btn-link btn-danger btn-just-icon remove"
                           ><i class="material-icons">close</i></a
                         >
-                      </td>
+                      </td> -->
                     </tr>
-                    <tr role="row" class="odd">
-                      <td tabindex="0" class="sorting_1">11.07.2014</td>
-                      <td>2600</td>
-                      <td>Cash</td>
-                      <td>66</td>
-                      <td>2009/01/12</td>
-                      <td class="text-right">
-                        <a
-                          href="#"
-                          class="btn btn-link btn-info btn-just-icon like"
-                          ><i class="material-icons">favorite</i></a
-                        >
-                        <a
-                          href="#"
-                          class="btn btn-link btn-warning btn-just-icon edit"
-                          ><i class="material-icons">dvr</i></a
-                        >
-                        <a
-                          href="#"
-                          class="btn btn-link btn-danger btn-just-icon remove"
-                          ><i class="material-icons">close</i></a
-                        >
-                      </td>
-                    </tr>
-                    <tr role="row" class="even">
-                      <td class="sorting_1" tabindex="0">04.10.2014</td>
-                      <td>2600</td>
-                      <td>Cheque</td>
-                      <td>41</td>
-                      <td>2012/10/13</td>
-                      <td class="text-right">
-                        <a
-                          href="#"
-                          class="btn btn-link btn-info btn-just-icon like"
-                          ><i class="material-icons">favorite</i></a
-                        >
-                        <a
-                          href="#"
-                          class="btn btn-link btn-warning btn-just-icon edit"
-                          ><i class="material-icons">dvr</i></a
-                        >
-                        <a
-                          href="#"
-                          class="btn btn-link btn-danger btn-just-icon remove"
-                          ><i class="material-icons">close</i></a
-                        >
-                      </td>
-                    </tr>
-                    <tr role="row" class="odd">
-                      <td class="sorting_1" tabindex="0">03.01.2015</td>
-                      <td>2500</td>
-                      <td>Online</td>
-                      <td>28</td>
-                      <td>2011/06/07</td>
-                      <td class="text-right">
-                        <a
-                          href="#"
-                          class="btn btn-link btn-info btn-just-icon like"
-                          ><i class="material-icons">favorite</i></a
-                        >
-                        <a
-                          href="#"
-                          class="btn btn-link btn-warning btn-just-icon edit"
-                          ><i class="material-icons">dvr</i></a
-                        >
-                        <a
-                          href="#"
-                          class="btn btn-link btn-danger btn-just-icon remove"
-                          ><i class="material-icons">close</i></a
-                        >
-                      </td>
-                    </tr>
+                    {% endfor %} 
+                    {% else %}
+                      <tr>
+                        <td colspan="6" class="text-center"><b>No payments made</b></td>
+                      </tr>
+                    {% endif %}
                   </tbody>
                 </table>
               </div>

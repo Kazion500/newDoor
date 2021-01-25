@@ -103,9 +103,9 @@
                   {% if uploaded_documents %} {% for uploaded_document in uploaded_documents %}
 
                   <tr>
-                    <td scope="row">{{uploaded_document.doc_type}}</td>
-                    <td>{{uploaded_document.image.name}}</td>
-                    <td>{{uploaded_document.image.size}} KB</td>
+                    <td scope="row">{{ uploaded_document.doc_type.docs_type.upper }}</td>
+                    <td class="doc-name">{{ uploaded_document.image.name.upper }}</td>
+                    <td>{{ uploaded_document.image.size }} KB</td>
                     <td>100%</td>
 <!-- 
                     <td class="text-right">
@@ -139,10 +139,13 @@
       <div class="row">
         {% for uploaded_document in uploaded_documents %}
         <div
-          class="col-md-4 ml-4 my-2"
-          style="height: 200px;
-          background-image: url('{{ uploaded_document.image.url }}'); background-size: cover;"
-        ></div>
+          class="col-md-4"
+          
+        >
+        <div class="uploaded-docs" style="height: 200px;
+        background-image: url('{{ uploaded_document.image.url }}'); background-size: cover; border-radius: 7px;">
+        </div>
+      </div>
         {% endfor %}
       </div>
     </div>
@@ -152,6 +155,7 @@
 <script>
   let fileInput = document.getElementById("image_upload");
   let stagedDocs = document.querySelector(".staged-docs");
+  let docNames = document.querySelectorAll(".doc-name");
   let imagePreviewIcon = document.querySelector(".imagePreviewIcon");
   const url = `/upload-documents/{{ tenant.user.username }}`;
 
@@ -310,7 +314,13 @@
 
   }
   
-
+  (()=>{
+    docNames.forEach((docName)=>{
+      docName.textContent = docName.textContent.replace('MEDIA/DOCUMENTS/','')
+    })
+    
+  })()
+  
   
 </script>
 

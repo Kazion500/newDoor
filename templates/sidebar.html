@@ -31,10 +31,18 @@
       </div>
       <div class="user-info">
         <a data-toggle="collapse" href="#collapseExample" class="username">
-          <span>
-            {{ request.user.get_full_name }}
-            <b class="caret"></b>
-          </span>
+          
+          {% if request.user.get_full_name %}
+            <span>
+              {{ request.user.get_full_name }}
+              <b class="caret"></b>
+            </span>
+          {% else %}
+            <span>
+              {{ request.user.username }}
+              <b class="caret"></b>
+            </span>
+          {% endif %}
         </a>
         <div class="collapse" id="collapseExample">
           <ul class="nav">
@@ -62,7 +70,7 @@
     </div>
 
     <ul class="nav">
-      {% if request.user.profile.is_tenant or request.user.profile.is_manager or request.user.is_superuser %}
+      {% if request.user.profile.is_tenant %}
       <li class="nav-item active">
         <a class="nav-link" href="{% url 'tenant_dashboard' %} ">
           <i class="material-icons">dashboard</i>
@@ -183,8 +191,14 @@
           </ul>
         </div>
       </li>
-
       <li class="nav-item">
+        <a class="nav-link d-flex align-items-center" href="">
+          <i class="material-icons">history</i>
+          <span class="sidebar-normal"> Reports </span>
+        </a>
+      </li>
+
+      <!-- <li class="nav-item">
         <a class="nav-link" data-toggle="collapse" href="#tablesExamples">
           <i class="material-icons">grid_on</i>
           <p>
@@ -194,14 +208,8 @@
         </a>
         <div class="collapse" id="tablesExamples">
           <ul class="nav">
-            <!-- <li class="nav-item">
-              <a class="nav-link" href="/Add_Tenant">
-                <span class="sidebar-mini"> AT </span>
-                <span class="sidebar-normal"> Add Tenant </span>
-              </a>
-            </li> -->
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'add_tetant_contract' request.user.username %}">
+              <a class="nav-link" href="-url 'add_tetant_contract' request.user.username-">
                 <span class="sidebar-mini"> TC </span>
                 <span class="sidebar-normal"> Tenant Contract </span>
               </a>
@@ -212,15 +220,10 @@
                 <span class="sidebar-normal"> Review Documents </span>
               </a>
             </li>
-            <!-- <li class="nav-item">
-              <a class="nav-link" href="">
-                <span class="sidebar-mini"> TC </span>
-                <span class="sidebar-normal"> Payment </span>
-              </a>
-            </li> -->
+  
           </ul>
         </div>
-      </li>
+      </li> -->
       {% endif %} {% if request.user.profile.is_tenant %}
       <li class="nav-item">
         <a class="nav-link" href="{% url 'upload_documents' request.user.username %}">
@@ -235,8 +238,7 @@
           <span class="sidebar-normal"> Make Payement</span>
         </a>
       </li>
-      {% endif %}
-
+      
       <li class="nav-item">
         <a class="nav-link" data-toggle="collapse" href="#mapsExamples">
           <i class="material-icons">construction</i>
@@ -268,14 +270,17 @@
           </ul>
         </div>
       </li>
-      <ul class="nav">
+      {% endif %}
+
+      
+      <!-- <ul class="nav">
         <li class="nav-item active">
           <a class="nav-link" href="/Check_List">
             <i class="material-icons">CL</i>
             <p>Check List</p>
           </a>
         </li>
-      </ul>
+      </ul> -->
     </ul>
 
     <div class="ps__rail-x" style="left: 0px; top: 0px">

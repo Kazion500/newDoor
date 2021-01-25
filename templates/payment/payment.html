@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block title %} Payment {% endblock title %} {% block body %}
+{% extends 'base.html' %} {% load humanize %} {% block title %} Payment {% endblock title %} {% block body %}
 <style></style>
 <div class="col-md-12">
   <form
@@ -28,15 +28,20 @@
         <div class="col-md-12">
           <div class="card">
             <div class="card-header">
-              <h4 class="card-title"><b>Select a payment method</b></h4>
+              <h4 class="card-title text-center my-2">
+                <b style="text-transform: uppercase">Select a payment method</b>
+              </h4>
             </div>
             <div class="card-body">
               <div class="row p-0">
-                <div class="col-md-3.5">
+                <div class="col-md-3">
                   <ul
                     class="nav nav-pills nav-pills-rose flex-column"
                     role="tablist"
-                    style="background-color: rgb(245, 245, 245)"
+                    style="
+                      background-color: rgb(245, 245, 245);
+                      padding: initial;
+                    "
                   >
                     <li class="nav-item">
                       <a
@@ -108,14 +113,14 @@
                     </li>
                   </ul>
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-5">
                   <div class="tab-content">
                     <div class="tab-pane active show" id="link4">
-                      <h4>CREDIT/ DEBIT CARDS</h4>
+                      <h4><b>CREDIT/ DEBIT CARDS</b></h4>
                       Card Number
                       <div class="row">
                         <!-- <label class="col-sm-2 col-form-label" for="OccupancyType">Card Number*</label> -->
-                        <div class="col-sm-8">
+                        <div class="col-sm-12">
                           <div class="form-group bmd-form-group">
                             <div id="card-element">
                               <!-- A Stripe Element will be inserted here. -->
@@ -126,7 +131,7 @@
                       Name on card*
                       <div class="row">
                         <!-- <label class="col-sm-2 col-form-label" for="OccupancyType">Card Number*</label> -->
-                        <div class="col-sm-8">
+                        <div class="col-sm-12">
                           <div class="form-group bmd-form-group">
                             <input
                               class="form-control"
@@ -142,7 +147,7 @@
                       Email*
                       <div class="row">
                         <!-- <label class="col-sm-2 col-form-label" for="OccupancyType">Card Number*</label> -->
-                        <div class="col-sm-8">
+                        <div class="col-sm-12">
                           <div class="form-group bmd-form-group">
                             <input
                               class="form-control"
@@ -242,6 +247,39 @@
                       <br />
                       <br />Dynamically innovate resource-leveling customer
                       service for state of the art customer service.
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <h4><b>Payment Details</b></h4>
+                  <div class="payment-details d-flex">
+                    <div class="payment-details-left">
+                      <ul class="mx-2 p-0">
+                        <li><b>Amount to be paid</b></li>
+                        <!-- <li><b>Discount</b></li> -->
+                        <li><b>Any Other</b></li>
+                      </ul>
+                    </div>
+                    <div class="payment-details-right">
+                      <ul>
+                        <li class="text-success"><b>${{ final_amount|intcomma }}</b></li>
+                        <li class="text-danger">$0.00</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <hr class="mt-0" />
+                  <div
+                    class="total-payment-amount d-flex"
+                  >
+                    <div class="total-payment-amount-left">
+                      <ul class="ml-2 mr-4 p-0">
+                        <li><b>Total Amount</b></li>
+                      </ul>
+                    </div>
+                    <div class="total-payment-amount-right">
+                      <ul class="ml-2">
+                        <li id="total-amount"><b>${{ final_amount }}</b></li>
+                      </ul>
                     </div>
                   </div>
                 </div>

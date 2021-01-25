@@ -2008,6 +2008,16 @@ select.form-control-lg:not([size]):not([multiple]) {
   border-radius: 0.2rem;
 }
 
+/* Payments */
+.payment-details-right li,
+.payment-details-left li {
+  list-style: none;
+  margin-top: 15px;
+}
+.total-payment-amount li {
+  list-style: none;
+}
+
 .custom-select.is-valid,
 .form-control.is-valid,
 .was-validated .custom-select:valid,

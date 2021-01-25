@@ -118,9 +118,9 @@
               <tr>
                 <th>Owner Name</th>
                 <th>Property Name</th>
-                <th>Address</th>
-                <th>City</th>
-                <th>Country</th>
+                <th>Total Earnings</th>
+                <th>Total Dues</th>
+                <th>Total Units</th>
                 <th>Occupancy Graph</th>
                 <th class="disabled-sorting text-right">Actions</th>
               </tr>
@@ -128,22 +128,16 @@
             <tbody>
               {% if properties %} {% for property in properties %}
               <tr>
-                <td>{{property.owner_name}}</td>
+                <td>{{ property.owner_name }}</td>
                 <td>{{property.property_name}}</td>
-                <td>{{property.address1}}</td>
-                <td>{{property.city}}</td>
-                <td>{{property.get_country_display }}</td>
+                <td><b>$</b>676,576.7-demo</td>
+                <td><b>$</b>235,767-demo</td>
+                <td class="text-center">{{ property.unit_set.all.count }}</td>
                 <td>
                   <div
                     class="progress progress-line-primary"
-                    title="{{ number_of_vacant_units }} / {{ number_of_units}} Vacant"
-                    style="
-                      margin: 0;
-                      width: 100%;
-                      height: 10px;
-                      border-radius: 30px;
-                      background: rgb(8, 158, 8);
-                    "
+                    title="{{ number_of_vacant_units }} / {{ property.unit_set.all.count }} Vacant"
+                    style="margin: 0;width: 90%; height: 10px; border-radius: 30px; background:rgb(8, 158, 8)"
                   >
                     <div
                       class="progress-bar progress-bar-danger"
@@ -151,7 +145,7 @@
                       aria-valuenow="{{ percentage }}"
                       aria-valuemin="0"
                       aria-valuemax="100"
-                      title="{{ number_of_occupied_units }} / {{ number_of_units }} Occupied"
+                      title="{{ number_of_occupied_units }} / {{ property.unit_set.all.count }} Occupied"
                       style="width: {{ percentage }}%"
                     >
                       <span class="sr-only">{{ percentage }}% Complete</span>
@@ -161,9 +155,8 @@
                 <td class="text-right">
                   <a
                     href=" {% url 'property_unit_overview' property.pk %} "
-                    class="d-inline"
-                    title="View units"
-                  >
+                    class="d-inline" title="View units"
+                    >
                     <div class="ripple-container success"></div>
                     <i
                       class="material-icons"
@@ -178,6 +171,7 @@
                   </a>
 
                   <a href="" class="d-inline" title="View location">
+                    
                     <i
                       class="material-icons"
                       style="
@@ -196,8 +190,8 @@
                     class="d-inline"
                     rel="tooltip "
                     data-original-title="Remove"
-                    title="View property"
-                  >
+                     title="View property"
+                    >
                     <div class="ripple-container success"></div>
                     <i
                       class="material-icons"
@@ -213,9 +207,9 @@
 
                   <a
                     href="{% url 'update_property' property.pk  %}"
-                    title="Update property"
+                   title="Update property"
                     class="d-inline"
-                  >
+                    >
                     <div class="ripple-container success"></div>
                     <i
                       class="material-icons"
@@ -234,6 +228,7 @@
                     title="Delete property"
                     class="d-inline"
                   >
+                    
                     <i
                       class="material-icons"
                       style="
