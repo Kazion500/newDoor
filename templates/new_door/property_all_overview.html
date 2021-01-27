@@ -14,7 +14,13 @@
             <div class="card-icon">
               <i class="material-icons">account_balance_wallet</i>
             </div>
-            <h3 class="card-title">$985456</h3>
+            <h3 class="card-title">
+              {% if not total_earning.amount == None %}
+                ${{ total_earning.amount }}
+              {% else %}
+                $0
+              {% endif %}
+            </h3>
             <br /><br />
             <p class="card-category">Total Earnings</p>
           </div>
@@ -31,7 +37,13 @@
             <div class="card-icon">
               <i class="material-icons">account_balance_wallet</i>
             </div>
-            <h3 class="card-title">$754875</h3>
+            <h3 class="card-title">
+              {% if not total_due.amount == None %}
+                ${{ total_due.amount }}
+              {% else %}
+                $0
+              {% endif %}
+            </h3>
             <br /><br />
             <p class="card-category">Total Dues Amount</p>
           </div>
@@ -127,7 +139,7 @@
                 <td>
                   <div
                     class="progress progress-line-primary"
-                    title="{{ number_of_vacant_units }} / {{ number_of_units}} Vacant"
+                    title="{{ number_of_vacant_units }} / {{ property.unit_set.all.count}} Vacant"
                     style="margin: 0;width: 90%; height: 10px; border-radius: 30px; background:rgb(8, 158, 8)"
                   >
                     <div
@@ -136,7 +148,7 @@
                       aria-valuenow="{{ percentage }}"
                       aria-valuemin="0"
                       aria-valuemax="100"
-                      title="{{ number_of_occupied_units }} / {{ number_of_units }} Occupied"
+                      title="{{ number_of_occupied_units }} / {{ property.unit_set.all.count }} Occupied"
                       style="width: {{ percentage }}%"
                     >
                       <span class="sr-only">{{ percentage }}% Complete</span>

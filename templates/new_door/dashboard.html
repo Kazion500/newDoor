@@ -482,7 +482,7 @@
         <div class="card-icon">
           <i class="material-icons" style="width: initial">account_balance</i>
         </div>
-        <h4 class="card-title">Property Status</h4>
+        <h4 class="card-title">4 Top Property </h4>
       </div>
       <div class="card-body">
         <div class="toolbar">
@@ -526,72 +526,19 @@
                     >
                       Units
                     </th>
-                      <th
-                        class="sorting"
-                        tabindex="0"
-                        aria-controls="datatables"
-                        rowspan="1"
-                        colspan="1"
-                        style="width: 108px"
-                        aria-label="Position: activate to sort column ascending"
-                      >
-                        Doc pending
-                      </th>
-                      <th
-                        class="sorting"
-                        tabindex="0"
-                        aria-controls="datatables"
-                        rowspan="1"
-                        colspan="1"
-                        style="width: 152px"
-                        aria-label="Office: activate to sort column ascending"
-                      >
-                        Create Contract
-                      </th>
-                  
-                      <th
-                        class=" sorting"
-                        tabindex="0"
-                        aria-controls="datatables"
-                        rowspan="1"
-                        colspan="1"
-                        style="width: 70px"
-                        aria-label="Actions: activate to sort column ascending"
-                      >
-                        Vacant
-                      </th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr role="row" class="odd">
-                      <th tabindex="0" class="sorting_1">Building 1</th>
-                      <td>10</td>
-                      <td>2</td>
-                      <td>5</td>
-                      <td>3</td>
-                    </tr>
-                    <tr role="row" class="odd">
-                      <th tabindex="0" class="sorting_1">Building 2</th>
-                      <td>10</td>
-                      <td>2</td>
-                      <td>5</td>
-                      <td>3</td>
-                    </tr>
-                    <tr role="row" class="odd">
-                      <th tabindex="0" class="sorting_1">Building 3</th>
-                      <td>10</td>
-                      <td>2</td>
-                      <td>5</td>
-                      <td>3</td>
-                    </tr>
-                    <tr role="row" class="odd">
-                      <th tabindex="0" class="sorting_1">Building 4</th>
-                      <td>10</td>
-                      <td>2</td>
-                      <td>5</td>
-                      <td>3</td>
-                    </tr>
-               
+                    {% if properties %}
+                      
+                      {% for property in properties %}
+                      <tr role="row" class="odd">
+                        <th tabindex="0" class="sorting_1">{{property.property_name}}</th>
+                        <td>{{ property.unit_set.all.count }}</td>
+                      </tr>
+                      {% endfor %}
+                         
+                    {% endif %}
                   </tbody>
                 </table>
               </div>
@@ -1402,28 +1349,17 @@
                 >
                   <thead>
                     <tr role="row">
-                      <th
-                        class="sorting_asc"
-                        tabindex="0"
-                        aria-controls="datatables"
-                        rowspan="1"
-                        colspan="1"
-                        style="width: 175px"
-                        aria-sort="ascending"
-                        aria-label="Name: activate to sort column descending"
-                      >
-                        Name
-                      </th>
+          
                       <th
                         class="sorting"
                         tabindex="0"
                         aria-controls="datatables"
                         rowspan="1"
                         colspan="1"
-                        style="width: 178px"
+                        style="width: 130px"
                         aria-label="Position: activate to sort column ascending"
                       >
-                        Position
+                        Paid amount
                       </th>
                       <th
                         class="sorting"
@@ -1434,7 +1370,7 @@
                         style="width: 132px"
                         aria-label="Office: activate to sort column ascending"
                       >
-                        Office
+                        Due amount
                       </th>
                       <th
                         class="sorting"
@@ -1442,29 +1378,29 @@
                         aria-controls="datatables"
                         rowspan="1"
                         colspan="1"
-                        style="width: 77px"
+                        style="width: 137px"
                         aria-label="Age: activate to sort column ascending"
-                      >
-                        Age
-                      </th>
-                      <th
-                        class="sorting"
-                        tabindex="0"
-                        aria-controls="datatables"
-                        rowspan="1"
-                        colspan="1"
-                        style="width: 113px"
-                        aria-label="Date: activate to sort column ascending"
                       >
                         Date
                       </th>
                       <th
-                        class="disabled-sorting text-right sorting"
+                        class="sorting text-center"
                         tabindex="0"
                         aria-controls="datatables"
                         rowspan="1"
                         colspan="1"
-                        style="width: 204px"
+                        style="width: 123px"
+                        aria-label="Date: activate to sort column ascending"
+                      >
+                        Status
+                      </th>
+                      <th
+                        class="disabled-sorting text-right sorting "
+                        tabindex="0"
+                        aria-controls="datatables"
+                        rowspan="1"
+                        colspan="1"
+                        style="width: 154px"
                         aria-label="Actions: activate to sort column ascending"
                       >
                         Actions
@@ -1472,18 +1408,16 @@
                     </tr>
                   </thead>
                   <tbody>
+                    
+                    {% if payments %}
+                    
+                    {% for payment in payments %}
                     <tr role="row" class="odd">
-                      <td tabindex="0" class="sorting_1">Airi Satou</td>
-                      <td>Accountant</td>
-                      <td>Tokyo</td>
-                      <td>33</td>
-                      <td>2008/11/28</td>
+                      <td>{{ payment.amount }}</td>
+                      <td>{{ payment.remain_amount }}</td>
+                      <td>{{ payment.paid_date|date:'d F Y' }}</td>
+                      <td class="text-center"><span class="badge badge-success badge-pill">{{ payment.status }}</span></td>
                       <td class="text-right">
-                        <a
-                          href="#"
-                          class="btn btn-link btn-info btn-just-icon like"
-                          ><i class="material-icons">favorite</i></a
-                        >
                         <a
                           href="#"
                           class="btn btn-link btn-warning btn-just-icon edit"
@@ -1496,6 +1430,14 @@
                         >
                       </td>
                     </tr>
+                    {% endfor %}
+                      
+                 
+                    {% else %}
+                    <tr><td>No payments yet</td></tr>
+                    {% endif %}
+                      
+                    
                   </tbody>
                 </table>
               </div>

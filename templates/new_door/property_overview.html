@@ -14,7 +14,13 @@
             <div class="card-icon">
               <i class="material-icons">account_balance_wallet</i>
             </div>
-            <h3 class="card-title">$9877</h3>
+            <h3 class="card-title">
+              {% if not total_earning.amount == None %}
+                ${{ total_earning.amount }}
+              {% else %}
+                $0
+              {% endif %}
+            </h3>
             <br /><br />
             <p class="card-category">Total Earnings</p>
           </div>
@@ -31,7 +37,13 @@
             <div class="card-icon">
               <i class="material-icons">account_balance_wallet</i>
             </div>
-            <h3 class="card-title">$754875</h3>
+            <h3 class="card-title">
+              {% if not total_due.amount == None %}
+                ${{ total_due.amount }}
+              {% else %}
+                $0
+              {% endif %}
+            </h3>
             <br /><br />
             <p class="card-category">Total Dues Amount</p>
           </div>
@@ -129,7 +141,7 @@
               {% if properties %} {% for property in properties %}
               <tr>
                 <td>{{ property.owner_name }}</td>
-                <td>{{property.property_name}}</td>
+                <td>{{ property.property_name }}</td>
                 <td><b>$</b>676,576.7-demo</td>
                 <td><b>$</b>235,767-demo</td>
                 <td class="text-center">{{ property.unit_set.all.count }}</td>

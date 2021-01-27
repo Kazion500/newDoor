@@ -14,7 +14,13 @@
             <div class="card-icon">
               <i class="material-icons">account_balance_wallet</i>
             </div>
-            <h3 class="card-title">${{ collected_amount }}</h3>
+            <h3 class="card-title">
+              {% if not total_earning.amount == None %}
+                ${{ total_earning.amount }}
+              {% else %}
+                $0
+              {% endif %}
+            </h3>
             <br /><br />
             <p class="card-category">Total Earnings</p>
           </div>
@@ -31,7 +37,13 @@
             <div class="card-icon">
               <i class="material-icons">account_balance_wallet</i>
             </div>
-            <h3 class="card-title">${{ due_amount }}</h3>
+            <h3 class="card-title">
+              {% if not total_due.amount == None %}
+                ${{ total_due.amount }}
+              {% else %}
+                $0
+              {% endif %}
+            </h3>
             <br /><br />
             <p class="card-category">Total Dues Amount</p>
           </div>
@@ -170,12 +182,16 @@
             <td>${{ unit.rent_amount }}</td>
             <td>
               {% if unit.tenantcontract.payment_set.all %}
-                ${{ collected_amount }}
+                {% for payment in unit.tenantcontract.payment_set.all %}
+                  ${{ payment.amount }}
+                {% endfor %}
               {% endif %}
              </td>
             <td>
               {% if unit.tenantcontract.payment_set.all %}
-                ${{ remain_amount }}
+                {% for payment in unit.tenantcontract.payment_set.all %}
+                  ${{ payment.remain_amount }}
+                {% endfor %}
               {% endif %}
             </td>
 
@@ -265,7 +281,10 @@
               </a>
             </td>
           </tr>
-          {% endfor %} {% else %} NoData {% endif %}
+          {% endfor %}
+          {% else %} 
+          <tr><td colspan="8" class="text-center">No Units</td></tr>  
+          {% endif %}
         </tbody>
         </table>
       </div>
@@ -326,5 +345,6 @@
       }
     });
   }
+  console.log('{{collected_amount}}');
 </script>
 {% endblock %}

@@ -13,7 +13,13 @@
             <div class="card-icon">
               <i class="material-icons">account_balance_wallet</i>
             </div>
-            <h3 class="card-title">$514184</h3>
+            <h3 class="card-title">
+              {% if not total_earning.amount == 0 %}
+                ${{ total_earning.amount }}
+              {% else %}
+                $0
+              {% endif %} 
+            </h3>
             <br /><br />
             <p class="card-category">Total Earnings</p>
           </div>
@@ -30,7 +36,13 @@
             <div class="card-icon">
               <i class="material-icons">account_balance_wallet</i>
             </div>
-            <h3 class="card-title">$754875</h3>
+              <h3 class="card-title">
+                {% if not total_due.amount == None %}
+                  ${{ total_due.amount }}
+                {% else %}
+                  $0
+                {% endif %}
+              </h3>
             <br /><br />
             <p class="card-category">Total Dues Amount</p>
           </div>
@@ -168,14 +180,18 @@
               </td>
               <td>{{ unit.tenantcontract.tenant.user.username.capitalize }}</td>
               <td>${{ unit.rent_amount }}</td>
-              <td>
+              <td class="amount">
                 {% if unit.tenantcontract.payment_set.all %}
-                  ${{ collected_amount }}
+                  {% for payment in unit.tenantcontract.payment_set.all %}
+                    ${{ payment.amount }}
+                  {% endfor %}
                 {% endif %}
                </td>
-              <td>
+              <td class="remain_amount">
                 {% if unit.tenantcontract.payment_set.all %}
-                    ${{ remain_amount }}
+                  {% for payment in unit.tenantcontract.payment_set.all %}
+                    ${{ payment.remain_amount }}
+                  {% endfor %}
                 {% endif %}
               </td>
 
@@ -325,5 +341,6 @@
     });
   }
 
+  
 </script>
 {% endblock %}
