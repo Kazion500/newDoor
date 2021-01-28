@@ -14,7 +14,7 @@ from django.template.loader import render_to_string
 from .utils import account_activation_token
 from django.urls import reverse
 import stripe
-import datetime
+import random
 from datetime import timezone, date
 
 
@@ -223,8 +223,10 @@ def property_unit_overview(request, id):
         except:
             pass
     try:
-        total_due = Payment.objects.filter(contract__unit__property_id__pk=id).aggregate(amount=Sum('remain_amount'))
-        total_earning = Payment.objects.filter(contract__unit__property_id__pk=id).aggregate(amount=Sum('amount'))
+        total_due = Payment.objects.filter(
+            contract__unit__property_id__pk=id).aggregate(amount=Sum('remain_amount'))
+        total_earning = Payment.objects.filter(
+            contract__unit__property_id__pk=id).aggregate(amount=Sum('amount'))
     except:
         pass
 
@@ -816,6 +818,10 @@ def add_tenant_to_unit(request, unit_id):
             tenant_contract = TenantContract(tenant=tenant, unit=unit)
             property_ = Property.objects.get(unit=unit)
             tenant_contract.property_id = property_
+            ran_num = random.randint(1, 900000)
+
+            tenant_contract.contract_no = ran_num
+            tenant_contract.annual_rent = unit.rent_amount
             unit.occupancy_type = occupancy_type
             unit.save()
             tenant_contract.save()
@@ -975,6 +981,7 @@ def add_tetant_contract(request, user):
                 return redirect('add_tetant_contract', user)
 
             form.save()
+
             messages.success(
                 request, 'Congratulations...! Contract successfully added.')
 

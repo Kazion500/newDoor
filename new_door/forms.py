@@ -245,15 +245,15 @@ class TenantContractModelForm(forms.ModelForm):
     remark = forms.CharField(
         widget=forms.TextInput(attrs={"col": "3", "row": "1", 'class': 'form-control'}))
     discount = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control'}))
+        widget=forms.NumberInput(attrs={'class': 'form-control'}))
     annual_rent = forms.CharField(max_length=100,
-                                  widget=forms.TextInput(attrs={'class': 'form-control'}))
+                                  widget=forms.NumberInput(attrs={'class': 'form-control',"readonly":True}))
     security_dep = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control'}))
+        widget=forms.NumberInput(attrs={'class': 'form-control'}))
     commission = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control'}))
+        widget=forms.NumberInput(attrs={'class': 'form-control'}))
     installments = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control'}))
+        widget=forms.NumberInput(attrs={'class': 'form-control'}))
     start_date = forms.DateField(initial=datetime.date.today,
                                  widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}))
     end_date = forms.DateField(
@@ -265,10 +265,10 @@ class TenantContractModelForm(forms.ModelForm):
         exclude = ['id']
 
         widgets = {
-            'tenant': forms.TextInput(attrs={'class': 'form-control'}),
-            'property_id': forms.TextInput(attrs={'class': 'form-control'}),
-            'unit': forms.TextInput(attrs={'class': 'form-control'}),
-            'contract_no': forms.TextInput(attrs={'class': 'form-control'}),
+            'tenant': forms.TextInput(attrs={'class': 'form-control',"readonly":True}),
+            'property_id': forms.TextInput(attrs={'class': 'form-control',"readonly":True}),
+            'unit': forms.TextInput(attrs={'class': 'form-control',"readonly":True}),
+            'contract_no': forms.TextInput(attrs={'class': 'form-control',"readonly":True}),
             'sms_notify': forms.CheckboxInput(attrs={'class': 'form-check-input', "id": "sms_notify"},),
             'email_notify': forms.CheckboxInput(attrs={'class': 'form-check-input', "id": "email_notify"}),
         }
