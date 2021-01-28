@@ -332,9 +332,10 @@ class TenantContractModelForm(forms.ModelForm):
     def clean_start_date(self):
         start_date = self.cleaned_data['start_date']
         today = datetime.date.today()
+
         if start_date < today:
-            raise forms.ValidationError(
-                'Start date should not be less than current date')
+            self.add_error(
+                'start_date', 'Start date should not be less than current date')
         return start_date
 
 
