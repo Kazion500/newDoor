@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block title %} Dashboard {% endblock title %} {% block body %}
+{% extends 'base.html' %} {% load humanize %} {% block title %} Dashboard {% endblock title %} {% block body %}
 
 <div class="row">
   <div class="col-lg-3 col-md-6 col-sm-6">
@@ -1413,7 +1413,7 @@
                     
                     {% for payment in payments %}
                     <tr role="row" class="odd">
-                      <td>{{ payment.amount }}</td>
+                      <td>{{ payment.amount|intcomma }}</td>
                       <td>{{ payment.remain_amount }}</td>
                       <td>{{ payment.paid_date|date:'d F Y' }}</td>
                       <td class="text-center"><span class="badge badge-success badge-pill">{{ payment.status }}</span></td>
