@@ -213,8 +213,6 @@ def property_unit_overview(request, id):
         occupancy_type__occupancy_type__iexact="occupied", property_id=_property).count()
 
     try:
-        total_due = Payment.objects.filter(
-            contract__unit__property_id__pk=id).aggregate(amount=Sum('remain_amount'))
         total_earning = Payment.objects.filter(
             contract__unit__property_id__pk=id).aggregate(amount=Sum('amount'))
     except:
