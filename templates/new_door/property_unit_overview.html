@@ -1,4 +1,4 @@
-{% extends 'base.html' %}{% load humanize %} {% block title %} Unit Overview {% endblock title %}
+{% extends 'base.html' %} {% load static %}{% load humanize %} {% block title %} Unit Overview {% endblock title %}
 {% block body %}
 <div class="row">
   <div class="col-md-12">
@@ -37,13 +37,7 @@
             <div class="card-icon">
               <i class="material-icons">account_balance_wallet</i>
             </div>
-            <h3 class="card-title">
-              {% if not total_due.amount == None %}
-                ${{ total_due.amount|intcomma }}
-              {% else %}
-                $0
-              {% endif %}
-            </h3>
+            <h3 class="card-title" id="totalDueAmounts"></h3>
             <br /><br />
             <p class="card-category">Total Dues Amount</p>
           </div>
@@ -180,17 +174,20 @@
             </td>
             <td>{{ unit.tenantcontract.tenant.user.username.capitalize }}</td>
             <td>${{ unit.rent_amount }}</td>
-            <td>
+            <td class="amount">
               {% if unit.tenantcontract.payment_set.all %}
-                {% for payment in unit.tenantcontract.payment_set.all %}
+                {% for payment in unit.tenantcontract.payment_set.all  %}
                   ${{ payment.amount|intcomma }}
                 {% endfor %}
               {% endif %}
              </td>
-            <td>
+             
+            <td class="remain_amount">
               {% if unit.tenantcontract.payment_set.all %}
                 {% for payment in unit.tenantcontract.payment_set.all %}
-                  ${{ payment.remain_amount|intcomma }}
+                  {% if forloop.last %}
+                    ${{ payment.remain_amount|intcomma }}
+                  {% endif %}
                 {% endfor %}
               {% endif %}
             </td>
@@ -263,10 +260,9 @@
               </a>
 
               <a
-              href="#"
+              href="{% url 'review_documents' unit.tenantcontract.tenant.user.username %} "
               class="d-inline delete-item"
-              title="Delete unit"
-              data-toggle="modal" data-target="#deleteToggle"
+              title="View contract"
             >
               <i
                 class="material-icons"
@@ -274,12 +270,34 @@
                   margin-right: 5px;
                   margin-top: 10px;
                   margin-bottom: 20px;
-                  color: #f44336;
+                  color: #0e352b;
                 "
-                >delete</i
+                >description</i
               >
               <div class="ripple-container"></div>
             </a>
+
+              {% if request.user.is_superuser %}
+              <a
+                  href="#"
+                  class="d-inline delete-item"
+                  title="Delete unit"
+                  data-target="#deleteToggle"
+                  data-toggle="modal"
+                >
+                  <i
+                    class="material-icons"
+                    style="
+                      margin-right: 5px;
+                      margin-top: 10px;
+                      margin-bottom: 20px;
+                      color: #c55d55;
+                    "
+                    >delete</i
+                  >
+                  <div class="ripple-container"></div>
+              </a>
+              {% endif %}
           </td>
         </tr>
                   <!-- Modal -->
@@ -315,57 +333,7 @@
   <!--  end card  -->
 </div>
 <!-- end row -->
+{% block unit_overview %}
+<script src="{% static 'js/unit_overview.js' %}"> </script>
 {% endblock %}
-
-{% block occupancy %}
-<script>
-  const occupancyTypes = document.querySelectorAll(".occupancy_type");
-  addColorToButtons();
-
-  function addColorToButtons() {
-    occupancyTypes.forEach((occupancyType) => {
-      const occupancyTypeText = occupancyType.textContent.trim().toLowerCase();
-
-      switch (occupancyTypeText) {
-        case "vacant":
-          occupancyType.style.backgroundColor = "green";
-          break;
-
-        case "occupied":
-          occupancyType.style.backgroundColor = "red";
-          break;
-
-        case "user verification pending":
-          occupancyType.style.backgroundColor = "greenyellow";
-          occupancyType.style.color = "black";
-          break;
-
-        case "document pending":
-          occupancyType.style.backgroundColor = "lightblue";
-          occupancyType.style.color = "black";
-          break;
-
-        case "payment pending":
-          occupancyType.style.backgroundColor = "#1f97c7";
-          break;
-
-        case "create contract":
-          occupancyType.style.backgroundColor = "#000";
-          break;
-
-        case "document approved":
-          occupancyType.style.backgroundColor = "#000";
-          break;
-
-        case "payment pending":
-          occupancyType.style.backgroundColor = "#000";
-          break;
-
-        default:
-          break;
-      }
-    });
-  }
-  console.log('{{collected_amount}}');
-</script>
 {% endblock %}

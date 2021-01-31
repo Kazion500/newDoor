@@ -228,14 +228,20 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url 'upload_documents' request.user.username %}">
           <i class="material-icons">cloud_upload</i>
-          <span class="sidebar-normal"> Upload Documents </span>
+          <p>Upload Documents</p>
         </a>
       </li>
       <!-- TODO: Check if user documents are verified  -->
       <li class="nav-item">
         <a class="nav-link" href="{% url 'payment' request.user.username %}">
           <i class="material-icons">attach_money</i>
-          <span class="sidebar-normal"> Make Payement</span>
+          <p>Make Payement</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'review_documents' request.user.username %}">
+          <i class="material-icons">description</i>
+          <p>View Your Contract</p>
         </a>
       </li>
       

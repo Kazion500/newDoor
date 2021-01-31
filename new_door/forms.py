@@ -123,16 +123,16 @@ class ProfileRegistrationForm(UserCreationForm):
         attrs={"class": "form-control", 'placeholder': 'Enter last name'})
     )
     pcontact = forms.CharField(widget=forms.NumberInput(
-        attrs={"class": "form-control", 'placeholder': 'Enter p_contact'})
+        attrs={"class": "form-control", 'placeholder': 'Enter primary contact'})
     )
     scontact = forms.CharField(widget=forms.NumberInput(
-        attrs={"class": "form-control", 'placeholder': 'Enter s_contact'})
+        attrs={"class": "form-control", 'placeholder': 'Enter secondary contact'})
     )
     marital_status = forms.CharField(widget=forms.Select(
         attrs={"class": "form-control", 'placeholder': 'Enter marital status'}, choices=MARITAL_STATUS)
     )
-    nationality = forms.CharField(widget=forms.TextInput(
-        attrs={"class": "form-control", 'placeholder': 'Enter nationality'})
+    nationality = CountryField(blank_label='Select your nationality').formfield(
+        widget=CountrySelectWidget(attrs={"class": "form-control"}),
     )
     image = forms.ImageField(widget=forms.FileInput(
         attrs={"class": "form-control"})
@@ -174,7 +174,7 @@ class ProfileRegistrationForm(UserCreationForm):
         pcontact_ = self.cleaned_data.get('pcontact')
         try:
             profile_obj = Profile.objects.get(pcontact=pcontact_)
-
+            
             if pcontact_ == profile_obj.pcontact:
                 raise forms.ValidationError(
                     'Primary contact is already in use')

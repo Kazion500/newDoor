@@ -45,7 +45,7 @@
             <button
               class="btn btn-rose btn-round btn-sm"
               type="button"
-              onclick="document.getElementById('image_upload').click()"
+              onclick="document.getElementById('imageUpload').click()"
             >
               <i class="material-icons">open_in_browser </i> Browse File
               <div class="ripple-container"></div>
@@ -53,7 +53,7 @@
             <input
               type="file"
               name="image"
-              id="image_upload"
+              id="imageUpload"
               style="display: none"
             />
           </div>
@@ -96,33 +96,15 @@
                     <th>File Name</th>
                     <th>Size</th>
                     <th>File Progress</th>
-                    <!-- <th class="disabled-sorting text-right">Actions</th> -->
                   </tr>
                 </thead>
                 <tbody>
                   {% if uploaded_documents %} {% for uploaded_document in uploaded_documents %}
-
                   <tr>
                     <td scope="row">{{ uploaded_document.doc_type.docs_type.upper }}</td>
                     <td class="doc-name">{{ uploaded_document.image.name.upper }}</td>
                     <td>{{ uploaded_document.image.size }} KB</td>
                     <td>100%</td>
-<!-- 
-                    <td class="text-right">
-                      <a href="" class="d-inline" title="Delete file">
-                        <i
-                          class="material-icons"
-                          style="
-                            margin-right: 5px;
-                            margin-top: 10px;
-                            margin-bottom: 20px;
-                            color: #f44336;
-                          "
-                          >delete</i
-                        >
-                        <div class="ripple-container"></div>
-                      </a>
-                    </td> -->
                   </tr>
                   {% endfor %} {% else %} NoData {% endif %}
                 </tbody>
@@ -134,13 +116,12 @@
     </div>
   </div>
   <div class="card">
-    <h4 class="card-header">Uploaded Documents</h4>
+    <h4 class="card-header" style="font-weight: 600; text-transform: uppercase;">Uploaded Documents</h4>
     <div class="card-body">
       <div class="row">
         {% for uploaded_document in uploaded_documents %}
         <div
           class="col-md-4"
-          
         >
         <div class="uploaded-docs" style="height: 200px;
         background-image: url('{{ uploaded_document.image.url }}'); background-size: cover; border-radius: 7px;">
@@ -153,8 +134,9 @@
 </div>
 
 <script>
-  let fileInput = document.getElementById("image_upload");
+  let fileInput = document.getElementById("imageUpload");
   let stagedDocs = document.querySelector(".staged-docs");
+  let stagedDocsToUpload = document.querySelectorAll(".staged-docs");
   let docNames = document.querySelectorAll(".doc-name");
   let imagePreviewIcon = document.querySelector(".imagePreviewIcon");
   const url = `/upload-documents/{{ tenant.user.username }}`;
@@ -183,47 +165,18 @@
   function removeOperation(div,input){
     let closeBtns = document.querySelectorAll(".fa-times");
     let upload = document.querySelector(".fa-check-circle");
-
-    console.log(input.files);
     
-      closeBtns.forEach((closeBtn)=>{
-        closeBtn.addEventListener('click',()=>{
-          // file.remove
-          div.remove()
-          
-          console.log(stagedDocs.children);
+    closeBtns.forEach((closeBtn)=>{
+      closeBtn.addEventListener('click',()=>{
+        // file.remove
+        div.remove()
         
-        })
+        console.log(stagedDocs.children);
+      
       })
-
-    // if(upload){
-    //   upload.addEventListener('click',(e)=>{
-    //     const form = new FormData()
-    //     form.append(input.files)
-    //     $.ajax({
-    //       url: url,
-    //       method: "POST",
-    //       data: {
-    //         user: "{{ tenant.user.username }}",
-    //         operation: "save",
-    //         filename: form,
-    //       },
-    //       headers: {
-    //         "X-CSRFToken": csrftoken,
-    //       },
-    //       success(data) {
-    //         // this.classList.add('text-success')
-    //         for (let i = 0; i < iconVerify.length; i++) {
-    //           console.log(iconVerify[i].dataset.fileName);
-    //           if (iconVerify[i].dataset.fileName === data.file) {
-    //             iconVerify[i].classList.add('text-success')
-    //           }
-    //         }
-    //       },
-    //     });
-    //   })
-    // }
+    })
   }
+
 
   function uploadFile() {
     // Multiple images preview in browser
@@ -309,7 +262,7 @@
     };
 
     fileInput.addEventListener("change", () => {
-      imagesPreview(fileInput, stagedDocs);
+      imagesPreview(fileInput, stagedDocs);      
     });
 
   }
@@ -319,9 +272,7 @@
       docName.textContent = docName.textContent.replace('MEDIA/DOCUMENTS/','')
     })
     
-  })()
-  
-  
+  })() 
 </script>
 
 {% endblock body %}

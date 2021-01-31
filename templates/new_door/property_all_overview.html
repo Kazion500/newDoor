@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% load humanize %}{% block title %} Property Overview {% endblock title %} {% block body %}
+{% extends 'base.html' %} {% load static %} {% load humanize %}{% block title %} Property Overview {% endblock title %} {% block body %}
 <div class="row">
   <div class="col-md-12">
     <!-- **************Mini Dashbar************************************************** -->
@@ -37,13 +37,7 @@
             <div class="card-icon">
               <i class="material-icons">account_balance_wallet</i>
             </div>
-            <h3 class="card-title">
-              {% if not total_due.amount == None %}
-                ${{ total_due.amount|intcomma }}
-              {% else %}
-                $0
-              {% endif %}
-            </h3>
+            <h3 class="card-title" id="totalDueAmounts"></h3>
             <br /><br />
             <p class="card-category">Total Dues Amount</p>
           </div>
@@ -132,8 +126,26 @@
               {% if properties %} {% for property in properties %}
               <tr>
                 <td>{{ property.owner_name }}</td>
-                <td>{{property.property_name}}</td>
-                <td><b>$</b>676,576.7-demo</td>
+                <td>{{ property.property_name }}</td>
+                <td class="total_earning">
+                {% if property.unit_set.all.count > 0 %}
+                  
+                  {% for unit in property.unit_set.all %}
+                    {% if unit.tenantcontract.payment_set.all %}
+                      {% for payment in unit.tenantcontract.payment_set.all  %}
+                        {% if forloop.last %}
+                          ${{ payment.amount|intcomma }}
+                        {% endif %}
+                      {% endfor %}
+                    {% else %}
+                      $0
+                    {% endif %}
+                  {% endfor %}
+
+                {% else %}
+                  $0
+                {% endif %}
+                  </td>
                 <td><b>$</b>235,767-demo</td>
                 <td class="text-center">{{ property.unit_set.all.count }}</td>
                 <td>
@@ -279,4 +291,7 @@
   <!-- end col-md-12 -->
 </div>
 <!-- end row -->
+{% block unit_overview %}
+<script src="{% static 'js/unit_overview.js' %}"> </script>
+{% endblock %}
 {% endblock %}

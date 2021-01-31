@@ -1,6 +1,7 @@
+from django.db.models.query_utils import Q
 from django.http.response import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.db.models import Sum, Max
+from django.db.models import Sum, Max,Min
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -249,10 +250,6 @@ def property_unit_overview(request, id):
 
 @login_required
 def unit_overview(request):
-
-    collected_amount = []
-    remain_amount = 0
-    total_due = 0
     total_earning = 0
 
     units = Unit.objects.all()
@@ -271,8 +268,8 @@ def unit_overview(request):
         except:
             pass
     try:
-        total_due = Payment.objects.all().aggregate(amount=Sum('remain_amount'))
         total_earning = Payment.objects.all().aggregate(amount=Sum('amount'))
+
     except:
         pass
 
@@ -281,10 +278,7 @@ def unit_overview(request):
 
     context = {
         'units': units,
-        "total_due": total_due,
         "total_earning": total_earning,
-        "collected_amount": collected_amount,
-        "remain_amount": remain_amount,
         'number_of_occupied_units': number_of_occupied_units,
         'number_of_vacant_units': number_of_vacant_units,
     }
@@ -299,12 +293,22 @@ def checklist(request):
 
 @login_required
 def upload_documents(request, user):
+    tenant_contract = ''
+    property_owner = ''
     tenant = get_object_or_404(Profile, user__username__iexact=user)
-    tenant_contract = TenantContract.objects.get(tenant__user__username=user)
-    property_owner = Property.objects.get(pk=tenant_contract.property_id_id)
     uploaded_documents = UploadDocument.objects.filter(tenant=tenant)
     doc_type = DocumentType.objects.all()
     # uploaded_documents = DocumentType.objects.filter(uploaddocument__doc_type=uploaded_document.doc_type)
+
+    try:
+        tenant_contract = TenantContract.objects.get(
+            tenant__user__username=user)
+        property_owner = Property.objects.get(
+            pk=tenant_contract.property_id_id)
+    except TenantContract.DoesNotExist:
+        messages.info(
+            request, 'You dont have a contract please contact your real estate manager')
+        return redirect('tenant_dashboard')
 
     if request.method == "POST":
         form = UploadDocumentModelForm(request.POST, request.FILES)
@@ -343,6 +347,7 @@ def upload_documents(request, user):
 
 
 def review_documents(request, user):
+    # TODO:// add authorization
     tenant = get_object_or_404(Profile, user__username=user)
     tenant_contract = get_object_or_404(TenantContract, tenant=tenant)
     tenant_docs = UploadDocument.objects.filter(tenant=tenant)
@@ -435,11 +440,20 @@ def verify_documents(request, user):
 
 @login_required
 def payment(request, user):
-    tenant_contract = TenantContract.objects.get(
-        tenant__user__username=user)
+    tenant_contract = ''
+    property_owner = ''
+    profile = Profile.objects.get(user__username=user)
     user_docs = UploadDocument.objects.filter(tenant__user__username=user)
 
-    property_owner = Property.objects.get(pk=tenant_contract.property_id_id)
+    try:
+        tenant_contract = TenantContract.objects.get(
+            tenant__user__username=user)
+        property_owner = Property.objects.get(
+            pk=tenant_contract.property_id_id)
+    except TenantContract.DoesNotExist:
+        messages.info(
+            request, 'You dont have a contract to make payments for, please contact your real estate manager')
+        return redirect('tenant_dashboard')
 
     if user_docs.count() == 0:
         messages.info(
@@ -473,9 +487,22 @@ def payment(request, user):
     final_amount = int(security_dep) + int(commission) + \
         int(unit_amount) - int(discount)
 
-    profile = Profile.objects.get(user__username=user)
-
     if request.method == "POST":
+        # Check if email and card name are provided
+        tenant_email = profile.user.email
+        email = request.POST.get('email')
+        card_name = request.POST.get('email')
+
+        if email != tenant_email:
+            messages.error(
+                request, 'Make sure your is email and card name valid, this is due to mismatch of emails')
+            return redirect("payment", user)
+
+        if email == '' and card_name == '':
+            messages.error(
+                request, 'Make sure your email and card name are filled')
+            return redirect("payment", user)
+
         # No charge at 0
         try:
             payments = Payment.objects.filter(contract=tenant_contract)
@@ -486,8 +513,8 @@ def payment(request, user):
         except:
             pass
         customer = stripe.Customer.create(
-            name=request.POST.get('fullname'),
-            email=request.POST.get('email'),
+            name=card_name,
+            email=email,
             source=request.POST.get('stripeToken')
         )
         rental_amount = stripe.Charge.create(
@@ -697,8 +724,7 @@ def add_user(request):
             user.profile.mid_name = form.cleaned_data.get('mid_name')
             user.profile.pcontact = form.cleaned_data.get('pcontact')
             user.profile.scontact = form.cleaned_data.get('scontact')
-            user.profile.is_tenant = form.cleaned_data.get('is_tenant')
-            user.profile.is_owner = form.cleaned_data.get('is_owner')
+            user.profile.is_owner = True
             user.profile.marital_status = form.cleaned_data.get(
                 'marital_status')
             user.profile.nationality = form.cleaned_data.get('nationality')
@@ -800,7 +826,7 @@ def add_tenant_to_unit(request, unit_id):
             user.profile.mid_name = form.cleaned_data.get('mid_name')
             user.profile.pcontact = form.cleaned_data.get('pcontact')
             user.profile.scontact = form.cleaned_data.get('scontact')
-            user.profile.is_tenant = form.cleaned_data.get('is_tenant')
+            user.profile.is_tenant = True
             user.profile.marital_status = form.cleaned_data.get(
                 'marital_status')
             user.profile.nationality = form.cleaned_data.get('nationality')

@@ -114,28 +114,31 @@
                       >create</i
                     >
                   </a>
-
-                  <a
-                  href="#"
-                  class="d-inline delete-item"
-                  title="Delete unit"
-                  data-toggle="modal" data-target="#deleteToggle"
-                >
-                  <i
-                    class="material-icons"
-                    style="
-                      margin-right: 5px;
-                      margin-top: 10px;
-                      margin-bottom: 20px;
-                      color: #f44336;
-                    "
-                    >delete</i
+                {% if request.user.is_superuser %}
+                <a
+                    href="#"
+                    class="d-inline delete-item"
+                    title="Delete unit"
+                    data-target="#deleteToggle"
+                    data-toggle="modal"
                   >
-                  <div class="ripple-container"></div>
+                    <i
+                      class="material-icons"
+                      style="
+                        margin-right: 5px;
+                        margin-top: 10px;
+                        margin-bottom: 20px;
+                        color: #c55d55;
+                      "
+                      >delete</i
+                    >
+                    <div class="ripple-container"></div>
                 </a>
+                {% endif %}
+                    
               </td>
             </tr>
-                      <!-- Modal -->
+            <!-- Modal -->
             <div class="modal fade" id="deleteToggle" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
               <div class="modal-dialog modal-dialog-top" role="document">
                 <div class="modal-content">
