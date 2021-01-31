@@ -15,11 +15,15 @@
               <i class="material-icons">account_balance_wallet</i>
             </div>
             <h3 class="card-title">
-              {% if not total_earning.amount == None %}
-                ${{ total_earning.amount|intcomma }}
+              {% if total_earning == 0 %}
+                $0
+              {% elif total_earning.amount == None%}
+                $0
+              {% elif not total_earning.amount == 0 %}
+                ${{ total_earning.amount|intcomma }}12
               {% else %}
                 $0
-              {% endif %}
+              {% endif %} 
             </h3>
             <br /><br />
             <p class="card-category">Total Earnings</p>

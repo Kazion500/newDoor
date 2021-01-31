@@ -16,8 +16,10 @@
             <h3 class="card-title">
               {% if total_earning == 0 %}
                 $0
+              {% elif total_earning.amount == None%}
+                $0
               {% elif not total_earning.amount == 0 %}
-                ${{ total_earning.amount|intcomma }}
+                ${{ total_earning.amount|intcomma }}12
               {% else %}
                 $0
               {% endif %} 
