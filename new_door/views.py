@@ -203,10 +203,6 @@ def property_all_overview(request):
 
 
 def property_unit_overview(request, id):
-    collected_amount = 0
-    remain_amount = 0
-
-    total_due = 0
     total_earning = 0
     _property = get_object_or_404(Property, pk=id)
     units = Unit.objects.filter(property_id=_property.pk)
@@ -216,13 +212,6 @@ def property_unit_overview(request, id):
     number_of_occupied_units = Unit.objects.filter(
         occupancy_type__occupancy_type__iexact="occupied", property_id=_property).count()
 
-    for unit in units:
-        try:
-            for payment in unit.tenantcontract.payment_set.all():
-                collected_amount += payment.amount
-                remain_amount = payment.remain_amount
-        except:
-            pass
     try:
         total_due = Payment.objects.filter(
             contract__unit__property_id__pk=id).aggregate(amount=Sum('remain_amount'))
@@ -237,12 +226,9 @@ def property_unit_overview(request, id):
     context = {
         'property': _property,
         'units': units,
-        "total_due": total_due,
         "total_earning": total_earning,
         'number_of_vacant_units': number_of_vacant_units,
         'number_of_occupied_units': number_of_occupied_units,
-        "collected_amount": collected_amount,
-        "remain_amount": remain_amount,
     }
 
     return render(request, 'new_door/property_unit_overview.html', context)
@@ -258,15 +244,6 @@ def unit_overview(request):
     number_of_occupied_units = Unit.objects.filter(
         occupancy_type__occupancy_type__iexact="occupied").count()
 
-    for unit in units:
-        try:
-            payments = Payment.objects.filter(contract__unit_id=unit.pk)
-            for payment in payments:
-                collected_amount.append(payment.amount)
-                remain_amount = payment.remain_amount
-            # print(unit)
-        except:
-            pass
     try:
         total_earning = Payment.objects.all().aggregate(amount=Sum('amount'))
 
