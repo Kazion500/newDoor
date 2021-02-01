@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block title %} Category_Type {% endblock title %}
+{% extends 'base.html' %} {% block title %} Category Type {% endblock title %}
 {% block body %} {% load static %}
 <div class="col-md-12">
   <form
@@ -51,7 +51,6 @@
       {% comment %} Main form send here {% endcomment %}
       <div class="row">
         <div class="col-md-12">
-          <div class="card">
             <div class="card-header card-header-primary card-header-icon">
               <h4 class="card-title">Category Type Overview</h4>
             </div>
@@ -118,7 +117,7 @@
                           >
                         </a>
 
-                        <a href=" {% url 'delete_category_type' category.pk %}" class="d-inline" title="Delete category type" >
+                        <a href="#" data-toggle="modal" data-target="#deleteToggle" class="d-inline" title="Delete category type" >
                           <i
                             class="material-icons"
                             style="
@@ -133,19 +132,37 @@
                         </a>
                       </td>
                     </tr>
-                    {% endfor %} {% else %} NoData {% endif %}
+                    <!-- Modal -->
+                    <div class="modal fade" id="deleteToggle" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-top" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <!-- <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5> -->
+                            <button type="button" class="close p-3" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            Are you sure you want to delete  {{ category.cat_type }}?
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
+                            <a href="{% url 'delete_category_type' category.pk %}" type="button" class="btn btn-danger">Yes</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {% endfor %} {% else %} <tr class="text-center"><td colspan="4">No Category</td></tr> {% endif %}
                   </tbody>
                 </table>
               </div>
             </div>
-            <!-- end content-->
-          </div>
           <!--  end card  -->
         </div>
         <!-- end col-md-12 -->
       </div>
     </div>
-  </form>
+
 </div>
 
 {% endblock body %}

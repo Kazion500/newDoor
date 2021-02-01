@@ -158,7 +158,10 @@
                 </div>
               </div>
             </div>
-              {% endfor %} {% else %} NoData {% endif %}
+              {% endfor %}
+              {% else %} 
+              <tr class="text-center"><td colspan="6">No Entity</td></tr> 
+              {% endif %}
             </tbody>
           </table>
         </div>

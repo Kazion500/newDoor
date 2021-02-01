@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block title %} Contract_Request_Type {% endblock title %} {% block body %} {% load static %}
+{% extends 'base.html' %} {% block title %} Contract Request Type {% endblock title %} {% block body %} {% load static %}
 <div class="col-md-12">
   <div class="card">
     <div
@@ -48,7 +48,6 @@
     {% comment %} Main form send here {% endcomment %}
     <div class="row">
       <div class="col-md-12">
-        <div class="card">
           <div class="card-header card-header-primary card-header-icon">
             <h4 class="card-title">Contract Request Type Overview</h4>
           </div>
@@ -121,8 +120,9 @@
                       </a>
 
                       <a
-                        href="{% url 'delete_contract_request' contract_request.pk  %} "
+                        href="#"
                         class="d-inline" title="Delete contract request"
+                        data-toggle="modal" data-target="#deleteToggle"
                       >
                         <i
                           class="material-icons"
@@ -138,14 +138,30 @@
                       </a>
                     </td>
                   </tr>
-                  {% endfor %} {% else %} NoData {% endif %}
+                  <div class="modal fade" id="deleteToggle" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-top" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <!-- <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5> -->
+                          <button type="button" class="close p-3" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          Are you sure you want to delete {{ contract_request.contract_req }} requested by {{ contract_request.tenant.user.username.capitalize }}?
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
+                          <a href="{% url 'delete_contract_request' contract_request.pk  %}" type="button" class="btn btn-danger">Yes</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %} {% else %} <tr class="text-center"><td colspan="7">No Contract Requests</td></tr> {% endif %}
                 </tbody>
               </table>
             </div>
           </div>
-          <!-- end content-->
-        </div>
-        <!--  end card  -->
       </div>
       <!-- end col-md-12 -->
     </div>
