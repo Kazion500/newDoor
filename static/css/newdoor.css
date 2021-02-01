@@ -2008,6 +2008,16 @@ select.form-control-lg:not([size]):not([multiple]) {
   border-radius: 0.2rem;
 }
 
+#id_password1{
+  position: relative;
+}
+#togglePassword,#togglePassword2 {
+  position: absolute;
+  top:24%;
+  right: 10px;
+  /* margin-left: 300px; */
+  cursor: pointer;
+}
 /* Payments */
 .payment-details-right li,
 .payment-details-left li {

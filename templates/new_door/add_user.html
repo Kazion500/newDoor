@@ -34,7 +34,9 @@
             <label class="col-sm-6 col-form-label">Password</label>
             <div class="col-sm-12">
               <div class="form-group bmd-form-group">
-                {{ form.password1 }} {% for error in form.password1.errors %}
+                {{ form.password1 }}
+                <i class="far fa-eye" id="togglePassword"></i>
+                 {% for error in form.password1.errors %}
                 <small style="color: red">{{ error }}</small>
                 {% endfor %}
               </div>
@@ -42,7 +44,9 @@
             <label class="col-sm-6 col-form-label">Confirm password</label>
             <div class="col-sm-12">
               <div class="form-group bmd-form-group">
-                {{ form.password2 }}{% for error in form.password2.errors %}
+                {{ form.password2 }}
+                <i class="far fa-eye" id="togglePassword2"></i>
+                {% for error in form.password2.errors %}
                 <small style="color: red">{{ error }}</small>
                 {% endfor %}
               </div>
