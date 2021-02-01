@@ -537,7 +537,8 @@
                         <td>{{ property.unit_set.all.count }}</td>
                       </tr>
                       {% endfor %}
-                         
+                    {% else %}
+                      <tr class="text-center"><td colspan="5">No Properties yet</td></tr>
                     {% endif %}
                   </tbody>
                 </table>
