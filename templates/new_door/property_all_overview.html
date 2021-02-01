@@ -172,7 +172,6 @@
                     href=" {% url 'property_unit_overview' property.pk %} "
                     class="d-inline" title="View units"
                     >
-                    <div class="ripple-container success"></div>
                     <i
                       class="material-icons"
                       style="
@@ -197,15 +196,12 @@
                       "
                       >location_on</i
                     >
-                    <div class="ripple-container"></div>
                   </a>
 
                   <a
                     href="{% url 'view_property' property.pk %}"
                     class="d-inline"
-                    rel="tooltip "
-                    data-original-title="Remove"
-                     title="View property"
+                    title="View property"
                     >
                     <div class="ripple-container success"></div>
                     <i
@@ -222,10 +218,9 @@
 
                   <a
                     href="{% url 'update_property' property.pk  %}"
-                   title="Update property"
+                    title="Update property"
                     class="d-inline"
                     >
-                    <div class="ripple-container success"></div>
                     <i
                       class="material-icons"
                       style="
@@ -255,7 +250,6 @@
                     "
                     >delete</i
                   >
-                  <div class="ripple-container"></div>
                 </a>
               </td>
             </tr>
