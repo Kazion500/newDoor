@@ -1352,56 +1352,66 @@
                     <tr role="row">
           
                       <th
-                        class="sorting"
+
                         tabindex="0"
                         aria-controls="datatables"
                         rowspan="1"
                         colspan="1"
-                        style="width: 130px"
                         aria-label="Position: activate to sort column ascending"
                       >
                         Paid amount
                       </th>
                       <th
-                        class="sorting"
+
                         tabindex="0"
                         aria-controls="datatables"
                         rowspan="1"
                         colspan="1"
-                        style="width: 132px"
+
                         aria-label="Office: activate to sort column ascending"
                       >
                         Due amount
                       </th>
                       <th
-                        class="sorting"
+
                         tabindex="0"
                         aria-controls="datatables"
                         rowspan="1"
                         colspan="1"
-                        style="width: 137px"
+
                         aria-label="Age: activate to sort column ascending"
                       >
                         Date
                       </th>
                       <th
-                        class="sorting text-center"
+
                         tabindex="0"
                         aria-controls="datatables"
                         rowspan="1"
                         colspan="1"
-                        style="width: 123px"
+
+                        aria-label="Age: activate to sort column ascending"
+                      >
+                        Next Payment Date
+                      </th>
+                      <th
+
+                        tabindex="0"
+                        aria-controls="datatables"
+                        rowspan="1"
+                        colspan="1"
+   
                         aria-label="Date: activate to sort column ascending"
                       >
                         Status
                       </th>
                       <th
-                        class="disabled-sorting text-right sorting "
+                        class="text-center"
                         tabindex="0"
                         aria-controls="datatables"
                         rowspan="1"
-                        colspan="1"
-                        style="width: 154px"
+                        colspan="2"
+     
                         aria-label="Actions: activate to sort column ascending"
                       >
                         Actions
@@ -1417,17 +1427,13 @@
                       <td>{{ payment.amount|intcomma }}</td>
                       <td>{{ payment.remain_amount }}</td>
                       <td>{{ payment.paid_date|date:'d F Y' }}</td>
+                      <td>{{ payment.paid_date|date:'d F Y' }}</td>
                       <td class="text-center"><span class="badge badge-success badge-pill">{{ payment.status }}</span></td>
-                      <td class="text-right">
+                      <td class="text-center">
                         <a
                           href="#"
                           class="btn btn-link btn-warning btn-just-icon edit"
                           ><i class="material-icons">dvr</i></a
-                        >
-                        <a
-                          href="#"
-                          class="btn btn-link btn-danger btn-just-icon remove"
-                          ><i class="material-icons">close</i></a
                         >
                       </td>
                     </tr>
