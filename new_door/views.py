@@ -1,7 +1,7 @@
 from django.db.models.query_utils import Q
 from django.http.response import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.db.models import Sum, Max,Min
+from django.db.models import Sum, Max, Min
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -12,11 +12,12 @@ from django.utils.encoding import force_bytes, force_text
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.template.loader import render_to_string
+from stripe import multipart_data_generator
 from .utils import account_activation_token
 from django.urls import reverse
 import stripe
 import random
-from datetime import timezone, date
+import datetime
 
 
 from .models import (
@@ -63,12 +64,17 @@ def dashboard_view(request):
     properties = Property.objects.all().order_by('-property_name')[:4]
     payments = Payment.objects.all().order_by('-paid_date')[:4]
     total_num_units = Unit.objects.all().count()
+    units = Unit.objects.filter(
+        Q(property_id__owner_name=request.user.profile),
+        Q(tenantcontract__gte=1)
+    ).order_by('occupancy_type')[:4]
     vacant_units = Unit.objects.filter(
         occupancy_type__occupancy_type__iexact="vacant").count()
 
     context = {
         'total_num_units': total_num_units,
         'vacant_units': vacant_units,
+        'units': units,
         'properties': properties,
         'payments': payments,
     }
@@ -87,6 +93,9 @@ def tenant_dashboard(request):
     amount = 0
     due_amount = 0
     unit_rental = 0
+    units = []
+    uploaded_documents = []
+
     try:
         payments = Payment.objects.filter(
             contract__tenant__user__username=logged_user).order_by('paid_date')[:5]
@@ -96,6 +105,8 @@ def tenant_dashboard(request):
             contract__tenant__user__username=logged_user).aggregate(remain=Max('remain_amount'))
         units = Unit.objects.filter(
             tenantcontract__tenant__user__username=logged_user)
+        uploaded_documents = UploadDocument.objects.filter(
+            tenant__user__username=logged_user)
 
         for unit in units:
             unit_rental += unit.rent_amount
@@ -107,6 +118,8 @@ def tenant_dashboard(request):
         "unit_rental": unit_rental,
         'amount': amount,
         'due_amount': due_amount,
+        "units": units,
+        "uploaded_documents": uploaded_documents,
     }
 
     return render(request, 'tenant/tenant_dashboard.html', context)
@@ -462,6 +475,24 @@ def payment(request, user):
     final_amount = int(security_dep) + int(commission) + \
         int(unit_amount) - int(discount)
 
+    try:
+        payments = Payment.objects.filter(contract=tenant_contract)
+        expire_month = installment // 12
+        for payment in payments:
+            initial_date = str(payment.paid_date)[
+                :10].replace("-", ',').split(',')
+            initial_paid_year = int(initial_date[0])
+            initial_paid_month = int(initial_date[1])
+            initial_paid_day = int(initial_date[2])
+
+            expire_year = datetime.date(
+                initial_paid_year, expire_month, initial_paid_day)
+            print(expire_year)
+            if payment.remain_amount == 0:
+                messages.success(request, 'Payment completed')
+                return redirect("payment", user)
+    except:
+        pass
     if request.method == "POST":
         # Check if email and card name are provided
         tenant_email = profile.user.email
@@ -481,12 +512,20 @@ def payment(request, user):
         # No charge at 0
         try:
             payments = Payment.objects.filter(contract=tenant_contract)
+            expire_month = installment // 12
+
             for payment in payments:
+                initial_date = datetime.datetime(payment.paid_date)
+                print(initial_date.year)
+                print(initial_date.month)
+                print(initial_date.day)
+                expire_year = datetime.date(2021, expire_month,)
                 if payment.remain_amount == 0:
                     messages.success(request, 'Payment completed')
                     return redirect("payment", user)
         except:
             pass
+
         customer = stripe.Customer.create(
             name=card_name,
             email=email,
@@ -966,10 +1005,6 @@ def add_tetant_contract(request, user):
     tenant = Profile.objects.get(user__username=user)
     property_ = Property.objects.get(pk=tenant_contract.property_id.pk)
     unit = Unit.objects.get(pk=tenant_contract.unit.pk)
-    unit_occupancy = OccupancyType.objects.get(
-        occupancy_type__iexact='Payment Pending')
-    unit.occupancy_type = unit_occupancy
-    unit.save()
 
     occupancy_types = OccupancyType.objects.all()
 
@@ -981,6 +1016,10 @@ def add_tetant_contract(request, user):
                     request, 'User is not a tenant please make sure the user is a tenant')
                 return redirect('add_tetant_contract', user)
 
+            unit_occupancy = OccupancyType.objects.get(
+                occupancy_type__iexact='Payment Pending')
+            unit.occupancy_type = unit_occupancy
+            unit.save()
             form.save()
 
             messages.success(

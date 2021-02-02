@@ -1,5 +1,30 @@
 {% extends 'base.html' %} {% load humanize %} {% block title %} Tenant Dashboard {% endblock title %} {% block body %}
 <p>Tenant Dashboard</p>
+<div class="container-fluid">
+  {% if units.count > 0 %} 
+    {% for unit in units %} 
+      {% if unit.occupancy_type.occupancy_type.lower == 'document pending' %}
+        <div class="alert alert-info mt-3 p-3">
+          Document upload is pending click <a href="{% url 'upload_documents' request.user.username %}"><b style="font-weight: 600;" class="text-dark">Here</b> to upload documents</a>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <i class="material-icons">close</i>
+          </button>
+          <span> </span>
+        </div>
+      {% endif %}
+
+      {% if unit.occupancy_type.occupancy_type.lower == 'payment pending' %}
+        <div class="alert alert-info mt-3 p-3">
+          Your initial payement is pending click <a href="{% url 'payment' request.user.username %}"><b style="font-weight: 600;" class="text-dark">Here</b> to make the payment</a>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <i class="material-icons">close</i>
+          </button>
+          <span> </span>
+        </div>
+      {% endif %}
+    {% endfor %} 
+  {% endif %} 
+</div>
 <div class="row">
   <div class="col-lg-3 col-md-6 col-sm-6">
     <div class="card card-stats">
@@ -66,7 +91,7 @@
 </div>
 
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-8">
     <div class="card">
       <div class="card-header card-header-primary card-header-icon">
         <div class="card-icon">
@@ -94,68 +119,57 @@
                   <thead>
                     <tr role="row">
                       <th
-                        class="sorting"
+                        class=""
                         tabindex="0"
                         aria-controls="datatables"
                         rowspan="1"
                         colspan="1"
-                        style="width: 90px"
+
                         aria-label="Position: activate to sort column ascending"
                       >
                         Amount
                       </th>
                       <th
-                        class="sorting"
+                        class=""
                         tabindex="0"
                         aria-controls="datatables"
                         rowspan="1"
                         colspan="1"
-                        style="width: 132px"
+
                         aria-label="Office: activate to sort column ascending"
                       >
                         Payment Mode
                       </th>
-                      <!-- <th
-                        class="sorting"
-                        tabindex="0"
-                        aria-controls="datatables"
-                        rowspan="1"
-                        colspan="1"
-                        style="width: 47px"
-                        aria-label="Age: activate to sort column ascending"
-                      >
-                        Age
-                      </th> -->
                       <th
-                        class="sorting_asc"
+                        class=""
                         tabindex="0"
                         aria-controls="datatables"
                         rowspan="1"
                         colspan="1"
-                        style="width: 120px"
+                   
                         aria-sort="ascending"
                         aria-label="Name: activate to sort column descending"
                       >
                         Date Paid
                       </th>
                       <th
-                        class="sorting"
+                        class=""
                         tabindex="0"
                         aria-controls="datatables"
                         rowspan="1"
                         colspan="1"
-                        style="width: 153px"
+                   
                         aria-label="Date: activate to sort column ascending"
                       >
                         Next Payment Date
                       </th>
                       <th
-                        class="sorting text-center"
+                        class=""
                         tabindex="0"
                         aria-controls="datatables"
                         rowspan="1"
                         colspan="1"
-                        style="width: 90px"
+                     
                         aria-label="Date: activate to sort column ascending"
                       >
                         Status
@@ -191,6 +205,88 @@
     </div>
     <!--  end card  -->
   </div>
+
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header card-header-warning card-header-icon">
+        <div class="card-icon">
+          <i class="material-icons" style="width: initial">description</i>
+        </div>
+        <h4 class="card-title">Document view</h4>
+      </div>
+      <div class="card-body">
+        <div class="toolbar">
+          <!--        Here you can write extra buttons/actions for the toolbar              -->
+        </div>
+        <div class="material-datatables">
+          <div id="datatables_wrapper" class="dataTables_wrapper dt-bootstrap4">
+            <div class="row">
+              <div class="col-sm-12">
+                <table
+                  id="datatables"
+                  class="table table-striped table-no-bordered table-hover dataTable dtr-inline"
+                  cellspacing="0"
+                  width="100%"
+                  style="width: 100%"
+                  role="grid"
+                  aria-describedby="datatables_info"
+                >
+                  <thead>
+                    <tr role="row">
+                      <th
+                        class=""
+                        tabindex="0"
+                        aria-controls="datatables"
+                        rowspan="1"
+                        colspan="1"
+                        aria-label="Position: activate to sort column ascending"
+                      >
+                       Document type
+                      </th>
+                      <th
+                        class="text-center"
+                        tabindex="0"
+                        aria-controls="datatables"
+                        rowspan="1"
+                        colspan="1"
+                        aria-label="Office: activate to sort column ascending"
+                      >
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    
+                    {% if uploaded_documents.count > 0 %}
+                      {% for uploaded_document in uploaded_documents %}
+                        <tr>
+                          <td>{{uploaded_document.doc_type.docs_type}}</td>
+                          <td class="text-center" >
+                            <a href="" title="view documents">
+                              <i class="far fa-eye"  style="margin-right: 5px; margin-top: 10px; margin-bottom: 20px; color: #4caf50; "></i>
+                            </a> 
+                          </td>
+                        </tr>
+                      {% endfor %}
+                    {% else %}
+                      <tr>
+                        <td colspan="6" class="text-center"><b>No document yet</b></td>
+                      </tr>
+                    {% endif %}
+                      
+                    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end content-->
+    </div>
+    <!--  end card  -->
+  </div>
   <!-- end col-md-12 -->
 </div>
+
 {% endblock body %}

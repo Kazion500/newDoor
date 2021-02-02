@@ -199,6 +199,7 @@ class Payment(models.Model):
     pay_mode = models.ForeignKey(
         PayModeType, on_delete=models.CASCADE, null=True, blank=True)
     paid_date = models.DateTimeField(auto_now_add=True)
+    next_paid_date = models.DateField(null=True, blank=True)
     amount = models.PositiveIntegerField()
     status = models.CharField(max_length=50)
     remain_amount = models.PositiveIntegerField()
