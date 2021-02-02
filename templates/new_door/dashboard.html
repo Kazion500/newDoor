@@ -1465,8 +1465,8 @@
         <h4 class="card-title">Notification</h4>
       </div>
       <div class="card-body">
-        {% if units %} 
-          {% if unit.tenantcontract.tenant.user.username %}
+        {% if units.count > 0 %} 
+          {% if unit.tenantcontract.count > 0 %}
             {% for unit in units %} 
               {% if unit.occupancy_type.occupancy_type.lower == 'create contract' %}
                 <div class="mgs d-flex mt-2">
@@ -1480,9 +1480,11 @@
               {% endif %}
               
             {% endfor %}
-            {% else %}
+          {% else %}
             <p class="text-center" style="font-weight: 600;">No notifications</p> 
           {% endif %}
+        {% else %}
+          <p class="text-center" style="font-weight: 600;">No notifications</p> 
         {% endif %} 
       </div>
       <!-- end content-->
