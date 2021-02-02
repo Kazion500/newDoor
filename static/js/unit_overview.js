@@ -39,15 +39,12 @@ function addColorToButtons() {
         occupancyType.style.backgroundColor = "#000";
         break;
 
-      case "document approved":
-        occupancyType.style.backgroundColor = "#000";
-        break;
-
-      case "payment pending":
-        occupancyType.style.backgroundColor = "#000";
+      case "document uploaded":
+        occupancyType.style.backgroundColor = "#555";
         break;
 
       default:
+        occupancyType.style.backgroundColor = "green";
         break;
     }
   });

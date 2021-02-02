@@ -127,25 +127,7 @@
               <tr>
                 <td>{{ property.owner_name }}</td>
                 <td>{{ property.property_name }}</td>
-                <td class="total_earning">
-                {% if property.unit_set.all.count > 0 %}
-                  
-                  {% for unit in property.unit_set.all %}
-                    {% if unit.tenantcontract.payment_set.all %}
-                      {% for payment in unit.tenantcontract.payment_set.all  %}
-                        {% if forloop.last %}
-                          ${{ payment.amount|intcomma }}
-                        {% endif %}
-                      {% endfor %}
-                    {% else %}
-                      $0
-                    {% endif %}
-                  {% endfor %}
-
-                {% else %}
-                  $0
-                {% endif %}
-                  </td>
+                <td><b>$</b>676,576.7-demo</td>
                 <td><b>$</b>235,767-demo</td>
                 <td class="text-center">{{ property.unit_set.all.count }}</td>
                 <td>
