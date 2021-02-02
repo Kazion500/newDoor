@@ -261,25 +261,27 @@
                     "
                     >create</i
                   >
-                </a>
-                <a
-                href="{% url 'review_documents' unit.tenantcontract.tenant.user.username %} "
-                class="d-inline delete-item"
-                title="View contract"
-              >
-                <i
-                  class="material-icons"
-                  style="
-                    margin-right: 5px;
-                    margin-top: 10px;
-                    margin-bottom: 20px;
-                    color: #0e352b;
-                  "
-                  >description</i
-                >
-                <div class="ripple-container"></div>
-              </a>
-                
+                </a>            
+                {% if unit.tenantcontract.tenant.user.username %}
+                  <a
+                    href="{% url 'review_documents' unit.tenantcontract.tenant.user.username %} "
+                    class="d-inline delete-item"
+                    title="View contract"
+                  >
+                    <i
+                      class="material-icons"
+                      style="
+                        margin-right: 5px;
+                        margin-top: 10px;
+                        margin-bottom: 20px;
+                        color: #0e352b;
+                      "
+                      >description</i
+                    >
+                    <div class="ripple-container"></div>
+                  </a>
+                {% endif %}
+
                 {% if request.user.is_superuser %}
                 <a
                     href="#"

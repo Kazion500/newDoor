@@ -46,7 +46,8 @@
           <label class="col-sm-2 col-form-label" for="UnitID">Unit*</label>
           <div class="col-sm-4">
             <div class="form-group bmd-form-group">
-              {{ form.unit }}
+              <input value="{{ unit }}" class="form-control" disabled>
+              <small style="display: none">{{ form.unit }}</small>
             </div>
           </div>
         </div>
