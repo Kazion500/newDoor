@@ -133,7 +133,7 @@
         <tbody>
           {% if units %} {% for unit in units %}
           <tr>
-            <td>{{unit.id}}</td>
+            <td>{{unit.flat}}</td>
             <td>{{unit.property_type.property_type}}</td>
             <td>
               {% if unit.occupancy_type.occupancy_type.lower == 'vacant' %}
@@ -176,7 +176,7 @@
               </button>
               {% endif %}
             </td>
-            <td>{{ unit.tenantcontract.tenant.user.username.capitalize }}</td>
+            <td>{{ unit.tenantcontract.tenant.user.get_fullname.capitalize }}</td>
             <td>${{ unit.rent_amount }}</td>
             <td class="amount">
               {% if unit.tenantcontract.payment_set.all %}
