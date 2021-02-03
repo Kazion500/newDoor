@@ -102,7 +102,7 @@ def tenant_dashboard(request):
         amount = Payment.objects.filter(
             contract__tenant__user__username=logged_user).aggregate(paid=Sum('amount'))
         due_amount = Payment.objects.filter(
-            contract__tenant__user__username=logged_user).aggregate(remain=Max('remain_amount'))
+            contract__tenant__user__username=logged_user).aggregate(remain=Min('remain_amount'))
         units = Unit.objects.filter(
             tenantcontract__tenant__user__username=logged_user)
         uploaded_documents = UploadDocument.objects.filter(
