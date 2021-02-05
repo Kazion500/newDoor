@@ -147,7 +147,7 @@
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
-                            <a href="{% url 'delete_category_type' category.pk %}" type="button" class="btn btn-danger">Yes</a>
+                            <a href="{% url 'delete_category_type' category.pk %}"  data-id="{{category.pk}}" type="button" class="btn btn-danger">Yes</a>
                           </div>
                         </div>
                       </div>
