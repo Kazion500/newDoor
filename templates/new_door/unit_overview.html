@@ -124,7 +124,7 @@
               <th>Type</th>
               <th>Occupancy</th>
               <th>Tenant</th>
-              <th>Rental Amount</th>
+              <th>Total Amount</th>
               <th>Collected</th>
               <th>Due Amount</th>
               <th class="disabled-sorting text-right">Actions</th>
@@ -348,18 +348,19 @@
   const amounts = document.querySelectorAll('.amount')
 
   occupancyTypes.forEach((occupancyType,index)=>{
-    if(occupancyType.textContent.trim().toLowerCase() == 'occupied'){
-      console.log('Yes');
+    if(occupancyType.textContent.trim().toLowerCase() !== 'occupied'){
+      amounts[index].textContent = ''
+    }else{
       amounts.forEach((amount,index)=>{
         if(parseInt(rentalAmounts[index].textContent.trim()) <= parseInt(remainAmounts[index].textContent.trim())){
           amount.textContent = rentalAmounts[index].textContent.trim()
         }else{
           const eachAmount  = parseInt(rentalAmounts[index].textContent.trim()) - parseInt(remainAmounts[index].textContent.trim())
-          amount.textContent = eachAmount
+          if(!isNaN(eachAmount)){
+            amount.textContent = eachAmount
+          }  
         }  
       })
-    }else{
-      amounts[index] = 0
     }
   })
  
