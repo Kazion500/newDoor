@@ -124,7 +124,7 @@
             <th>Type</th>
             <th>Occupancy</th>
             <th>Tenant</th>
-            <th>Rental Amount</th>
+            <th>Total Amount</th>
             <th>Collected</th>
             <th>Due Amount</th>
             <th class="disabled-sorting text-right">Actions</th>
@@ -177,15 +177,8 @@
               {% endif %}
             </td>
             <td>{{ unit.tenantcontract.tenant.user.get_full_name.capitalize }}</td>
-            <td>${{ unit.rent_amount }}</td>
-            <td class="amount">
-              {% if unit.tenantcontract.payment_set.all %}
-                {% for payment in unit.tenantcontract.payment_set.all  %}
-                  ${{ payment.amount|intcomma }}
-                {% endfor %}
-              {% endif %}
-             </td>
-             
+            <td class="rental_amount">{{ unit.rent_amount }}</td>
+            <td class="amount"></td>
             <td class="remain_amount">
               {% if unit.tenantcontract.payment_set.all %}
                 {% for payment in unit.tenantcontract.payment_set.all %}

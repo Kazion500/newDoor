@@ -58,11 +58,9 @@ function calculateDueAmount() {
     let nums = parseInt(
       remainAmount.innerHTML.trim().replace("$", "").replace(",", "")
     );
-    if(!isNaN(nums)){
+    if (!isNaN(nums)) {
       remainDues.push(nums);
     }
-   
-    
   });
   // Calculate Sum
   function sum(arr) {
@@ -70,14 +68,14 @@ function calculateDueAmount() {
       return a + b;
     }, 0);
   }
-  
-    if (totalDueAmounts.innerText === "") {
-      totalDueAmounts.innerText = "$" + sum(remainDues).toLocaleString();
-    } else if (totalDueAmounts.innerText != "0") {
-      totalDueAmounts.innerText = "$" + sum(remainDues).toLocaleString();
-    } else {
-      totalDueAmounts.innerText = "$" + 0;
-    }
+
+  if (totalDueAmounts.innerText === "") {
+    totalDueAmounts.innerText = "$" + sum(remainDues).toLocaleString();
+  } else if (totalDueAmounts.innerText != "0") {
+    totalDueAmounts.innerText = "$" + sum(remainDues).toLocaleString();
+  } else {
+    totalDueAmounts.innerText = "$" + 0;
+  }
 }
 
 function calculateAmountCollected() {
@@ -114,3 +112,32 @@ function calculateAmountCollected() {
 //     console.log(totalEarning.innerText.replace('$','').replace("$",''));
 //   })
 // }
+
+(() => {
+  const occupancyTypes = document.querySelectorAll(".occupancy_type");
+  const rentalAmounts = document.querySelectorAll(".rental_amount");
+  const remainAmounts = document.querySelectorAll(".remain_amount");
+  const amounts = document.querySelectorAll(".amount");
+
+  occupancyTypes.forEach((occupancyType, index) => {
+    if (occupancyType.textContent.trim().toLowerCase() !== "occupied") {
+      amounts[index].textContent = "";
+    } else {
+      amounts.forEach((amount, index) => {
+        if (
+          parseInt(rentalAmounts[index].textContent.trim()) <=
+          parseInt(remainAmounts[index].textContent.trim())
+        ) {
+          amount.textContent = rentalAmounts[index].textContent.trim();
+        } else {
+          const eachAmount =
+            parseInt(rentalAmounts[index].textContent.trim()) -
+            parseInt(remainAmounts[index].textContent.trim());
+          if (!isNaN(eachAmount)) {
+            amount.textContent = eachAmount;
+          }
+        }
+      });
+    }
+  });
+})();
