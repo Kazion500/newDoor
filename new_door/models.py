@@ -174,7 +174,7 @@ class TenantContract(models.Model):
     email_notify = models.BooleanField(default='False')
 
     def __str__(self) -> str:
-        return f'{self.tenant}'
+        return f'{self.unit}'
 
 
 # Image models

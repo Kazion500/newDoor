@@ -127,7 +127,17 @@
               <tr>
                 <td>{{ property.owner_name }}</td>
                 <td>{{ property.property_name }}</td>
-                <td><b>$</b>676,576.7-demo</td>
+                <td>
+                  
+                  {% for unit in property.unit_set.all %}
+                    
+                    {% for payment in unit.payment_set.all %}
+                      {{ payment.amount }}
+                    {% endfor %}
+                      
+                  {% endfor %}
+                    
+                </td>
                 <td><b>$</b>235,767-demo</td>
                 <td class="text-center">{{ property.unit_set.all.count }}</td>
                 <td>
@@ -269,5 +279,40 @@
 <!-- end row -->
 {% block unit_overview %}
 <script src="{% static 'js/unit_overview.js' %}"> </script>
+<script>
+  let amounts = []
+  let total = 0
+  function sum(arr) {
+    return arr.reduce(function (a, b) {
+      return a + b;
+    }, 0);
+  }
+  const amountPaids = document.querySelectorAll('.amountPaid')
+  const newAmountPaids = document.querySelectorAll('.newAmountPaid')
+
+  amountPaids.forEach((amountPaid)=>{
+    if(amountPaid.textContent == ''){
+      console.log('empty');
+    }else if(parseInt(amountPaid.textContent) > 0){
+      let arr = amountPaid.textContent.split(' ')
+      amounts.push(parseInt(amountPaid.textContent))
+      document.addEventListener('DOMContentLoaded',()=>{
+        total = sum(amounts)
+        amountPaid.innerHTML = total
+        amountPaid.style.display = 'none'
+        newAmountPaids.forEach((newAmountPaid)=>{
+          newAmountPaid.innerHTML = total
+        })
+       
+      })
+     
+   
+    }else{
+      console.log('none');
+    }
+   
+  })
+  
+</script>
 {% endblock %}
 {% endblock %}

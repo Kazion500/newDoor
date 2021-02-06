@@ -177,7 +177,7 @@
                 {% endif %}
               </td>
               <td>{{ unit.tenantcontract.tenant.user.get_full_name.capitalize }}</td>
-              <td>${{ unit.rent_amount|intcomma }}</td>
+              <td class="rental_amount">{{ unit.rent_amount }}</td>
               <td class="amount">
                 {% if unit.tenantcontract.payment_set.all %}
                   {% for payment in unit.tenantcontract.payment_set.all  %}
@@ -190,7 +190,7 @@
                 {% if unit.tenantcontract.payment_set.all %}
                   {% for payment in unit.tenantcontract.payment_set.all %}
                     {% if forloop.last %}
-                      ${{ payment.remain_amount|intcomma }}
+                      {{ payment.remain_amount }}
                     {% endif %}
                   {% endfor %}
                 {% endif %}
@@ -340,4 +340,28 @@
 {% endblock %} 
 {% block unit_overview %}
 <script src="{% static 'js/unit_overview.js' %}"> </script>
+<!-- Unit Solved -->
+<script>
+  const occupancyTypes = document.querySelectorAll('.occupancy_type')
+  const rentalAmounts = document.querySelectorAll('.rental_amount')
+  const remainAmounts = document.querySelectorAll('.remain_amount')
+  const amounts = document.querySelectorAll('.amount')
+
+  occupancyTypes.forEach((occupancyType,index)=>{
+    if(occupancyType.textContent.trim().toLowerCase() == 'occupied'){
+      console.log('Yes');
+      amounts.forEach((amount,index)=>{
+        if(parseInt(rentalAmounts[index].textContent.trim()) <= parseInt(remainAmounts[index].textContent.trim())){
+          amount.textContent = rentalAmounts[index].textContent.trim()
+        }else{
+          const eachAmount  = parseInt(rentalAmounts[index].textContent.trim()) - parseInt(remainAmounts[index].textContent.trim())
+          amount.textContent = eachAmount
+        }  
+      })
+    }else{
+      amounts[index] = 0
+    }
+  })
+ 
+</script>
 {% endblock %}
