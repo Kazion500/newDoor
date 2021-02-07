@@ -1,5 +1,11 @@
 {% extends 'base.html' %} {% block title %} Property Type {% endblock title %}
 {% block body %} {% load static %}
+<div class="alert alert-success alert-dismissible fade show" style="display: none;" role="alert">
+  <span class="message"></span>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
 <div class="col-md-12">
   <form
     id="TypeValidation"
@@ -145,48 +151,33 @@
                           >
                         </a>
 
-                        <a
-                          href="#"
-                          title="Delete property type"
-                          class="d-inline"
-                          data-toggle="modal" data-target="#deleteToggle"
-                        >
-                    
-                          <i
-                            class="material-icons"
-                            style="
-                              margin-right: 5px;
-                              margin-top: 10px;
-                              margin-bottom: 20px;
-                              color: #f44336;
-                            "
-                            >delete</i
-                          >
+                        <a href="#" class="d-inline btn-delete"  title="Delete property type" data-pk="{{property_type.pk}}" data-name="{{ property_type.property_type }}" data-target="#deleteToggle"
+                            data-toggle="modal" >
+                            <i class="material-icons " style="margin-right: 5px; margin-top: 10px; margin-bottom: 20px; color: #f44336; " >delete</i>
                         </a>
                       </td>
                     </tr>
-                    <div class="modal fade" id="deleteToggle" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-top" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <!-- <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5> -->
-                            <button type="button" class="close p-3" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                            Are you sure you want to delete property type {{ property_type.property_type }}?
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
-                            <a href="{% url 'delete_property_type' property_type.pk  %}" type="button" class="btn btn-danger">Yes</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                   
                     {% endfor %} {% else %} <tr class="text-center"><td colspan="5">No Property Type</td></tr> {% endif %}
                   </tbody>
                 </table>
+                <!-- Modal -->
+                <div class="modal fade" id="deleteToggle" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-top" role="document">
+                      <div class="modal-content">
+                      <div class="modal-header">
+                          <button type="button" class="close p-3" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                          </button>
+                      </div>
+                      <div class="modal-body"></div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
+                          <a href="" class="btn btn-danger confirmation" data-dismiss="modal">Yes</a>
+                      </div>
+                      </div>
+                  </div>
+              </div>
               </div>
             </div>
         </div>
@@ -195,5 +186,16 @@
     </div>
   </form>
 </div>
+<script type="module" >
+  import {deleteFunc} from '../../static/js/master_tables.js'
 
+  deletePropertyType();
+  function deletePropertyType() {
+    let endpoint = "/delete-property-type";
+    let whatHasBeenDeleted = "Property Type";
+    let redirectUrl = "/add-property-type/";
+    deleteFunc(endpoint, whatHasBeenDeleted, redirectUrl);
+  }
+
+</script>
 {% endblock body %}

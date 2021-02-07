@@ -702,6 +702,10 @@ def add_unit(request):
             messages.success(
                 request, 'Congratulations...! Unit successfully added.')
             return redirect('add_unit')
+        else:
+            messages.error(
+                request, 'Make sure all fields are filled')
+            return redirect('add_unit')
     else:
         form = UnitModelForm(request.POST)
 
@@ -848,7 +852,7 @@ def add_tenant_to_unit(request, unit_id):
             user.is_active = False
             user.save()
             occupancy_type = OccupancyType.objects.get(
-                occupancy_type='User Verification Pending')
+                occupancy_type='Verification Pending')
 
             tenant = Profile.objects.get(user=user)
             if not tenant.is_tenant:

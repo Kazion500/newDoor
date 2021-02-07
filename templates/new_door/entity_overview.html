@@ -1,5 +1,11 @@
-{% extends 'base.html' %} {% block title %} Entity Overview {% endblock title %}
+{% extends 'base.html' %} {% load static %} {% block title %} Entity Overview {% endblock title %}
 {% block body %}
+<div class="alert alert-success alert-dismissible fade show" style="display: none;" role="alert">
+  <span class="message"></span>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
 <div class="row">
   <div class="col-md-12">
     <div class="card">
@@ -117,10 +123,11 @@
                 {% if request.user.is_superuser %}
                 <a
                     href="#"
-                    class="d-inline delete-item"
+                    class="d-inline delete-item btn-delete"
                     title="Delete unit"
                     data-target="#deleteToggle"
                     data-toggle="modal"
+                    data-pk="{{entity.pk}}" data-name="{{ entity.entity_name }}"
                   >
                     <i
                       class="material-icons"
@@ -138,32 +145,31 @@
                     
               </td>
             </tr>
-            <!-- Modal -->
-            <div class="modal fade" id="deleteToggle" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-top" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <!-- <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5> -->
-                    <button type="button" class="close p-3" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    Are you sure you want to delete  {{ entity.entity_name }}?
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
-                    <a href="{% url 'delete_entity' entity.pk %}" type="button" class="btn btn-danger">Yes</a>
-                  </div>
-                </div>
-              </div>
-            </div>
               {% endfor %}
               {% else %} 
               <tr class="text-center"><td colspan="6">No Entity</td></tr> 
               {% endif %}
             </tbody>
           </table>
+          <div class="modal fade" id="deleteToggle" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-top" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <!-- <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5> -->
+                  <button type="button" class="close p-3" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
+                  <a href="" type="button" class="btn btn-danger confirmation" data-dismiss="modal">Yes</a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <!-- end content-->
@@ -173,4 +179,9 @@
   <!-- end col-md-12 -->
 </div>
 <!-- end row -->
+
+{% block entity_overview %}
+  <script src="{% static 'js/entity_overview.js' %}"></script>
+{% endblock %}
+  
 {% endblock body %}

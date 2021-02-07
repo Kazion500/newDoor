@@ -1,4 +1,10 @@
 {% extends 'base.html' %} {% block title %} Tenant Request Type {% endblock title %} {% block body %} {% load static %}
+<div class="alert alert-success alert-dismissible fade show" style="display: none;" role="alert">
+    <span class="message"></span>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
 <div class="col-md-12">
     <form id="TypeValidation" class="form-horizontal" method="post" novalidate="novalidate">
         {% csrf_token %}
@@ -73,35 +79,34 @@
                                                 </a>
 
 
-                                                <a href="#" class="d-inline" title="Delete tenant request" data-toggle="modal" data-target="#deleteToggle">
+                                                <a href="#" class="d-inline btn-delete"  title="Delete tenant request" data-pk="{{tenant_request.pk}}" data-name="{{ tenant_request.tenant_req_type }}" data-target="#deleteToggle"
+                                                    data-toggle="modal" >
                                                     <i class="material-icons " style="margin-right: 5px; margin-top: 10px; margin-bottom: 20px; color: #f44336; " >delete</i>
-
                                                 </a>
 
                                             </td>
                                         </tr>
-                                        <div class="modal fade" id="deleteToggle" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-top" role="document">
-                                              <div class="modal-content">
-                                                <div class="modal-header">
-                                                  <!-- <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5> -->
-                                                  <button type="button" class="close p-3" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                  </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                  Are you sure you want to delete status request of type {{ tenant_request.tenant_req_type }}?
-                                                </div>
-                                                <div class="modal-footer">
-                                                  <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
-                                                  <a href="{% url 'delete_tenant_request' tenant_request.pk %}" type="button" class="btn btn-danger">Yes</a>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </div>
+                    
                                           {% endfor %} {% else %} <tr class="text-center"><td colspan="4">No Tenant Request Type</td></tr> {% endif %}
                                     </tbody>
                                 </table>
+                                  <!-- Modal -->
+                                <div class="modal fade" id="deleteToggle" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-top" role="document">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close p-3" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body"></div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
+                                            <a href="" class="btn btn-danger confirmation" data-dismiss="modal">Yes</a>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <!-- end content-->
@@ -113,4 +118,16 @@
 </div>
 
 </div>
+<script type="module" >
+    import {deleteFunc} from '../../static/js/master_tables.js'
+
+    deleteTenantRequestType();
+    function deleteTenantRequestType() {
+        let endpoint = "/delete-tenant-request";
+        let whatHasBeenDeleted = "Tenant Request Type";
+        let redirectUrl = "/add-tenant-request/";
+        deleteFunc(endpoint, whatHasBeenDeleted, redirectUrl);
+    }
+    
+  </script>
 {% endblock body %}

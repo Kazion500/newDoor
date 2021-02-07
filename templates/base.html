@@ -454,9 +454,12 @@
     {% comment %} Core JS Files END from here {% endcomment %}
     <!-- Custom javaScript -->
 
+    <script src="{% static 'js/global.js' %}" type="module"></script>
     {% block payment %}{% endblock %}
     {% block unit_overview %}{% endblock %}
     {% block upload_user_image %}{% endblock %}
+    {% block property_overview %}{% endblock %}  
+    {% block entity_overview %}{% endblock %}
       
   </body>
 </html>

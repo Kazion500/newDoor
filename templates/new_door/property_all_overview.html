@@ -1,4 +1,10 @@
 {% extends 'base.html' %} {% load static %} {% load humanize %}{% block title %} Property Overview {% endblock title %} {% block body %}
+<div class="alert alert-success alert-dismissible fade show" style="display: none;" role="alert">
+  <span class="message"></span>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
 <div class="row">
   <div class="col-md-12">
     <!-- **************Mini Dashbar************************************************** -->
@@ -128,11 +134,12 @@
                 <td>{{ property.owner_name }}</td>
                 <td>{{ property.property_name }}</td>
                 <td>
-                  
+         
                   {% for unit in property.unit_set.all %}
-                    
-                    {% for payment in unit.payment_set.all %}
-                      {{ payment.amount }}
+                  123
+                  {{unit.tenantcontract_set.all}}
+                    {% for payment in unit.tenantcontract_set.all %}
+                      {{ unit.tenantcontract_set.all }}
                     {% endfor %}
                       
                   {% endfor %}
@@ -228,9 +235,10 @@
         
                   <a
                   href="#"
-                  class="d-inline delete-item"
+                  class="d-inline delete-item btn-delete"
                   title="Delete unit"
                   data-toggle="modal" data-target="#deleteToggle"
+                  data-pk="{{property.pk}}" data-name="{{ property.property_name }}"
                 >
                   <i
                     class="material-icons"
@@ -245,29 +253,30 @@
                 </a>
               </td>
             </tr>
-                      <!-- Modal -->
-            <div class="modal fade" id="deleteToggle" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-top" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <!-- <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5> -->
-                    <button type="button" class="close p-3" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    Are you sure you want to delete  {{ property.property_name }}?
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
-                    <a href="{% url 'delete_property' property.pk  %}" type="button" class="btn btn-danger">Yes</a>
-                  </div>
-                </div>
-              </div>
-            </div>
+          
               {% endfor %} {% else %} <tr class="text-center"><td colspan="7">No Unit</td></tr>  {% endif %}
             </tbody>
           </table>
+                    <!-- Modal -->
+        <div class="modal fade" id="deleteToggle" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-top" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <!-- <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5> -->
+                <button type="button" class="close p-3" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
+                <a href="" type="button" class="btn btn-danger confirmation" data-dismiss="modal">Yes</a>
+              </div>
+            </div>
+          </div>
+        </div>
         </div>
       </div>
       <!-- end content-->
@@ -278,8 +287,8 @@
 </div>
 <!-- end row -->
 {% block unit_overview %}
-<script src="{% static 'js/unit_overview.js' %}"> </script>
-<script>
+<script src="{% static 'js/property_overview.js' %}"> </script>
+<!-- <script>
   let amounts = []
   let total = 0
   function sum(arr) {
@@ -313,6 +322,6 @@
    
   })
   
-</script>
+</script> -->
 {% endblock %}
 {% endblock %}

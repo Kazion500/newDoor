@@ -1,5 +1,12 @@
 {% extends 'base.html' %} {% block title %} Category Type {% endblock title %}
 {% block body %} {% load static %}
+<div class="alert alert-success alert-dismissible fade show" style="display: none;" role="alert">
+  <span class="message"></span>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
 <div class="col-md-12">
   <form
     id="TypeValidation"
@@ -117,44 +124,35 @@
                           >
                         </a>
 
-                        <a href="#" data-toggle="modal" data-target="#deleteToggle" class="d-inline" title="Delete category type" >
-                          <i
-                            class="material-icons"
-                            style="
-                              margin-right: 5px;
-                              margin-top: 10px;
-                              margin-bottom: 20px;
-                              color: #f44336;
-                            "
-                            >delete</i
-                          >
-                          <div class="ripple-container"></div>
+                        <a href="#" class="d-inline btn-delete" data-pk="{{category.pk}}" data-name="{{ category.cat_type }}" data-target="#deleteToggle"
+                          data-toggle="modal" >
+                          <i class="material-icons " style="margin-right: 5px; margin-top: 10px; margin-bottom: 20px; color: #f44336; " >delete</i>
+                        </a>
                         </a>
                       </td>
                     </tr>
-                    <!-- Modal -->
-                    <div class="modal fade" id="deleteToggle" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-top" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <!-- <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5> -->
-                            <button type="button" class="close p-3" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                            Are you sure you want to delete  {{ category.cat_type }}?
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
-                            <a href="{% url 'delete_category_type' category.pk %}"  data-id="{{category.pk}}" type="button" class="btn btn-danger">Yes</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                   
                     {% endfor %} {% else %} <tr class="text-center"><td colspan="4">No Category</td></tr> {% endif %}
                   </tbody>
                 </table>
+
+                <!-- Modal -->
+                <div class="modal fade" id="deleteToggle" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-top" role="document">
+                      <div class="modal-content">
+                      <div class="modal-header">
+                          <button type="button" class="close p-3" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                          </button>
+                      </div>
+                      <div class="modal-body"></div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
+                          <a href="" class="btn btn-danger confirmation" data-dismiss="modal">Yes</a>
+                      </div>
+                      </div>
+                  </div>
+                </div>
               </div>
             </div>
           <!--  end card  -->
@@ -164,5 +162,15 @@
     </div>
 
 </div>
-
+<script type="module">
+  import {deleteFunc} from '../../static/js/master_tables.js'
+  
+  deleteCategoryType();
+  function deleteCategoryType() {
+    let endpoint = "/delete-category-type";
+    let whatHasBeenDeleted = "Category Type";
+    let redirectUrl = "/add-category-type/";
+    deleteFunc(endpoint, whatHasBeenDeleted, redirectUrl);
+  }
+</script>
 {% endblock body %}

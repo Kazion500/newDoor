@@ -21,7 +21,7 @@ function addColorToButtons() {
         occupancyType.style.backgroundColor = "red";
         break;
 
-      case "user verification pending":
+      case "verification pending":
         occupancyType.style.backgroundColor = "greenyellow";
         occupancyType.style.color = "black";
         break;
@@ -104,14 +104,6 @@ function calculateAmountCollected() {
     }
   });
 }
-// function calculateTotalEarning(){
-//   let amounts = []
-//   const totalEarnings = document.querySelectorAll('.total_earning')
-//   totalEarnings.forEach((totalEarning)=>{
-//     totalEarning.innerText.replace('$','').replace("$",'').split(' ')
-//     console.log(totalEarning.innerText.replace('$','').replace("$",''));
-//   })
-// }
 
 (() => {
   const occupancyTypes = document.querySelectorAll(".occupancy_type");
@@ -128,16 +120,50 @@ function calculateAmountCollected() {
           parseInt(rentalAmounts[index].textContent.trim()) <=
           parseInt(remainAmounts[index].textContent.trim())
         ) {
-          amount.textContent = rentalAmounts[index].textContent.trim();
+          amount.textContent =
+            "$" + rentalAmounts[index].textContent.trim().toLocaleString();
         } else {
           const eachAmount =
             parseInt(rentalAmounts[index].textContent.trim()) -
             parseInt(remainAmounts[index].textContent.trim());
           if (!isNaN(eachAmount)) {
-            amount.textContent = eachAmount;
+            amount.textContent = "$" + String(eachAmount).toLocaleString();
           }
         }
       });
     }
   });
 })();
+
+deleteFunc()
+function deleteFunc() {
+  const deleteBtns = document.querySelectorAll(".btn-delete");
+  const confirmation = document.querySelector(".confirmation");
+  const modalBody = document.querySelector(".modal-body");
+  const show = document.querySelector(".show");
+  const message = document.querySelector(".message");
+  let url;
+
+  deleteBtns.forEach((deleteBtn, index) => {
+    deleteBtn.addEventListener("click", (e) => {
+      const pk = deleteBtn.dataset.pk;
+      const name = deleteBtn.dataset.name;
+      modalBody.textContent = `Are you sure you want to delete unit flat number ${name}?`;
+      url = `/delete-unit/${pk}`;
+    });
+  });
+  confirmation.addEventListener("click", (e) => {
+    e.preventDefault();
+    $.ajax({
+      url: url,
+      method: "GET",
+      success(data) {
+        show.style.display = "block";
+        message.textContent = `Congratulations...! Unit successfully deleted.`;
+        setTimeout(() => {
+          location.pathname = "/unit-overview/";
+        }, 3000);
+      },
+    });
+  });
+}

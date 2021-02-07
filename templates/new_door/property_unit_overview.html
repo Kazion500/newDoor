@@ -1,5 +1,11 @@
 {% extends 'base.html' %} {% load static %}{% load humanize %} {% block title %} Unit Overview {% endblock title %}
 {% block body %}
+<div class="alert alert-success alert-dismissible fade show" style="display: none;" role="alert">
+  <span class="message"></span>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
 <div class="row">
   <div class="col-md-12">
     <div class="row">
@@ -107,9 +113,6 @@
         </div>
     </div>
     <div class="card-body">
-      <div class="toolbar">
-        <!--Here you can write extra buttons/actions for the toolbar -->
-      </div>
       <div class="material-datatables">
         <table
           id="datatables"
@@ -183,7 +186,7 @@
               {% if unit.tenantcontract.payment_set.all %}
                 {% for payment in unit.tenantcontract.payment_set.all %}
                   {% if forloop.last %}
-                    ${{ payment.remain_amount|intcomma }}
+                    {{ payment.remain_amount|intcomma }}
                   {% endif %}
                 {% endfor %}
               {% endif %}
@@ -279,10 +282,11 @@
               {% if request.user.is_superuser %}
               <a
                   href="#"
-                  class="d-inline delete-item"
+                  class="d-inline delete-item btn-delete"
                   title="Delete unit"
                   data-target="#deleteToggle"
                   data-toggle="modal"
+                  data-pk="{{unit.pk}}" data-name="{{ unit.flat }}"
                 >
                   <i
                     class="material-icons"
@@ -299,7 +303,15 @@
               {% endif %}
           </td>
         </tr>
-                  <!-- Modal -->
+
+          {% endfor %}
+          {% else %} 
+          <tr><td colspan="8" class="text-center">No Units</td></tr>  
+          {% endif %}
+
+        </tbody>
+        </table>
+        <!-- Modal -->
         <div class="modal fade" id="deleteToggle" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog modal-dialog-top" role="document">
             <div class="modal-content">
@@ -310,21 +322,15 @@
                 </button>
               </div>
               <div class="modal-body">
-                Are you sure you want to delete unit flat number {{ unit.flat }}?
+                
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
-                <a href="{% url 'delete_unit' unit.pk %}" type="button" class="btn btn-danger">Yes</a>
+                <a href="" type="button" class="btn btn-danger confirmation" data-dismiss="modal">Yes</a>
               </div>
             </div>
           </div>
         </div>
-          {% endfor %}
-          {% else %} 
-          <tr><td colspan="8" class="text-center">No Units</td></tr>  
-          {% endif %}
-        </tbody>
-        </table>
       </div>
     </div>
     <!-- end content-->
