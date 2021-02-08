@@ -155,7 +155,18 @@
                     </td>
                 <td><b>$</b>235,767-demo</td>
                 <td class="text-center">{{ property.unit_set.all.count }}</td>
-                <td>
+                <td class="inUnit">
+                  
+                  {% for unit in property.unit_set.all %}
+                  {% if 'vacant' in unit.occupancy_type.occupancy_type.lower %}
+                   yes
+                   
+                     
+                  {% endif %}
+                    
+                    {{ unit.occupancy_type_set }}
+                  {% endfor %}
+                    
                   <div
                     class="progress progress-line-primary"
                     title="{{ number_of_vacant_units }} / {{ property.unit_set.all.count }} Vacant"
@@ -308,6 +319,15 @@
 {% block property_overview %}
 <script src="{% static 'js/property_overview.js' %}"></script>
 {% endblock %}
-  
+  <script>
+    const d = document.querySelectorAll('.inUnit')
+    let arr = []
+    d.forEach((e,i)=>{
+      
+      arr.push(d[i].innerText.trim())
+      console.log(arr);
+    })
+   
+  </script>
 
 {% endblock %}

@@ -14,7 +14,7 @@ def post_save_end_user(sender, instance, created, **kwargs):
 
 
 @receiver(post_save, sender=TenantContract)
-def post_save_end_user(sender, instance, created, **kwargs):
+def post_save_tenant_contract(sender, instance, created, **kwargs):
     if created:
         unit = Unit.objects.get(pk=instance.unit.pk)
         if instance.discount != None and instance.security_dep != None and instance.commission != None:

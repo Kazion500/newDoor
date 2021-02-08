@@ -55,6 +55,9 @@
               name="image"
               id="imageUpload"
               style="display: none"
+              class="upload_files"
+              data-import-url="{% url 'upload_documents' request.user.username %}"
+              multiple
             />
           </div>
           <div class="col-sm-3">
@@ -267,12 +270,53 @@
 
   }
   
-  (()=>{
-    docNames.forEach((docName)=>{
-      docName.textContent = docName.textContent.replace('MEDIA/DOCUMENTS/','')
-    })
-    
-  })() 
+
+(()=>{
+  docNames.forEach((docName)=>{
+    let start = docName.textContent.replace('MEDIA/DOCUMENTS/','').indexOf('_')
+    docName.textContent = docName.textContent.replace('MEDIA/DOCUMENTS/','').slice(0,start)
+  })
+  
+})() 
+
+
+// let upload_files = document.querySelector(".upload_files")
+// let TypeValidation = document.getElementById("TypeValidation")
+// upload_files.addEventListener('change',uploadMultipleImage);
+// $("#upload_files").change(uploadMultipleImage);
+
+// function uploadMultipleImage(e) {
+//   e.preventDefault()
+//   // var url = $(this).attr("data-import-url");
+//   var arr = []
+//   var data = new FormData();
+  
+//   $.each($(".upload_files")[0].files, function (i, file) {
+//     data.append("file", file);
+//     console.log(file);
+//   });
+//   // data.append("csrfmiddlewaretoken", 'csrftoken');
+  
+//   // $.ajax({
+//   //   url: url,
+//   //   data: data,
+//   //   cache: false,
+//   //   contentType: false,
+//   //   processData: false,
+//   //   type: "post",
+//   //   beforeSend: function () {
+//   //     alert('can i?')
+//   //     // before send, display loading, etc...
+//   //   },
+//   //   success: function (data) {
+//   //     // success handling...
+//   //   },
+//   //   error: function () {
+//   //     // error handling...
+//   //   },
+//   // });
+// }
+
 </script>
 
 {% endblock body %}

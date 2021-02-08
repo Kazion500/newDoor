@@ -2,6 +2,7 @@
 
 addColorToButtons();
 calculateDueAmount();
+deleteFunc()
 // calculateTotalEarning()
 // calculateAmountCollected()
 
@@ -78,33 +79,7 @@ function calculateDueAmount() {
   }
 }
 
-function calculateAmountCollected() {
-  let totalAmounts = [];
-  const amounts = document.querySelectorAll(".amount");
-  const totalDueAmounts = document.getElementById("totalDueAmounts");
-
-  amounts.forEach((amount) => {
-    let nums = amount.innerText.trim().replace(",", "").split(" ");
-    totalAmounts.push(nums);
-    console.log(totalAmounts);
-
-    // remainDues.push(nums);
-  });
-
-  // // Calculate Sum
-  function sum(arr) {
-    return arr.reduce(function (a, b) {
-      return parseInt(a) + parseInt(b);
-    }, 0);
-  }
-  totalAmounts.forEach((val, index) => {
-    console.log(sum(val));
-    for (let i = 0; i < totalAmounts.length; i++) {
-      amounts[i].textContent = sum(val);
-    }
-  });
-}
-
+// Calculate collected
 (() => {
   const occupancyTypes = document.querySelectorAll(".occupancy_type");
   const rentalAmounts = document.querySelectorAll(".rental_amount");
@@ -135,7 +110,7 @@ function calculateAmountCollected() {
   });
 })();
 
-deleteFunc()
+
 function deleteFunc() {
   const deleteBtns = document.querySelectorAll(".btn-delete");
   const confirmation = document.querySelector(".confirmation");

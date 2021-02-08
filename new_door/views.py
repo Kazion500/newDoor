@@ -1,3 +1,4 @@
+from django.db.models.aggregates import Count
 from django.db.models.query_utils import Q
 from django.http.response import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -143,6 +144,9 @@ def property_overview(request, entity):
     properties = Property.objects.filter(entity__entity_name=entity)
     number_of_units = Unit.objects.filter(
         property_id__entity__entity_name=entity).count()
+
+    number = Unit.objects.filter(property_id__entity__entity_name=entity).aggregate(num_vancant=Sum('rent_amount'))
+    print(number)
     number_of_vacant_units = Unit.objects.filter(
         occupancy_type__occupancy_type__iexact="vacant",
         property_id__entity__entity_name=entity).count()
@@ -159,6 +163,8 @@ def property_overview(request, entity):
     try:
         total_due = Payment.objects.filter(
             contract__unit__property_id__entity__entity_name=entity).aggregate(amount=Sum('remain_amount'))
+        total_rental_amount = Unit.objects.filter(
+            property_id__entity__entity_name=entity)
         total_earning = Payment.objects.filter(
             contract__unit__property_id__entity__entity_name=entity).aggregate(amount=Sum('amount'))
     except:
