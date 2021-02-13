@@ -196,8 +196,7 @@ def property_all_overview(request):
         occupancy_type__occupancy_type__iexact="occupied").count()
     number_of_occupied_units = Unit.objects.filter(
         occupancy_type__occupancy_type__iexact="occupied").count()
-
-    print(dir(TenantContract.payment_set.field.related_model))
+        
     if number_of_occupied_units:
         percentage = number_of_occupied_units / number_of_units * 100
     else:

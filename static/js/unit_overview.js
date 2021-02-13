@@ -95,16 +95,6 @@ function trimAndReplace(str) {
       amounts[index].textContent = "";
     } else {
       amounts.forEach((amount, index) => {
-        rentalAmounts[index].textContent =
-          "$" +
-          parseInt(
-            trimAndReplace(rentalAmounts[index].textContent)
-          ).toLocaleString();
-        remainAmounts[index].textContent =
-          "$" +
-          parseInt(
-            trimAndReplace(remainAmounts[index].textContent)
-          ).toLocaleString();
         if (isNaN(trimAndReplace(remainAmounts[index].textContent))) {
           remainAmounts[index].textContent = "";
         }
@@ -124,7 +114,7 @@ function trimAndReplace(str) {
             parseInt(trimAndReplace(rentalAmounts[index].textContent)) -
             parseInt(trimAndReplace(remainAmounts[index].textContent));
           if (!isNaN(eachAmount)) {
-            amount.textContent = "$" + String(eachAmount).toLocaleString();
+            amount.textContent = "$" + eachAmount.toLocaleString();
           }
         }
       });

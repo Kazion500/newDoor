@@ -183,13 +183,17 @@
                 {% endif %}
               </td>
               <td>{{ unit.tenantcontract.tenant.user.get_full_name.capitalize }}</td>
-              <td class="rental_amount">{{ unit.tenantcontract.annual_rent }}</td>
+              <td class="rental_amount">
+                {% if unit.tenantcontract.annual_rent %}
+                  ${{ unit.tenantcontract.annual_rent|intcomma }}
+                {% endif %}
+              </td>
               <td class="amount"></td>  
               <td class="remain_amount">
                 {% if unit.tenantcontract.payment_set.all %}
                   {% for payment in unit.tenantcontract.payment_set.all %}
                     {% if forloop.last %}
-                      {{ payment.remain_amount }}
+                      ${{ payment.remain_amount|intcomma }}
                     {% endif %}
                   {% endfor %}
                 {% endif %}

@@ -145,24 +145,16 @@
               <tr>
                 <td>{{ property.owner_name }}</td>
                 <td>{{ property.property_name }}</td>
-                <td>
-                {% if property.unit_set.count %}
-                  {{property.unit_set.count}}
-                {% endif %}
-                    </td>
-                <td><b>$</b>235,767-demo</td>
+                <td class="collectedAmount">
+                  {% for unit in property.unit_set.all %}
+                    {% for payment in unit.payment_set.all %}
+                      ${{ payment.amount|intcomma }}
+                    {% endfor %}      
+                  {% endfor %}
+                </td>
+                <td class="dueAmount"></td>
                 <td class="text-center">{{ property.unit_set.all.count }}</td>
                 <td class="inUnit">
-                  
-                  {% for unit in property.unit_set.all %}
-                  {% if 'vacant' in unit.occupancy_type.occupancy_type.lower %}
-                   yes
-                   
-                     
-                  {% endif %}
-                    
-                    {{ unit.occupancy_type_set }}
-                  {% endfor %}
                     
                   <div
                     class="progress progress-line-primary"
