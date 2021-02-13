@@ -20,9 +20,9 @@
             <div class="card-icon">
               <i class="material-icons">account_balance_wallet</i>
             </div>
-            <h3 class="card-title">
-              {% if not total_earning.amount == None %}
-                ${{ total_earning.amount|intcomma }}
+            <h3 class="card-title" id="totalCollectedAmount">
+              {% if not total_earnings.amount == None %}
+                ${{ total_earnings.amount|intcomma }}
               {% else %}
                 $0
               {% endif %}
@@ -43,13 +43,10 @@
             <div class="card-icon">
               <i class="material-icons">account_balance_wallet</i>
             </div>
-            <h3 class="card-title">
-              {% if not total_due.amount == None %}
-                ${{ total_due.amount|intcomma }}
-              {% else %}
-                $0
-              {% endif %}
-            </h3>
+            <h3 class="card-title totalDueAmount"></h3>
+            <span class="totalUnitAmounts" style="display: none"
+              >{{ all_units_amount.annual_rent__sum }}</span
+            >
             <br /><br />
             <p class="card-category">Total Dues Amount</p>
           </div>
@@ -319,15 +316,6 @@
 {% block property_overview %}
 <script src="{% static 'js/property_overview.js' %}"></script>
 {% endblock %}
-  <script>
-    const d = document.querySelectorAll('.inUnit')
-    let arr = []
-    d.forEach((e,i)=>{
-      
-      arr.push(d[i].innerText.trim())
-      console.log(arr);
-    })
-   
-  </script>
+
 
 {% endblock %}

@@ -196,6 +196,7 @@ class UploadDocument(models.Model):
 
 class Payment(models.Model):
     contract = models.ForeignKey(TenantContract, on_delete=models.CASCADE)
+    unit = models.ForeignKey(Unit, on_delete=models.CASCADE,null=True, blank=True)
     pay_mode = models.ForeignKey(
         PayModeType, on_delete=models.CASCADE, null=True, blank=True)
     paid_date = models.DateTimeField(auto_now_add=True)

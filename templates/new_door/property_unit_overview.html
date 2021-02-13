@@ -180,7 +180,7 @@
               {% endif %}
             </td>
             <td>{{ unit.tenantcontract.tenant.user.get_full_name.capitalize }}</td>
-            <td class="rental_amount">{{ unit.rent_amount }}</td>
+            <td class="rental_amount">{{ unit.tenantcontract.annual_rent }}</td>
             <td class="amount"></td>
             <td class="remain_amount">
               {% if unit.tenantcontract.payment_set.all %}

@@ -36,7 +36,7 @@ class UnitModelAdmin(admin.ModelAdmin):
 
 @admin.register(Payment)
 class PaymentModelAdmin(admin.ModelAdmin):
-    list_display = ('contract', 'pay_mode', 'paid_date',
+    list_display = ('contract', 'unit', 'pay_mode', 'paid_date',
                     'amount', 'status', 'remain_amount', 'remarks')
 
 

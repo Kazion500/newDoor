@@ -174,7 +174,7 @@ class ProfileRegistrationForm(UserCreationForm):
         pcontact_ = self.cleaned_data.get('pcontact')
         try:
             profile_obj = Profile.objects.get(pcontact=pcontact_)
-            
+
             if pcontact_ == profile_obj.pcontact:
                 raise forms.ValidationError(
                     'Primary contact is already in use')
@@ -247,7 +247,7 @@ class TenantContractModelForm(forms.ModelForm):
     discount = forms.CharField(
         widget=forms.NumberInput(attrs={'class': 'form-control'}))
     annual_rent = forms.CharField(max_length=100,
-                                  widget=forms.NumberInput(attrs={'class': 'form-control',"readonly":True}))
+                                  widget=forms.NumberInput(attrs={'class': 'form-control', "readonly": True}), required=False)
     security_dep = forms.CharField(
         widget=forms.NumberInput(attrs={'class': 'form-control'}))
     commission = forms.CharField(
@@ -265,10 +265,10 @@ class TenantContractModelForm(forms.ModelForm):
         exclude = ['id']
 
         widgets = {
-            'tenant': forms.TextInput(attrs={'class': 'form-control',"readonly":True}),
-            'property_id': forms.TextInput(attrs={'class': 'form-control',"readonly":True}),
-            'unit': forms.TextInput(attrs={'class': 'form-control',"readonly":True}),
-            'contract_no': forms.TextInput(attrs={'class': 'form-control',"readonly":True}),
+            'tenant': forms.TextInput(attrs={'class': 'form-control', "readonly": True}),
+            'property_id': forms.TextInput(attrs={'class': 'form-control', "readonly": True}),
+            'unit': forms.TextInput(attrs={'class': 'form-control', "readonly": True}),
+            'contract_no': forms.TextInput(attrs={'class': 'form-control', "readonly": True}),
             'sms_notify': forms.CheckboxInput(attrs={'class': 'form-check-input', "id": "sms_notify"},),
             'email_notify': forms.CheckboxInput(attrs={'class': 'form-check-input', "id": "email_notify"}),
         }

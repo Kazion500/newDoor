@@ -1,5 +1,10 @@
-{% extends 'base.html' %} {% load static %} {% load humanize %}{% block title %} Property Overview {% endblock title %} {% block body %}
-<div class="alert alert-success alert-dismissible fade show" style="display: none;" role="alert">
+{% extends 'base.html' %} {% load static %} {% load humanize %}{% block title %}
+Property Overview {% endblock title %} {% block body %}
+<div
+  class="alert alert-success alert-dismissible fade show"
+  style="display: none"
+  role="alert"
+>
   <span class="message"></span>
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
@@ -20,12 +25,10 @@
             <div class="card-icon">
               <i class="material-icons">account_balance_wallet</i>
             </div>
-            <h3 class="card-title">
-              {% if not total_earning.amount == None %}
-                ${{ total_earning.amount|intcomma }}
-              {% else %}
-                $0
-              {% endif %}
+            <h3 class="card-title" id="totalCollectedAmount">
+              {% if not total_earnings.amount == None %} 
+              ${{ total_earnings.amount|intcomma }} 
+              {% else %} $0 {% endif %}
             </h3>
             <br /><br />
             <p class="card-category">Total Earnings</p>
@@ -43,7 +46,10 @@
             <div class="card-icon">
               <i class="material-icons">account_balance_wallet</i>
             </div>
-            <h3 class="card-title" id="totalDueAmounts"></h3>
+            <h3 class="card-title totalDueAmount"></h3>
+            <span class="totalUnitAmounts" style="display: none"
+              >{{ all_units_amount.annual_rent__sum }}</span
+            >
             <br /><br />
             <p class="card-category">Total Dues Amount</p>
           </div>
@@ -102,8 +108,7 @@
             font-size: 1rem;
             background: rgb(224, 79, 115);
           "
-        >
-        </div>
+        ></div>
       </div>
       <div class="card-body">
         <div class="toolbar">
@@ -133,25 +138,26 @@
               <tr>
                 <td>{{ property.owner_name }}</td>
                 <td>{{ property.property_name }}</td>
-                <td>
-         
+                <td class="collectedAmount">
                   {% for unit in property.unit_set.all %}
-                  123
-                  {{unit.tenantcontract_set.all}}
-                    {% for payment in unit.tenantcontract_set.all %}
-                      {{ unit.tenantcontract_set.all }}
-                    {% endfor %}
-                      
+                    {% for payment in unit.payment_set.all %}
+                      {{ payment.amount }}
+                    {% endfor %}      
                   {% endfor %}
-                    
                 </td>
-                <td><b>$</b>235,767-demo</td>
+                <td class="dueAmount"></td>
                 <td class="text-center">{{ property.unit_set.all.count }}</td>
                 <td>
                   <div
                     class="progress progress-line-primary"
                     title="{{ number_of_vacant_units }} / {{ property.unit_set.all.count}} Vacant"
-                    style="margin: 0;width: 90%; height: 10px; border-radius: 30px; background:rgb(8, 158, 8)"
+                    style="
+                      margin: 0;
+                      width: 90%;
+                      height: 10px;
+                      border-radius: 30px;
+                      background: rgb(8, 158, 8);
+                    "
                   >
                     <div
                       class="progress-bar progress-bar-danger"
@@ -169,8 +175,9 @@
                 <td class="text-right">
                   <a
                     href=" {% url 'property_unit_overview' property.pk %} "
-                    class="d-inline" title="View units"
-                    >
+                    class="d-inline"
+                    title="View units"
+                  >
                     <i
                       class="material-icons"
                       style="
@@ -184,7 +191,6 @@
                   </a>
 
                   <a href="" class="d-inline" title="View location">
-                    
                     <i
                       class="material-icons"
                       style="
@@ -201,7 +207,7 @@
                     href="{% url 'view_property' property.pk %}"
                     class="d-inline"
                     title="View property"
-                    >
+                  >
                     <div class="ripple-container success"></div>
                     <i
                       class="material-icons"
@@ -219,7 +225,7 @@
                     href="{% url 'update_property' property.pk  %}"
                     title="Update property"
                     class="d-inline"
-                    >
+                  >
                     <i
                       class="material-icons"
                       style="
@@ -232,51 +238,78 @@
                     >
                   </a>
 
-        
                   <a
-                  href="#"
-                  class="d-inline delete-item btn-delete"
-                  title="Delete unit"
-                  data-toggle="modal" data-target="#deleteToggle"
-                  data-pk="{{property.pk}}" data-name="{{ property.property_name }}"
-                >
-                  <i
-                    class="material-icons"
-                    style="
-                      margin-right: 5px;
-                      margin-top: 10px;
-                      margin-bottom: 20px;
-                      color: #f44336;
-                    "
-                    >delete</i
+                    href="#"
+                    class="d-inline delete-item btn-delete"
+                    title="Delete unit"
+                    data-toggle="modal"
+                    data-target="#deleteToggle"
+                    data-pk="{{property.pk}}"
+                    data-name="{{ property.property_name }}"
                   >
-                </a>
-              </td>
-            </tr>
-          
-              {% endfor %} {% else %} <tr class="text-center"><td colspan="7">No Unit</td></tr>  {% endif %}
+                    <i
+                      class="material-icons"
+                      style="
+                        margin-right: 5px;
+                        margin-top: 10px;
+                        margin-bottom: 20px;
+                        color: #f44336;
+                      "
+                      >delete</i
+                    >
+                  </a>
+                </td>
+              </tr>
+
+              {% endfor %} {% else %}
+              <tr class="text-center">
+                <td colspan="7">No Unit</td>
+              </tr>
+              {% endif %}
             </tbody>
           </table>
-                    <!-- Modal -->
-        <div class="modal fade" id="deleteToggle" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-top" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <!-- <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5> -->
-                <button type="button" class="close p-3" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
-                <a href="" type="button" class="btn btn-danger confirmation" data-dismiss="modal">Yes</a>
+          <!-- Modal -->
+          <div
+            class="modal fade"
+            id="deleteToggle"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-dialog-top" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <!-- <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5> -->
+                  <button
+                    type="button"
+                    class="close p-3"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body"></div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-info"
+                    data-dismiss="modal"
+                  >
+                    No
+                  </button>
+                  <a
+                    href=""
+                    type="button"
+                    class="btn btn-danger confirmation"
+                    data-dismiss="modal"
+                    >Yes</a
+                  >
+                </div>
               </div>
             </div>
           </div>
-        </div>
         </div>
       </div>
       <!-- end content-->
@@ -287,41 +320,6 @@
 </div>
 <!-- end row -->
 {% block unit_overview %}
-<script src="{% static 'js/property_overview.js' %}"> </script>
-<!-- <script>
-  let amounts = []
-  let total = 0
-  function sum(arr) {
-    return arr.reduce(function (a, b) {
-      return a + b;
-    }, 0);
-  }
-  const amountPaids = document.querySelectorAll('.amountPaid')
-  const newAmountPaids = document.querySelectorAll('.newAmountPaid')
-
-  amountPaids.forEach((amountPaid)=>{
-    if(amountPaid.textContent == ''){
-      console.log('empty');
-    }else if(parseInt(amountPaid.textContent) > 0){
-      let arr = amountPaid.textContent.split(' ')
-      amounts.push(parseInt(amountPaid.textContent))
-      document.addEventListener('DOMContentLoaded',()=>{
-        total = sum(amounts)
-        amountPaid.innerHTML = total
-        amountPaid.style.display = 'none'
-        newAmountPaids.forEach((newAmountPaid)=>{
-          newAmountPaid.innerHTML = total
-        })
-       
-      })
-     
-   
-    }else{
-      console.log('none');
-    }
-   
-  })
-  
-</script> -->
+<script src="{% static 'js/property_overview.js' %}"></script>
 {% endblock %}
 {% endblock %}

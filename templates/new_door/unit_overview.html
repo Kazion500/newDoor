@@ -22,7 +22,7 @@
             <h3 class="card-title">
               {% if total_earning == 0 %}
                 $0
-              {% elif total_earning.amount == None%}
+              {% elif total_earning.amount == None %}
                 $0
               {% elif not total_earning.amount == 0 %}
                 ${{ total_earning.amount|intcomma }}
@@ -183,7 +183,7 @@
                 {% endif %}
               </td>
               <td>{{ unit.tenantcontract.tenant.user.get_full_name.capitalize }}</td>
-              <td class="rental_amount">{{ unit.rent_amount }}</td>
+              <td class="rental_amount">{{ unit.tenantcontract.annual_rent }}</td>
               <td class="amount"></td>  
               <td class="remain_amount">
                 {% if unit.tenantcontract.payment_set.all %}

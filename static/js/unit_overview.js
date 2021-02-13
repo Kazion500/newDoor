@@ -2,7 +2,7 @@
 
 addColorToButtons();
 calculateDueAmount();
-deleteFunc()
+deleteFunc();
 // calculateTotalEarning()
 // calculateAmountCollected()
 
@@ -79,6 +79,10 @@ function calculateDueAmount() {
   }
 }
 
+function trimAndReplace(str) {
+  return str.trim().replace("$", "").replace(",", "");
+}
+
 // Calculate collected
 (() => {
   const occupancyTypes = document.querySelectorAll(".occupancy_type");
@@ -91,16 +95,34 @@ function calculateDueAmount() {
       amounts[index].textContent = "";
     } else {
       amounts.forEach((amount, index) => {
+        rentalAmounts[index].textContent =
+          "$" +
+          parseInt(
+            trimAndReplace(rentalAmounts[index].textContent)
+          ).toLocaleString();
+        remainAmounts[index].textContent =
+          "$" +
+          parseInt(
+            trimAndReplace(remainAmounts[index].textContent)
+          ).toLocaleString();
+        if (isNaN(trimAndReplace(remainAmounts[index].textContent))) {
+          remainAmounts[index].textContent = "";
+        }
+        if (isNaN(trimAndReplace(rentalAmounts[index].textContent))) {
+          rentalAmounts[index].textContent = "";
+        }
         if (
-          parseInt(rentalAmounts[index].textContent.trim()) <=
-          parseInt(remainAmounts[index].textContent.trim())
+          parseInt(trimAndReplace(rentalAmounts[index].textContent)) <=
+          parseInt(
+            trimAndReplace(remainAmounts[index].textContent)
+          )
         ) {
           amount.textContent =
             "$" + rentalAmounts[index].textContent.trim().toLocaleString();
         } else {
           const eachAmount =
-            parseInt(rentalAmounts[index].textContent.trim()) -
-            parseInt(remainAmounts[index].textContent.trim());
+            parseInt(trimAndReplace(rentalAmounts[index].textContent)) -
+            parseInt(trimAndReplace(remainAmounts[index].textContent));
           if (!isNaN(eachAmount)) {
             amount.textContent = "$" + String(eachAmount).toLocaleString();
           }
@@ -109,7 +131,6 @@ function calculateDueAmount() {
     }
   });
 })();
-
 
 function deleteFunc() {
   const deleteBtns = document.querySelectorAll(".btn-delete");

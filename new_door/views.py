@@ -110,7 +110,7 @@ def tenant_dashboard(request):
             tenant__user__username=logged_user)
 
         for unit in units:
-            unit_rental += unit.rent_amount
+            unit_rental += unit.tenantcontract.annual_rent
     except:
         pass
 
@@ -137,16 +137,15 @@ def entity_overview(request):
 
 @login_required
 def property_overview(request, entity):
-    total_due = 0
-    total_earning = 0
+    total_earnings = 0
+    all_units_amount = 0
 
     entity = get_object_or_404(Entity, entity_name=entity)
     properties = Property.objects.filter(entity__entity_name=entity)
+
     number_of_units = Unit.objects.filter(
         property_id__entity__entity_name=entity).count()
 
-    number = Unit.objects.filter(property_id__entity__entity_name=entity).aggregate(num_vancant=Sum('rent_amount'))
-    print(number)
     number_of_vacant_units = Unit.objects.filter(
         occupancy_type__occupancy_type__iexact="vacant",
         property_id__entity__entity_name=entity).count()
@@ -160,12 +159,11 @@ def property_overview(request, entity):
     else:
         percentage = 0
 
+    # Help calculate due amount
     try:
-        total_due = Payment.objects.filter(
-            contract__unit__property_id__entity__entity_name=entity).aggregate(amount=Sum('remain_amount'))
-        total_rental_amount = Unit.objects.filter(
-            property_id__entity__entity_name=entity)
-        total_earning = Payment.objects.filter(
+        all_units_amount = Unit.tenantcontract.get_queryset().filter(
+            property_id__entity__entity_name=entity).aggregate(Sum('annual_rent'))
+        total_earnings = Payment.objects.filter(
             contract__unit__property_id__entity__entity_name=entity).aggregate(amount=Sum('amount'))
     except:
         pass
@@ -177,8 +175,8 @@ def property_overview(request, entity):
         'number_of_occupied_units': number_of_occupied_units,
         'number_of_vacant_units': number_of_vacant_units,
         'percentage': int(percentage),
-        "total_due": total_due,
-        "total_earning": total_earning,
+        "total_earnings": total_earnings,
+        "all_units_amount": all_units_amount,
     }
 
     return render(request, 'new_door/property_overview.html', context)
@@ -186,8 +184,10 @@ def property_overview(request, entity):
 
 @login_required
 def property_all_overview(request):
-    total_due = 0
-    total_earning = 0
+    total_earnings = 0
+    all_units_amount = 0
+
+    # TODO: // add user roles
 
     properties = Property.objects.all()
     number_of_units = Unit.objects.all().count()
@@ -197,14 +197,17 @@ def property_all_overview(request):
     number_of_occupied_units = Unit.objects.filter(
         occupancy_type__occupancy_type__iexact="occupied").count()
 
+    print(dir(TenantContract.payment_set.field.related_model))
     if number_of_occupied_units:
         percentage = number_of_occupied_units / number_of_units * 100
     else:
         percentage = 0
 
+    # Help calculate due amount
     try:
-        total_due = Payment.objects.all().aggregate(amount=Sum('remain_amount'))
-        total_earning = Payment.objects.all().aggregate(amount=Sum('amount'))
+        all_units_amount = Unit.tenantcontract.get_queryset(
+        ).aggregate(Sum('annual_rent'))
+        total_earnings = Payment.objects.all().aggregate(amount=Sum('amount'))
     except:
         pass
 
@@ -214,8 +217,8 @@ def property_all_overview(request):
         'number_of_occupied_units': number_of_occupied_units,
         'number_of_vacant_units': number_of_vacant_units,
         'percentage': int(percentage),
-        "total_due": total_due,
-        "total_earning": total_earning,
+        'all_units_amount': all_units_amount,
+        "total_earnings": total_earnings,
     }
 
     return render(request, 'new_door/property_all_overview.html', context)
@@ -436,12 +439,18 @@ def verify_documents(request, user):
 def payment(request, user):
     tenant_contract = ''
     property_owner = ''
+    amount_remained = ''
+    unit = ''
     profile = Profile.objects.get(user__username=user)
     user_docs = UploadDocument.objects.filter(tenant__user__username=user)
 
     try:
         tenant_contract = TenantContract.objects.get(
             tenant__user__username=user)
+
+        unit = Unit.objects.filter(tenantcontract=tenant_contract).first()
+        print(unit)
+
         property_owner = Property.objects.get(
             pk=tenant_contract.property_id_id)
     except TenantContract.DoesNotExist:
@@ -481,29 +490,19 @@ def payment(request, user):
     final_amount = int(security_dep) + int(commission) + \
         int(unit_amount) - int(discount)
 
+    # get min due amount
     try:
-        payments = Payment.objects.filter(contract=tenant_contract)
+        amount_remained = Payment.objects.filter(
+            contract=tenant_contract).aggregate(amount_remained=Min('remain_amount'))
         expire_month = installment // 12
-        for payment in payments:
-            initial_date = str(payment.paid_date)[
-                :10].replace("-", ',').split(',')
-            initial_paid_year = int(initial_date[0])
-            initial_paid_month = int(initial_date[1])
-            initial_paid_day = int(initial_date[2])
-
-            expire_year = datetime.date(
-                initial_paid_year, expire_month, initial_paid_day)
-            print(expire_year)
-            if payment.remain_amount == 0:
-                messages.success(request, 'Payment completed')
-                return redirect("payment", user)
     except:
         pass
+
     if request.method == "POST":
         # Check if email and card name are provided
         tenant_email = profile.user.email
         email = request.POST.get('email')
-        card_name = request.POST.get('email')
+        card_name = request.POST.get('fullname')
 
         if email != tenant_email:
             messages.error(
@@ -514,6 +513,18 @@ def payment(request, user):
             messages.error(
                 request, 'Make sure your email and card name are filled')
             return redirect("payment", user)
+
+        # check if full payment is done
+        try:
+            payments = Payment.objects.filter(contract=tenant_contract)
+            expire_month = installment // 12
+            for payment in payments:
+
+                if payment.remain_amount == 0:
+                    messages.success(request, 'Payment completed')
+                    return redirect("payment", user)
+        except:
+            pass
 
         # No charge at 0
         try:
@@ -554,9 +565,9 @@ def payment(request, user):
             unit_contract.save()
 
             messages.success(
-                request, f'Payment of ${rental_amount.amount / 100} has been made successfully')
-            paid_amount = rental_amount.amount / 100
-            remain_amount = int(final_amount) - paid_amount
+                request, f'Payment of ${round(rental_amount.amount / 100)} has been made successfully')
+            paid_amount = round(rental_amount.amount / 100)
+            remain_amount = round(int(final_amount) - paid_amount)
 
             try:
                 payments = Payment.objects.filter(contract=tenant_contract)
@@ -567,6 +578,7 @@ def payment(request, user):
 
                 Payment.objects.create(
                     contract=tenant_contract,
+                    unit=unit,
                     amount=paid_amount,
                     status='Completed',
                     remain_amount=remain_amount,
@@ -616,6 +628,7 @@ def payment(request, user):
 
     context = {
         'final_amount': round(final_amount / int(installment)),
+        'amount_remained': amount_remained,
     }
 
     return render(request, 'payment/payment.html', context)
@@ -1021,14 +1034,28 @@ def add_tetant_contract(request, user):
     if request.method == 'POST':
         form = TenantContractModelForm(request.POST, instance=tenant_contract)
         if form.is_valid():
+            discount = form.cleaned_data.get('discount')
+            security_dep = form.cleaned_data.get('security_dep')
+            commission = form.cleaned_data.get('commission')
+
+            if discount == None and security_dep == None and commission == None:
+                messages.error(
+                    request, 'All fields must be filled')
+                return redirect('add_tetant_contract', user)
+
             if not tenant.is_tenant:
                 messages.error(
                     request, 'User is not a tenant please make sure the user is a tenant')
                 return redirect('add_tetant_contract', user)
 
+            # calculate total unit amount
+            total_unit_amount = unit.rent_amount + \
+                int(security_dep) + int(commission) - int(discount)
+            tenant_contract.annual_rent = total_unit_amount
             unit_occupancy = OccupancyType.objects.get(
                 occupancy_type__iexact='Payment Pending')
             unit.occupancy_type = unit_occupancy
+            tenant_contract.save()
             unit.save()
             form.save()
 

@@ -113,13 +113,10 @@
               <small style="color: #b6b6b6">
                 {{ form.contact_no.help_text }}
               </small>
-              
-              {% if form.email.errors %}
-                  
-                {% for error in form.email.errors %}
+              <br>
+                {% for error in form.contact_no.errors %}
                 <small style="color: red;">{{ error }}</small>
                 {% endfor %} 
-              {% endif %}
               
             </div>
           </div>
