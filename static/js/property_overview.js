@@ -33,7 +33,16 @@ function deleteFunc() {
 
 // trim and replace
 function trimAndReplace(str) {
-  if (str.length > 4) {
+  if (str.length > 10) {
+    return str
+      .trim()
+      .replace("$", "")
+      .replace(",", "")
+      .replace(",", "")
+      .replace(",", "");
+  } else if (str.length > 6) {
+    return str.trim().replace("$", "").replace(",", "").replace(",", "");
+  } else if (str.length > 4) {
     return str.trim().replace("$", "").replace(",", "");
   } else {
     return str.trim().replace("$", "");
@@ -46,13 +55,16 @@ function trimAndReplace(str) {
   const totalUnitAmount = document.querySelector(".totalUnitAmounts");
   const totalDueAmount = document.querySelector(".totalDueAmount");
   const totalCollectedAmount = document.getElementById("totalCollectedAmount");
-  if(parseInt(trimAndReplace(totalCollectedAmount.textContent))== 0 || parseInt(totalUnitAmount.textContent) == 0 ){
-    totalDueAmount.textContent = "$"+0 ;
-    return false
-  }else{
+  if (
+    parseInt(trimAndReplace(totalCollectedAmount.textContent)) == 0 ||
+    parseInt(totalUnitAmount.textContent) == 0
+  ) {
+    totalDueAmount.textContent = "$" + 0;
+    return false;
+  } else {
     const totaldues =
-    parseInt(totalUnitAmount.textContent) -
-    parseInt(trimAndReplace(totalCollectedAmount.textContent));
+      parseInt(totalUnitAmount.textContent) -
+      parseInt(trimAndReplace(totalCollectedAmount.textContent));
     totalDueAmount.textContent = "$" + totaldues.toLocaleString();
   }
 })();
@@ -60,9 +72,9 @@ function trimAndReplace(str) {
 // Calculate totalDue
 
 (() => {
-  const collectedAmounts = document.querySelectorAll('.collectedAmount')
-  const dueAmounts = document.querySelectorAll('.dueAmount')
-  const totalUnitAmount = document.querySelector('.totalUnitAmounts')
+  const collectedAmounts = document.querySelectorAll(".collectedAmount");
+  const dueAmounts = document.querySelectorAll(".dueAmount");
+  const totalUnitAmount = document.querySelector(".totalUnitAmounts");
 
   function sum(arr) {
     return arr.reduce(function (a, b) {
@@ -70,26 +82,33 @@ function trimAndReplace(str) {
     }, 0);
   }
 
-  collectedAmounts.forEach((collectedAmount,index)=>{
-    const collectedArray = collectedAmount.innerText.trim().trim().split(' ')
-    let newCollectedAmount = collectedArray.map((num,index)=>{
-      
-      return parseInt(num)
-      
-    })
-    let total = sum(newCollectedAmount)
+  collectedAmounts.forEach((collectedAmount, index) => {
+    const collectedArray = collectedAmount.innerText.trim().trim().split(" ");
+    let newCollectedAmount = collectedArray.map((num, index) => {
+      return parseInt(num);
+    });
+    let total = sum(newCollectedAmount);
 
-    if(!isNaN(total)){
-      collectedAmounts[index].textContent = "$"+total.toLocaleString()
+    if (!isNaN(total)) {
+      collectedAmounts[index].textContent = "$" + total.toLocaleString();
     }
 
-    collectedAmounts[index].textContent.trim().replace('$','').replace(',','')
-    const totalAmount = parseInt(totalUnitAmount.textContent)
-    const totalDuesAmount = totalAmount - parseInt(collectedAmounts[index].textContent.trim().replace('$','').replace(',',''))
+    collectedAmounts[index].textContent
+      .trim()
+      .replace("$", "")
+      .replace(",", "");
+    const totalAmount = parseInt(totalUnitAmount.textContent);
+    const totalDuesAmount =
+      totalAmount -
+      parseInt(
+        collectedAmounts[index].textContent
+          .trim()
+          .replace("$", "")
+          .replace(",", "")
+      );
 
-    if(!isNaN(totalDuesAmount)){
-      dueAmounts[index].textContent ="$"+totalDuesAmount.toLocaleString()
+    if (!isNaN(totalDuesAmount)) {
+      dueAmounts[index].textContent = "$" + totalDuesAmount.toLocaleString();
     }
-  })
-
+  });
 })();

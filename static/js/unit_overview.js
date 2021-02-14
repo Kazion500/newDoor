@@ -80,7 +80,20 @@ function calculateDueAmount() {
 }
 
 function trimAndReplace(str) {
-  return str.trim().replace("$", "").replace(",", "");
+  if (str.length > 10) {
+    return str
+      .trim()
+      .replace("$", "")
+      .replace(",", "")
+      .replace(",", "")
+      .replace(",", "");
+  } else if (str.length > 6) {
+    return str.trim().replace("$", "").replace(",", "").replace(",", "");
+  } else if (str.length > 4) {
+    return str.trim().replace("$", "").replace(",", "");
+  } else {
+    return str.trim().replace("$", "");
+  }
 }
 
 // Calculate collected
@@ -103,9 +116,7 @@ function trimAndReplace(str) {
         }
         if (
           parseInt(trimAndReplace(rentalAmounts[index].textContent)) <=
-          parseInt(
-            trimAndReplace(remainAmounts[index].textContent)
-          )
+          parseInt(trimAndReplace(remainAmounts[index].textContent))
         ) {
           amount.textContent =
             "$" + rentalAmounts[index].textContent.trim().toLocaleString();
