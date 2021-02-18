@@ -22,9 +22,9 @@
             </div>
             <h3 class="card-title" id="totalCollectedAmount">
               {% if not total_earnings.amount == None %}
-                ${{ total_earnings.amount|intcomma }}
+                {{ total_earnings.amount|intcomma }}
               {% else %}
-                $0
+                0
               {% endif %}
             </h3>
             <br /><br />
@@ -148,10 +148,15 @@
                 <td class="collectedAmount">
                   {% for unit in property.unit_set.all %}
                     {% for payment in unit.payment_set.all %}
-                      ${{ payment.amount|intcomma }}
+                      {{ payment.amount|intcomma }}
                     {% endfor %}      
                   {% endfor %}
                 </td>
+                <span class="totalInEach">
+                  {% for unit in property.unit_set.all %}
+                    {{unit.tenantcontract.annual_rent }}  
+                  {% endfor %}
+                </span>
                 <td class="dueAmount"></td>
                 <td class="text-center">{{ property.unit_set.all.count }}</td>
                 <td class="inUnit">

@@ -8,6 +8,24 @@ deleteFunc();
 
 // LOGIC
 
+function trimAndReplace(str) {
+  if (str.length > 10) {
+    return str.trim().replace(",", "").replace(",", "").replace(",", "");
+  } else if (str.length > 6) {
+    return str.trim().replace(",", "").replace(",", "");
+  } else if (str.length > 4) {
+    return str.trim().replace(",", "");
+  } else {
+    return str.trim();
+  }
+}
+
+function sum(arr) {
+  return arr.reduce(function (a, b) {
+    return a + b;
+  }, 0);
+}
+
 function addColorToButtons() {
   const occupancyTypes = document.querySelectorAll(".occupancy_type");
   occupancyTypes.forEach((occupancyType) => {
@@ -56,43 +74,20 @@ function calculateDueAmount() {
   const remainAmounts = document.querySelectorAll(".remain_amount");
   const totalDueAmounts = document.getElementById("totalDueAmounts");
   remainAmounts.forEach((remainAmount) => {
-    let nums = parseInt(
-      remainAmount.innerHTML.trim().replace("$", "").replace(",", "")
-    );
+    let nums = parseInt(trimAndReplace(remainAmount.innerHTML));
+
     if (!isNaN(nums)) {
       remainDues.push(nums);
     }
   });
   // Calculate Sum
-  function sum(arr) {
-    return arr.reduce(function (a, b) {
-      return a + b;
-    }, 0);
-  }
 
   if (totalDueAmounts.innerText === "") {
-    totalDueAmounts.innerText = "$" + sum(remainDues).toLocaleString();
+    totalDueAmounts.innerText = sum(remainDues).toLocaleString();
   } else if (totalDueAmounts.innerText != "0") {
-    totalDueAmounts.innerText = "$" + sum(remainDues).toLocaleString();
+    totalDueAmounts.innerText = sum(remainDues).toLocaleString();
   } else {
-    totalDueAmounts.innerText = "$" + 0;
-  }
-}
-
-function trimAndReplace(str) {
-  if (str.length > 10) {
-    return str
-      .trim()
-      .replace("$", "")
-      .replace(",", "")
-      .replace(",", "")
-      .replace(",", "");
-  } else if (str.length > 6) {
-    return str.trim().replace("$", "").replace(",", "").replace(",", "");
-  } else if (str.length > 4) {
-    return str.trim().replace("$", "").replace(",", "");
-  } else {
-    return str.trim().replace("$", "");
+    totalDueAmounts.innerText = 0;
   }
 }
 
@@ -118,14 +113,15 @@ function trimAndReplace(str) {
           parseInt(trimAndReplace(rentalAmounts[index].textContent)) <=
           parseInt(trimAndReplace(remainAmounts[index].textContent))
         ) {
-          amount.textContent =
-            "$" + rentalAmounts[index].textContent.trim().toLocaleString();
+          amount.textContent = rentalAmounts[index].textContent
+            .trim()
+            .toLocaleString();
         } else {
           const eachAmount =
             parseInt(trimAndReplace(rentalAmounts[index].textContent)) -
             parseInt(trimAndReplace(remainAmounts[index].textContent));
           if (!isNaN(eachAmount)) {
-            amount.textContent = "$" + eachAmount.toLocaleString();
+            amount.textContent = eachAmount.toLocaleString();
           }
         }
       });

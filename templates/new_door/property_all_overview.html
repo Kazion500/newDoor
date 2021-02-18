@@ -27,8 +27,8 @@ Property Overview {% endblock title %} {% block body %}
             </div>
             <h3 class="card-title" id="totalCollectedAmount">
               {% if not total_earnings.amount == None %} 
-              ${{ total_earnings.amount|intcomma }} 
-              {% else %} $0 {% endif %}
+              {{ total_earnings.amount|intcomma }} 
+              {% else %} 0 {% endif %}
             </h3>
             <br /><br />
             <p class="card-category">Total Earnings</p>
@@ -145,6 +145,11 @@ Property Overview {% endblock title %} {% block body %}
                     {% endfor %}      
                   {% endfor %}
                 </td>
+                <span class="totalInEach">
+                  {% for unit in property.unit_set.all %}
+                    {{unit.tenantcontract.annual_rent }}  
+                  {% endfor %}
+                </span>
                 <td class="dueAmount"></td>
                 <td class="text-center">{{ property.unit_set.all.count }}</td>
                 <td>
