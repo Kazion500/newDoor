@@ -196,7 +196,7 @@ def property_all_overview(request):
         occupancy_type__occupancy_type__iexact="occupied").count()
     number_of_occupied_units = Unit.objects.filter(
         occupancy_type__occupancy_type__iexact="occupied").count()
-        
+
     if number_of_occupied_units:
         percentage = number_of_occupied_units / number_of_units * 100
     else:
@@ -765,34 +765,35 @@ def add_user(request):
                 'marital_status')
             user.profile.nationality = form.cleaned_data.get('nationality')
             user.profile.image = form.cleaned_data.get('image')
-            user.is_active = False
+            # Change user.is_active to False
+            # user.is_active = True
             user.save()
 
-            current_site = get_current_site(request)
+            # current_site = get_current_site(request)
 
-            email_body = {
-                'user': user,
-                'domain': current_site.domain,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                'token': account_activation_token.make_token(user),
-            }
-            link = reverse('activate', kwargs={
-                'uidb64': email_body['uid'], 'token': email_body['token']})
+            # email_body = {
+            #     'user': user,
+            #     'domain': current_site.domain,
+            #     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+            #     'token': account_activation_token.make_token(user),
+            # }
+            # link = reverse('activate', kwargs={
+            #     'uidb64': email_body['uid'], 'token': email_body['token']})
 
-            email_subject = 'Activate your account'
+            # email_subject = 'Activate your account'
 
-            activate_url = 'http://'+current_site.domain+link
+            # activate_url = 'http://'+current_site.domain+link
 
-            html_content_template = render_to_string(
-                'auth/email_verification_msg.html', {"link": activate_url, "username": user.username.upper()})
-            email = EmailMultiAlternatives(
-                email_subject,
-                html_content_template,
-                'noreply@newdoor.com',
-                [email],
-            )
-            email.attach_alternative(html_content_template, "text/html")
-            email.send(fail_silently=False)
+            # html_content_template = render_to_string(
+            #     'auth/email_verification_msg.html', {"link": activate_url, "username": user.username.upper()})
+            # email = EmailMultiAlternatives(
+            #     email_subject,
+            #     html_content_template,
+            #     'noreply@newdoor.com',
+            #     [email],
+            # )
+            # email.attach_alternative(html_content_template, "text/html")
+            # email.send(fail_silently=False)
 
             messages.success(request, 'Account created successfully')
             return redirect('login')
