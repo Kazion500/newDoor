@@ -145,7 +145,7 @@ Property Overview {% endblock title %} {% block body %}
                     {% endfor %}      
                   {% endfor %}
                 </td>
-                 <span class="totalInEach" style="color: '#ffffff';">
+                 <span class="totalInEach"  style="color: #ffffff;">
                   {% for unit in property.unit_set.all %}
                     {{unit.tenantcontract.annual_rent }}  
                   {% endfor %}
