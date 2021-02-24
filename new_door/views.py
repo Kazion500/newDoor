@@ -318,16 +318,16 @@ def upload_documents(request, user):
             messages.success(
                 request, 'Congratulations...! Documents uploaded successfully.')
 
-            msg_to_owner = f"Hello Admin,\nDocuments for {user} are ready make sure you verify them"
+            # msg_to_owner = f"Hello Admin,\nDocuments for {user} are ready make sure you verify them"
 
-            if property_owner.owner_name.user.email:
-                send_mail(
-                    'New Door Contract',
-                    msg_to_owner,
-                    'noreply@newdoor.com',
-                    [property_owner.owner_name.user.email],
-                    fail_silently=False,
-                )
+            # if property_owner.owner_name.user.email:
+            #     send_mail(
+            #         'New Door Contract',
+            #         msg_to_owner,
+            #         'noreply@newdoor.com',
+            #         [property_owner.owner_name.user.email],
+            #         fail_silently=False,
+            #     )
             return redirect('upload_documents', tenant.user.username)
     else:
         form = UploadDocumentModelForm()
@@ -384,30 +384,35 @@ def verify_documents(request, user):
         tenant_email = tenant_doc.tenant.user.email
 
         if operation == 'delete':
-            tenant_imgs = UploadDocument.objects.filter(
-                tenant__user__username=user)
-            for tenant_img in tenant_imgs:
-                server_file = tenant_img.image.name
-                if server_file == filename:
-                    tenant_img.delete()
+            pass
+        #     tenant_imgs = UploadDocument.objects.filter(
+        #         tenant__user__username=user)
+        #     for tenant_img in tenant_imgs:
+        #         doc_type = tenant_img.doc_type
+        #         doc_types = DocumentType.objects.get(pk=doc_type.pk)
+        #         if doc_types.pk == doc_type.pk:
+        #             doc_types.delete()
 
-            # msg_error = f"Hi {user} \n document of type {filename} has been rejected because its not clear. \n "
-            # send_mail(
-            #     'Documents Rejected',
-            #     msg_error,
-            #     'noreply@newdoor.com',
-            #     [tenant_email],
-            #     fail_silently=False,
-            # )
+        # msg_error = f"Hi {user} \n document of type {filename} has been rejected because its not clear. \n "
+        # send_mail(
+        #     'Documents Rejected',
+        #     msg_error,
+        #     'noreply@newdoor.com',
+        #     [tenant_email],
+        #     fail_silently=False,
+        # )
 
         elif operation == 'save':
             tenant_img = ''
             tenant_imgs = UploadDocument.objects.filter(
                 tenant__user__username=user)
+
             for tenant_img in tenant_imgs:
                 server_file = tenant_img.image.name
+                print(server_file, filename)
                 if server_file == filename:
                     tenant_img.is_verified = True
+                    print('yes')
                     tenant_img.save()
 
             unit.occupancy_type = occupancy_type_

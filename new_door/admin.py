@@ -82,4 +82,4 @@ class UploadDocument(admin.ModelAdmin):
 
 @admin.register(DocumentType)
 class DocumentType(admin.ModelAdmin):
-    list_display = ('docs_type', 'desc')
+    list_display = ('docs_type', 'desc','num_of_doc')

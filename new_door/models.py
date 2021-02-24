@@ -118,6 +118,7 @@ class Unit(models.Model):
 
 class DocumentType(models.Model):
     docs_type = models.CharField(max_length=50,)
+    num_of_doc = models.IntegerField(default=2)
     desc = models.TextField(max_length=550,  null=True, blank=True)
 
     def __str__(self):

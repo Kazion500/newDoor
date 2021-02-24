@@ -26,9 +26,9 @@
               {% elif total_earning.amount == None%}
                 $0
               {% elif not total_earning.amount == 0 %}
-                ${{ total_earning.amount|intcomma }}
+                {{ total_earning.amount|intcomma }}
               {% else %}
-                $0
+                0
               {% endif %} 
             </h3>
             <br /><br />

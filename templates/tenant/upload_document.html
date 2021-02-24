@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block title %} Upload_Documents {% endblock title %} {% load static %} {% block gallerycss %}
+{% extends 'base.html' %} {% block title %} Upload Documents {% endblock title %} {% load static %} {% block gallerycss %}
 <link href="{% static 'css/gallery.css' %}" rel="stylesheet" />
 {% endblock %} {% block body %}
 
@@ -79,7 +79,9 @@
         </div>
       </div>
     </div>
+
   </form>
+
   <div class="card">
     <div class="card-body">
       <div class="row">
@@ -98,6 +100,7 @@
                     <th>Document Type</th>
                     <th>File Name</th>
                     <th>Size</th>
+                    <th>Status</th>
                     <th>File Progress</th>
                   </tr>
                 </thead>
@@ -107,9 +110,20 @@
                     <td scope="row">{{ uploaded_document.doc_type.docs_type.upper }}</td>
                     <td class="doc-name">{{ uploaded_document.image.name.upper }}</td>
                     <td>{{ uploaded_document.image.size }} KB</td>
+                    <td>
+                    {% if uploaded_document.is_verified %}
+                      <span class="badge badge-success">Approved</span>
+                    {% else %}
+                    <span class="badge badge-warning">Pending</span>
+                    {% endif %}
+                    </td>
                     <td>100%</td>
                   </tr>
-                  {% endfor %} {% else %} NoData {% endif %}
+                  {% endfor %} {% else %} 
+                  <tr>
+                    <td colspan="5" class="text-center">No documents uploaded yet</td>
+                  </tr> 
+                  {% endif %}
                 </tbody>
               </table>
             </div>
@@ -120,18 +134,23 @@
   </div>
   <div class="card">
     <h4 class="card-header" style="font-weight: 600; text-transform: uppercase;">Uploaded Documents</h4>
-    <div class="card-body">
+   
+    <div class="card-body shadow">
       <div class="row">
         {% for uploaded_document in uploaded_documents %}
-        <div
-          class="col-md-4"
-        >
-        <div class="uploaded-docs" style="height: 200px;
-        background-image: url('{{ uploaded_document.image.url }}'); background-size: cover; border-radius: 7px;">
+        
+        {% if uploaded_document.is_verified %}
+        <div class="col-md-5 text-center mx-auto">
+          <h6 class="card-title py-3" style="font-weight: 600; text-transform: uppercase">{{ uploaded_document.doc_type }}</h6>
+          <div class="uploaded-docs" style="height: 250px; box-shadow: 1px 1px 6px black;margin-bottom: 2em;
+          background-image: url('{{ uploaded_document.image.url }}'); background-size: cover; border-radius: 7px;">
+          </div>
         </div>
-      </div>
+        {% endif %}
+        
         {% endfor %}
       </div>
+
     </div>
   </div>
 </div>
@@ -188,7 +207,12 @@
         var filesAmount = input.files.length;
 
         if (stagedDocs.children.length > 1) {
-          alert("Only two(2) documents front and back pictures are required");
+          alert("Only two(2) document allowed front and back are required");
+          return false;
+        }
+
+        if (input.files.length > 2) {
+          alert("Only two(2) document allowed front and back are required");
           return false;
         }
 

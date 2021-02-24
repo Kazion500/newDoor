@@ -259,6 +259,7 @@
                     
                     {% if uploaded_documents.count > 0 %}
                       {% for uploaded_document in uploaded_documents %}
+                      {% if uploaded_document.is_verified %}
                         <tr>
                           <td>{{uploaded_document.doc_type.docs_type}}</td>
                           <td class="text-center" >
@@ -267,6 +268,7 @@
                             </a> 
                           </td>
                         </tr>
+                      {% endif %}
                       {% endfor %}
                     {% else %}
                       <tr>
