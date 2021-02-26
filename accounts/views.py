@@ -20,9 +20,12 @@ def login_view(request):
             password = form.cleaned_data.get('password')
             user = authenticate(request, username=user_name, password=password)
 
-            if user is not None:
+            if user != None:
                 login(request, user)
                 messages.success(request, 'Logged in successfully')
+                return redirect('/')
+            else:
+                messages.success(request, 'Your password or email is invalid')
                 return redirect('/')
 
             # try:
