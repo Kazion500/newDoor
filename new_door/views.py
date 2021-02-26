@@ -873,7 +873,8 @@ def add_tenant_to_unit(request, unit_id):
                 'marital_status')
             user.profile.nationality = form.cleaned_data.get('nationality')
             user.profile.image = form.cleaned_data.get('image')
-            user.is_active = False
+            # Change to False in production
+            # user.is_active = False
             user.save()
             occupancy_type = OccupancyType.objects.get(
                 occupancy_type='Verification Pending')
