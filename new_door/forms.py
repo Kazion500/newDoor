@@ -149,15 +149,15 @@ class ProfileRegistrationForm(UserCreationForm):
     is_owner = forms.CharField(widget=forms.CheckboxInput(
         attrs={"class": "form-check-input", "id": "is_owner"}), required=False)
 
-    def clean_email(self):
-        form_email = self.cleaned_data.get('email')
-        try:
-            user_obj = User.objects.get(email=form_email)
+    # def clean_email(self):
+    #     form_email = self.cleaned_data.get('email')
+    #     try:
+    #         user_obj = User.objects.get(email=form_email)
 
-            if form_email == user_obj.email:
-                raise forms.ValidationError('E-mail address is already in use')
-        except User.DoesNotExist:
-            return form_email
+    #         if form_email == user_obj.email:
+    #             raise forms.ValidationError('E-mail address is already in use')
+    #     except User.DoesNotExist:
+    #         return form_email
 
     def clean_scontact(self):
         scontact_ = self.cleaned_data.get('scontact')
