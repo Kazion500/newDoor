@@ -301,6 +301,7 @@ def upload_documents(request, user):
             tenant__user__username=user)
         property_owner = Property.objects.get(
             pk=tenant_contract.property_id_id)
+
     except TenantContract.DoesNotExist:
         messages.info(
             request, 'You dont have a contract please contact your real estate manager')
@@ -311,23 +312,28 @@ def upload_documents(request, user):
 
         if form.is_valid():
             uploaded_doc = form.save(commit=False)
+            doc_id =int(form.data.get('doc_type'))
             for image in request.FILES.getlist('image'):
+                if doc_id == uploaded_doc.doc_type.pk:
+                    messages.error( request, f'You already upload the documents with document type of {uploaded_doc.doc_type.docs_type}')
+                    return redirect('upload_documents', tenant.user.username)
+      
                 credentials = UploadDocument(
                     tenant=uploaded_doc.tenant, image=image, doc_type=uploaded_doc.doc_type)
                 credentials.save()
             messages.success(
                 request, 'Congratulations...! Documents uploaded successfully.')
 
-            # msg_to_owner = f"Hello Admin,\nDocuments for {user} are ready make sure you verify them"
+            msg_to_owner = f"Hello Admin,\nDocuments for {user} are ready make sure you verify them"
 
-            # if property_owner.owner_name.user.email:
-            #     send_mail(
-            #         'New Door Contract',
-            #         msg_to_owner,
-            #         'noreply@newdoor.com',
-            #         [property_owner.owner_name.user.email],
-            #         fail_silently=False,
-            #     )
+            if property_owner.owner_name.user.email:
+                send_mail(
+                    'New Door Contract',
+                    msg_to_owner,
+                    'noreply@newdoor.com',
+                    [property_owner.owner_name.user.email],
+                    fail_silently=False,
+                )
             return redirect('upload_documents', tenant.user.username)
     else:
         form = UploadDocumentModelForm()
