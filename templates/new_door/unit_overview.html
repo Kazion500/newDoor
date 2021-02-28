@@ -21,13 +21,13 @@
             </div>
             <h3 class="card-title">
               {% if total_earning == 0 %}
-                $0
+                0
               {% elif total_earning.amount == None %}
-                $0
+                0
               {% elif not total_earning.amount == 0 %}
-                ${{ total_earning.amount|intcomma }}
+                {{ total_earning.amount|intcomma }}
               {% else %}
-                $0
+                0
               {% endif %} 
             </h3>
             <br /><br />
@@ -166,7 +166,8 @@
                 >
                   {{ unit.occupancy_type.occupancy_type }}
                 </button>
-                {% endif %} {% elif unit.occupancy_type.occupancy_type.lower == 'create contract' %}
+                {% endif %} 
+                {% elif unit.occupancy_type.occupancy_type.lower == 'create contract' %}
                 <a
                   href="{% url 'add_tetant_contract' unit.tenantcontract.tenant.user.username %}"
                   class="btn btn-primary btn-round occupancy_type"

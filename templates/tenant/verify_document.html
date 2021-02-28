@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% load static %} {% block title %} Verify Documents
 {% endblock title%} {% block gallerycss %}
-<link href="{% static 'css/gallery.css' %}" rel="stylesheet" />
+
 {% endblock %} {% block body %}
 <div class="col-md-12">
   <form
@@ -127,6 +127,10 @@
   }
   const csrftoken = getCookie("csrftoken");
   
+  let clickImg = document.querySelectorAll('.click_img')
+  let modalBody = document.querySelector('.modal-body')
+  let dismissModal = document.querySelectorAll("button[data-dismiss='modal']")
+
 
   const iconVerify = document.querySelectorAll(".icon-verify");
   const iconRemove = document.querySelectorAll(".icon-remove");
@@ -148,7 +152,7 @@
           "X-CSRFToken": csrftoken,
         },
         success(data){
-          location.pathname = url
+          return window.location.pathname = url
         }
       });
     });
@@ -169,28 +173,17 @@
           "X-CSRFToken": csrftoken,
         },
         success(data) {
-          // for (let i = 0; i < iconVerify.length; i++) {
-          //   console.log(iconVerify[i].dataset.fileName);
-          //   if (iconVerify[i].dataset.fileName === data.file) {
-          //     iconVerify[i].classList.add('text-success')
-          //   }
-            
-          // }
-          location.pathname = url
+          return window.location.pathname = url
         },
       });
     });
   });
 
-  let clickImg = document.querySelectorAll('.click_img')
-  let modalBody = document.querySelector('.modal-body')
-  let dismissModal = document.querySelectorAll("button[data-dismiss='modal']")
 
-  
   clickImg.forEach((imgTag)=>{
     imgTag.addEventListener('click',(e)=>{
-      let imageUrl = e.target.dataset.image
-      console.log(imageUrl);
+      let imageUrl = imgTag.dataset.image
+      console.log(imageUrl,'hi');
       const img = document.createElement('img')
       img.setAttribute('src',imageUrl)
       img.setAttribute('alt','Document')

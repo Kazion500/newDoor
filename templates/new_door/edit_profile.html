@@ -1,0 +1,185 @@
+{% extends 'base.html' %} {% block title %} Add User {% endblock title %}
+{%block body %} {% load static %}
+<div class="col-md-12">
+  <form
+    id="TypeValidation"
+    class="form-horizontal"
+    method="post"
+    novalidate="novalidate"
+    enctype="multipart/form-data"
+  >
+    {% csrf_token %}
+    <div class="card">
+      <div class="card-header card-header-rose card-header-text">
+        <div class="card-text">
+          <h4 class="card-title d-flex align-items-center">
+            <i class="material-icons">roofing</i> Add User
+          </h4>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <br />
+        {% comment %} Row1 {% endcomment %} 
+          
+        <div class="row">
+          <div class="col-sm-6">
+            <label class="col-sm-6 col-form-label">Username</label>
+            <div class="col-sm-12">
+              <div class="form-group bmd-form-group">
+                {{ form.username }} {% for error in form.username.errors %}
+                <small style="color: red">{{ error }}</small>
+                {% endfor %}
+              </div>
+            </div>
+            <label class="col-sm-6 col-form-label">Password</label>
+            <div class="col-sm-12">
+              <div class="form-group bmd-form-group">
+                {{ form.password1 }}
+                <i class="far fa-eye" id="togglePassword"></i>
+                 {% for error in form.password1.errors %}
+                <small style="color: red">{{ error }}</small>
+                {% endfor %}
+              </div>
+            </div>
+            <label class="col-sm-6 col-form-label">Confirm password</label>
+            <div class="col-sm-12">
+              <div class="form-group bmd-form-group">
+                {{ form.password2 }}
+                <i class="far fa-eye" id="togglePassword2"></i>
+                {% for error in form.password2.errors %}
+                <small style="color: red">{{ error }}</small>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+
+          <div
+          class="col-sm-6 border justify-content-center text-center d-flex align-items-center flex-column"
+          data-provides="fileinput"
+          style="min-height: 20vh"
+        >
+          <div
+            class="float-right imgHulgFile"
+            style="width: 50px; height: 50px"
+          >
+            <img
+              id="imgFileToChange"
+              style="border-radius: 50%"
+              src="{% static '/img/placeholder.jpg' %}"
+            />
+          </div>
+
+          <button
+            class="btn btn-rose btn-round btn-sm"
+            type="button"
+            onclick="document.getElementById('image_upload').click()"
+          >
+            <i class="material-icons">open_in_browser </i> Browse File
+            <div class="ripple-container"></div>
+          </button>
+          <input
+            type="file"
+            name="image"
+            id="image_upload"
+            style="display: none"
+          />
+          {% for error in form.image.errors %}
+          <small style="color: red">{{ error }}</small>
+          {% endfor %}
+        </div>
+        </div>
+        {% comment %} Row2 {% endcomment %}
+
+        <hr
+          style="
+            width: 100%;
+            margin: 4em 0;
+            border-top: 1.5px solid rgba(0, 0, 0, 0.1);
+          "
+        />
+        {% comment %} Row3 {% endcomment %}
+        <div class="row">
+          <label class="col-sm-2 col-form-label">First Name*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.first_name }}</div>
+          </div>
+          <label class="col-sm-2 col-form-label">Middle Name</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.mid_name }}</div>
+          </div>
+        </div>
+        {% comment %} Row4 {% endcomment %}
+        <div class="row">
+          <label class="col-sm-2 col-form-label">Last Name</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.last_name }}</div>
+          </div>
+          <label class="col-sm-2 col-form-label">E-mail*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">
+              {{ form.email }} {% for error in form.email.errors %}
+              <small style="color: red">{{ error }}</small>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        {% comment %} Row5 {% endcomment %}
+        <div class="row">
+          <label class="col-sm-2 col-form-label">Primary Contact*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">
+              {{ form.pcontact }} {% for error in form.pcontact.errors %}
+              <small style="color: red">{{ error }}</small>
+              {% endfor %}
+            </div>
+          </div>
+          <label class="col-sm-2 col-form-label">Secondary Contact*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">
+              {{ form.scontact }} {% for error in form.scontact.errors %}
+              <small style="color: red">{{ error }}</small>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        {% comment %} Row6 {% endcomment %}
+        <div class="row mb-5">
+          <label class="col-sm-2 col-form-label">Nationality*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">{{ form.nationality }}</div>
+          </div>
+
+          <label class="col-sm-2 col-form-label">Marital Status*</label>
+          <div class="col-sm-4">
+            <div class="form-group bmd-form-group">
+              {{ form.marital_status }}
+            </div>
+          </div>
+        </div>
+        {% comment %} Row6 {% endcomment %}
+        <!-- <div class="mb-4 form-group d-flex">
+          <div class="col-md-4">
+            <label class="form-check-label" for="is_tenant">
+              
+              <span style="color: #a5a5a5">Is tenant</span>
+              <span class="form-check-sign" style="left: 146px">
+                <span class="check"></span>
+              </span>
+            </label>
+          </div>
+        </div> -->
+        <button class="btn btn-rose btn-round w-25 float-right" type="Submit">
+          <i class="material-icons">near_me </i> Submit
+          <div class="ripple-container"></div>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+{% block upload_user_image %}
+<script src="{% static 'js/uploadUserImage.js' %}"></script>
+{% endblock %}
+{% endblock body %}
+

@@ -22,9 +22,9 @@
             </div>
             <h3 class="card-title">
               {% if total_earning == 0 %}
-                $0
+                0
               {% elif total_earning.amount == None%}
-                $0
+                0
               {% elif not total_earning.amount == 0 %}
                 {{ total_earning.amount|intcomma }}
               {% else %}

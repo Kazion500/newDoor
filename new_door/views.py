@@ -415,10 +415,8 @@ def verify_documents(request, user):
 
             for tenant_img in tenant_imgs:
                 server_file = tenant_img.image.name
-                print(server_file, filename)
                 if server_file == filename:
                     tenant_img.is_verified = True
-                    print('yes')
                     tenant_img.save()
 
             unit.occupancy_type = occupancy_type_
@@ -444,6 +442,18 @@ def verify_documents(request, user):
     }
     return render(request, 'tenant/verify_document.html', context)
 
+# TODO//: add functionality
+@login_required
+def edit_profile(request, username):
+    profile = Profile.objects.get(user__username=username)
+    profile_ = User.objects.get(username=username)
+    if request.method =="POST":
+        form = ProfileRegistrationForm(request.POST,instance=profile_)
+        
+    else:
+        form = ProfileRegistrationForm(instance=profile_)
+
+    return render(request, 'new_door/edit_profile.html', {"form":form})
 
 @login_required
 def payment(request, user):

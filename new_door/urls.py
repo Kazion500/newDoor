@@ -18,6 +18,8 @@ urlpatterns = [
     path('view-entity/<id>', views.view_entity, name='view_entity'),
     path('delete-entity/<id>', views.delete_entity, name='delete_entity'),
 
+    #  Edit Profile
+     path('edit-profile/<str:username>', views.edit_profile, name='edit_profile'),
 
     # """ Propery Routes """
 
@@ -170,7 +172,7 @@ urlpatterns = [
     path('payment/<str:user>', views.payment, name='payment'),
 
     # Authentication routes
-#     path('auth/signup/', auth_views.signup_view, name='signup'),
+    #     path('auth/signup/', auth_views.signup_view, name='signup'),
     path('auth/login/', auth_views.login_view, name='login'),
     path('auth/logout/', auth_views.logout_view, name='logout'),
     path('activate/<uidb64>/<token>', views.email_verification, name='activate'),
