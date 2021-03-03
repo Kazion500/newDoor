@@ -130,6 +130,7 @@
             <th>Total Amount</th>
             <th>Collected</th>
             <th>Due Amount</th>
+            <th>Contract Expiration</th>
             <th class="disabled-sorting text-right">Actions</th>
           </tr>
         </thead>
@@ -194,6 +195,9 @@
                   {% endif %}
                 {% endfor %}
               {% endif %}
+            </td>
+            <td>
+              {{unit.tenantcontract.end_date}}
             </td>
 
             <td class="text-right">

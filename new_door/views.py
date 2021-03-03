@@ -225,6 +225,8 @@ def property_all_overview(request):
 
 def property_unit_overview(request, id):
     total_earning = 0
+    num_of_docs = 0
+
     _property = get_object_or_404(Property, pk=id)
     units = Unit.objects.filter(property_id=_property.pk)
 
@@ -236,6 +238,7 @@ def property_unit_overview(request, id):
     try:
         total_earning = Payment.objects.filter(
             contract__unit__property_id__pk=id).aggregate(amount=Sum('amount'))
+        num_of_docs = DocumentType.objects.all().aggregate(docs=Sum('num_of_doc'))
     except:
         pass
 
@@ -248,6 +251,7 @@ def property_unit_overview(request, id):
         "total_earning": total_earning,
         'number_of_vacant_units': number_of_vacant_units,
         'number_of_occupied_units': number_of_occupied_units,
+        'num_of_docs':num_of_docs,
     }
 
     return render(request, 'new_door/property_unit_overview.html', context)
@@ -256,6 +260,7 @@ def property_unit_overview(request, id):
 @login_required
 def unit_overview(request):
     total_earning = 0
+    num_of_docs = 0
 
     units = Unit.objects.all()
     number_of_vacant_units = Unit.objects.exclude(
@@ -265,6 +270,7 @@ def unit_overview(request):
 
     try:
         total_earning = Payment.objects.all().aggregate(amount=Sum('amount'))
+        num_of_docs = DocumentType.objects.all().aggregate(docs=Sum('num_of_doc'))
 
     except:
         pass
@@ -277,6 +283,7 @@ def unit_overview(request):
         "total_earning": total_earning,
         'number_of_occupied_units': number_of_occupied_units,
         'number_of_vacant_units': number_of_vacant_units,
+        'num_of_docs':num_of_docs,
     }
 
     return render(request, 'new_door/unit_overview.html', context)
@@ -312,12 +319,26 @@ def upload_documents(request, user):
 
         if form.is_valid():
             uploaded_doc = form.save(commit=False)
-            doc_id =int(form.data.get('doc_type'))
+            current_doc_type = DocumentType.objects.get(pk=uploaded_doc.doc_type.pk)
+            uploaded_documents_to_check =  UploadDocument.objects.filter(tenant=tenant,doc_type=current_doc_type)
+            doc_id = int(form.data.get('doc_type'))
+
+            # validate if the user is uploading the same document multiple times
+            if doc_id == uploaded_doc.doc_type.pk and uploaded_documents_to_check.count() == current_doc_type.num_of_doc:
+                messages.error(
+                        request, f'You have already upload the documents with document type of {uploaded_doc.doc_type.docs_type} and reach the maximum number of uploads for this type of document')
+                return redirect('upload_documents', tenant.user.username)
+
+            # validate the number of doc against the required
+            if not uploaded_documents_to_check.count() < current_doc_type.num_of_doc:
+                messages.error(request, f'You have reacted the maximum number of uploads for this type of document')
+                return redirect('upload_documents', tenant.user.username)
+
+            elif uploaded_documents_to_check.count() == current_doc_type.num_of_doc:
+                messages.error(request, f'You have reacted the maximum number of uploads for this type of document')
+                return redirect('upload_documents', tenant.user.username)
+            
             for image in request.FILES.getlist('image'):
-                if doc_id == uploaded_doc.doc_type.pk:
-                    messages.error( request, f'You already upload the documents with document type of {uploaded_doc.doc_type.docs_type}')
-                    return redirect('upload_documents', tenant.user.username)
-      
                 credentials = UploadDocument(
                     tenant=uploaded_doc.tenant, image=image, doc_type=uploaded_doc.doc_type)
                 credentials.save()
@@ -443,17 +464,20 @@ def verify_documents(request, user):
     return render(request, 'tenant/verify_document.html', context)
 
 # TODO//: add functionality
+
+
 @login_required
 def edit_profile(request, username):
     profile = Profile.objects.get(user__username=username)
     profile_ = User.objects.get(username=username)
-    if request.method =="POST":
-        form = ProfileRegistrationForm(request.POST,instance=profile_)
-        
+    if request.method == "POST":
+        form = ProfileRegistrationForm(request.POST, instance=profile_)
+
     else:
         form = ProfileRegistrationForm(instance=profile_)
 
-    return render(request, 'new_door/edit_profile.html', {"form":form})
+    return render(request, 'new_door/edit_profile.html', {"form": form})
+
 
 @login_required
 def payment(request, user):
