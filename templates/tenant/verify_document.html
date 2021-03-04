@@ -69,7 +69,7 @@
                           </a>
 
                           <a href="" class="d-inline text-danger" title="Reject Document">
-                            <i class="material-icons icon-remove p-2" data-filename="{{ uploaded_document.image.name }}">delete</i>
+                            <i class="material-icons icon-remove p-2" data-idfile="{{ uploaded_document.pk }}" data-filename="{{ uploaded_document.image.name }}">delete</i>
                           </a>
                         </td>
                       </tr>
@@ -140,6 +140,7 @@
 
   iconRemove.forEach((icon) => {
     icon.addEventListener("click", (e) => {
+      console.log(e.target.dataset.idfile,);
       $.ajax({
         url: url,
         method: "POST",
@@ -147,6 +148,7 @@
           user: "{{ tenant.user.username }}",
           operation: "delete",
           filename: e.target.dataset.filename,
+          docId:e.target.dataset.idfile,
         },
         headers: {
           "X-CSRFToken": csrftoken,

@@ -251,7 +251,7 @@ def property_unit_overview(request, id):
         "total_earning": total_earning,
         'number_of_vacant_units': number_of_vacant_units,
         'number_of_occupied_units': number_of_occupied_units,
-        'num_of_docs':num_of_docs,
+        'num_of_docs': num_of_docs,
     }
 
     return render(request, 'new_door/property_unit_overview.html', context)
@@ -283,7 +283,7 @@ def unit_overview(request):
         "total_earning": total_earning,
         'number_of_occupied_units': number_of_occupied_units,
         'number_of_vacant_units': number_of_vacant_units,
-        'num_of_docs':num_of_docs,
+        'num_of_docs': num_of_docs,
     }
 
     return render(request, 'new_door/unit_overview.html', context)
@@ -319,25 +319,29 @@ def upload_documents(request, user):
 
         if form.is_valid():
             uploaded_doc = form.save(commit=False)
-            current_doc_type = DocumentType.objects.get(pk=uploaded_doc.doc_type.pk)
-            uploaded_documents_to_check =  UploadDocument.objects.filter(tenant=tenant,doc_type=current_doc_type)
+            current_doc_type = DocumentType.objects.get(
+                pk=uploaded_doc.doc_type.pk)
+            uploaded_documents_to_check = UploadDocument.objects.filter(
+                tenant=tenant, doc_type=current_doc_type)
             doc_id = int(form.data.get('doc_type'))
 
             # validate if the user is uploading the same document multiple times
             if doc_id == uploaded_doc.doc_type.pk and uploaded_documents_to_check.count() == current_doc_type.num_of_doc:
                 messages.error(
-                        request, f'You have already upload the documents with document type of {uploaded_doc.doc_type.docs_type} and reach the maximum number of uploads for this type of document')
+                    request, f'You have already upload the documents with document type of {uploaded_doc.doc_type.docs_type} and reach the maximum number of uploads for this type of document')
                 return redirect('upload_documents', tenant.user.username)
 
             # validate the number of doc against the required
             if not uploaded_documents_to_check.count() < current_doc_type.num_of_doc:
-                messages.error(request, f'You have reacted the maximum number of uploads for this type of document')
+                messages.error(
+                    request, f'You have reacted the maximum number of uploads for this type of document')
                 return redirect('upload_documents', tenant.user.username)
 
             elif uploaded_documents_to_check.count() == current_doc_type.num_of_doc:
-                messages.error(request, f'You have reacted the maximum number of uploads for this type of document')
+                messages.error(
+                    request, f'You have reacted the maximum number of uploads for this type of document')
                 return redirect('upload_documents', tenant.user.username)
-            
+
             for image in request.FILES.getlist('image'):
                 credentials = UploadDocument(
                     tenant=uploaded_doc.tenant, image=image, doc_type=uploaded_doc.doc_type)
@@ -374,6 +378,7 @@ def review_documents(request, user):
     tenant = get_object_or_404(Profile, user__username=user)
     tenant_contract = get_object_or_404(TenantContract, tenant=tenant)
     tenant_docs = UploadDocument.objects.filter(tenant=tenant)
+
     if request.method == 'POST':
         form = TenantContractModelForm(request.POST, instance=tenant_contract)
         if form.is_valid():
@@ -397,10 +402,13 @@ def verify_documents(request, user):
     tenant = get_object_or_404(Profile, user__username=user)
     tenant_contract = TenantContract.objects.get(tenant__user__username=user)
     tenant_docs = UploadDocument.objects.filter(tenant=tenant)
-    tenant_doc = UploadDocument.objects.filter(tenant=tenant)[0]
     unit = Unit.objects.get(tenantcontract__tenant__user__username=user)
-    # occupancy_type_ = OccupancyType.objects.get(
-    #     occupancy_type='Payment Pending')
+
+    try:
+        tenant_doc = UploadDocument.objects.filter(tenant=tenant)[0]
+    except:
+        return redirect('unit_overview')
+
     occupancy_type_ = OccupancyType.objects.get(
         occupancy_type='Create Contract')
 
@@ -408,17 +416,23 @@ def verify_documents(request, user):
         user = request.POST.get('user')
         operation = request.POST.get('operation')
         filename = request.POST.get('filename')
+        doc_id = request.POST.get('docId')
         tenant_email = tenant_doc.tenant.user.email
 
         if operation == 'delete':
-            pass
-        #     tenant_imgs = UploadDocument.objects.filter(
-        #         tenant__user__username=user)
-        #     for tenant_img in tenant_imgs:
-        #         doc_type = tenant_img.doc_type
-        #         doc_types = DocumentType.objects.get(pk=doc_type.pk)
-        #         if doc_types.pk == doc_type.pk:
-        #             doc_types.delete()
+            tenant_imgs = UploadDocument.objects.filter(
+                tenant__user__username=user)
+            for tenant_img in tenant_imgs:
+                doc_type = tenant_img.doc_type
+                doc_types = DocumentType.objects.get(pk=doc_type.pk)
+                docs = UploadDocument.objects.filter(doc_type=doc_types)
+                for doc in docs:
+                    if doc.pk == int(doc_id):
+                        doc.delete()
+                    messages.success(
+                request, 'Congratulations...! Document rejects successfully')
+
+
 
         # msg_error = f"Hi {user} \n document of type {filename} has been rejected because its not clear. \n "
         # send_mail(
