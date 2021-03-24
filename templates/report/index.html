@@ -1,0 +1,214 @@
+{% extends 'base.html' %} {% load static %} {% block title %} Reports {%endblock title%} {% block body %}
+
+<div class="container" >
+  <div class="row">
+    <div class="col-md-3">
+      <div class="card">
+        <div
+          class="card-header border-bottom d-flex justify-content-center align-items-center"
+        >
+          <h4 class="card-title" style="font-weight: bold">Entity Report</h4>
+        </div>
+
+        <div class="card-body">
+          <span
+            style="
+              font-weight: bold;
+              font-size: 4rem;
+              display: block;
+              margin: 1rem 0 2rem;
+            "
+          >
+            30
+            <span style="font-size: 1.5rem; font-weight: 400 !important"
+              >Entities</span
+            >
+          </span>
+
+          <a href=" {% url 'oveview_report' %} " class="view btn btn-primary btn-sm btn-block">
+            View All Report
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div
+          class="card-header border-bottom d-flex justify-content-center align-items-center"
+        >
+          <h4 class="card-title" style="font-weight: bold">Property Report</h4>
+        </div>
+
+        <div class="card-body">
+          <span
+            style="
+              font-weight: bold;
+              font-size: 4rem;
+              display: block;
+              margin: 1rem 0 2rem;
+            "
+          >
+            25
+            <span style="font-size: 1.5rem; font-weight: 400 !important"
+              >Property</span
+            >
+          </span>
+
+          <a href="{% url 'oveview_report' %}" class="view btn btn-primary btn-sm btn-block">
+            View All Report
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div
+          class="card-header border-bottom d-flex justify-content-center align-items-center"
+        >
+          <h4 class="card-title" style="font-weight: bold">Unit Report</h4>
+        </div>
+
+        <div class="card-body">
+          <span
+            style="
+              font-weight: bold;
+              font-size: 4rem;
+              display: block;
+              margin: 1rem 0 2rem;
+            "
+          >
+            50
+            <span style="font-size: 1.5rem; font-weight: 400 !important"
+              >Units</span
+            >
+          </span>
+
+          <a href="{% url 'oveview_report' %}" class="view btn btn-primary btn-sm btn-block">
+            View All Report
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div
+          class="card-header border-bottom d-flex justify-content-center align-items-center"
+        >
+          <h4 class="card-title" style="font-weight: bold">Tenant Report</h4>
+        </div>
+
+        <div class="card-body">
+          <span
+            style="
+              font-weight: bold;
+              font-size: 4rem;
+              display: block;
+              margin: 1rem 0 2rem;
+            "
+          >
+            10
+            <span style="font-size: 1.5rem; font-weight: 400 !important"
+              >Tenants</span
+            >
+          </span>
+
+          <a href="{% url 'oveview_report' %}" class="view btn btn-primary btn-sm btn-block">
+            View All Report
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+      <div class="card">
+        <div
+          class="card-header border-bottom d-flex justify-content-center align-items-center"
+        >
+          <h4 class="card-title" style="font-weight: bold">Unpaid Tenant Report</h4>
+        </div>
+
+        <div class="card-body">
+          <span
+            style="
+              font-weight: bold;
+              font-size: 4rem;
+              display: block;
+              margin: 1rem 0 2rem;
+            "
+          >
+            30
+            <span style="font-size: 1.5rem; font-weight: 400 !important"
+              >Unpaid</span
+            >
+          </span>
+
+          <a href="{% url 'unpaid_tenant_report' %}" class="view btn btn-primary btn-sm btn-block">
+            View All Report
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div
+          class="card-header border-bottom d-flex justify-content-center align-items-center"
+        >
+          <h4 class="card-title" style="font-weight: bold">Tenant Payment Report</h4>
+        </div>
+
+        <div class="card-body">
+          <span
+            style="
+              font-weight: bold;
+              font-size: 4rem;
+              display: block;
+              margin: 1rem 0 2rem;
+            "
+          >
+            25
+            <span style="font-size: 1.5rem; font-weight: 400 !important"
+              >Payments</span
+            >
+          </span>
+
+          <a href=" {% url 'tenant_payment_report' %} " class="view btn btn-primary btn-sm btn-block">
+            View All Report
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div
+          class="card-header border-bottom d-flex justify-content-center align-items-center"
+        >
+          <h4 class="card-title" style="font-weight: bold">Tenant Detail Report</h4>
+        </div>
+
+        <div class="card-body">
+          <!-- <span
+            style="
+              font-weight: bold;
+              font-size: 4rem;
+              display: block;
+              margin: 1rem 0 2rem;
+            "
+          >
+            50
+            <span style="font-size: 1.5rem; font-weight: 400 !important"
+              >Units</span
+            >
+          </span> -->
+
+          <a href=" {% url 'tenant_detail_report' %} " class="view btn btn-primary btn-sm btn-block">
+            View All Report
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

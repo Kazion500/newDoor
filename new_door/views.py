@@ -127,6 +127,31 @@ def tenant_dashboard(request):
 
 
 @login_required
+def report(request):
+    return render(request, 'report/index.html')
+
+
+@login_required
+def oveview_report(request):
+    return render(request, 'report/oveview_report.html')
+
+
+@login_required
+def tenant_detail_report(request):
+    return render(request, 'report/tenant_detail_report.html')
+
+
+@login_required
+def tenant_payment_report(request):
+    return render(request, 'report/tenant_payment_report.html')
+
+
+@login_required
+def unpaid_tenant_report(request):
+    return render(request, 'report/unpaid_tenant_report.html')
+
+
+@login_required
 def entity_overview(request):
     entities = Entity.objects.all()
     context = {
@@ -430,9 +455,7 @@ def verify_documents(request, user):
                     if doc.pk == int(doc_id):
                         doc.delete()
                     messages.success(
-                request, 'Congratulations...! Document rejects successfully')
-
-
+                        request, 'Congratulations...! Document rejects successfully')
 
         # msg_error = f"Hi {user} \n document of type {filename} has been rejected because its not clear. \n "
         # send_mail(

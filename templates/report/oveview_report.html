@@ -1,0 +1,147 @@
+{% extends 'base.html' %} {% load static %} {% block title %} Reports {% endblock title%} 
+
+{% block body %}
+{% include 'report/links.html' %}
+    <header>
+      <div class="container1 d-grid-custom">
+        <div class="logo">
+          <img src=" {% static 'img/logo.png' %} " alt="" />
+        </div>
+        <div class="content">
+          <h1>Property Unit Report</h1>
+          <h5>NewDoor Building | Sur Area | Sharjah | UAE</h5>
+          <h6>info@njfdigita.com | +971-985478595</h6>
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="top container1">
+        <div class="top__section_first">
+          <div class="top__section__left">
+            <!-- Date -->
+            <strong>Date - </strong><b>01<sup>st</sup> March 2021</b>
+          </div>
+          <div class="top__section__right"><strong>Currency - AED</strong></div>
+        </div>
+
+        <!-- Property Details -->
+        <div class="top__section_second">
+          <div class="top__section__left">
+            <div class="propert_details">
+              <div class="row1">
+                <h4>Property</h4>
+              </div>
+              <div class="row2">
+                <h4>:</h4>
+              </div>
+              <div class="row3">
+                <p>Al Madina Building</p>
+              </div>
+            </div>
+            <div class="propert_details">
+              <div class="row1">
+                <h4>Address</h4>
+              </div>
+              <div class="row2">
+                <h4>:</h4>
+              </div>
+              <div class="row3">
+                <p>Al Hamriya South, Sharjah, UAE</p>
+              </div>
+            </div>
+            <div class="propert_details">
+              <div class="row1">
+                <h4>Owner</h4>
+              </div>
+              <div class="row2">
+                <h4>:</h4>
+              </div>
+              <div class="row3">
+                <p>Shaikh Owais Hamdan</p>
+              </div>
+            </div>
+          </div>
+          <div class="top__section__right">
+            <div class="propert_details">
+              <div class="row1">
+                <h4>Total Amount</h4>
+              </div>
+              <div class="row2">
+                <h4>:</h4>
+              </div>
+              <div class="row3">
+                <p>500000.00</p>
+              </div>
+            </div>
+            <div class="propert_details">
+              <div class="row1">
+                <h4>Total Collected</h4>
+              </div>
+              <div class="row2">
+                <h4>:</h4>
+              </div>
+              <div class="row3">
+                <p>175000.00</p>
+              </div>
+            </div>
+
+            <div class="propert_details">
+              <div class="row1">
+                <h4>Total Dues</h4>
+              </div>
+              <div class="row2">
+                <h4>:</h4>
+              </div>
+              <div class="row3">
+                <p>75000.00</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table with details -->
+      <div class="top__section_third">
+        <div class="container1 table__custom">
+          <table class="table__custom_style">
+            <thead style="margin-bottom: 20px">
+              <tr>
+                <th>Unit Flat</th>
+                <th>Unit Type</th>
+                <th>Occupancy</th>
+                <th>Tenant</th>
+                <th>Total Amount</th>
+                <th>Collected</th>
+                <th>Due Amount</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>101</td>
+                <td>Apartment</td>
+                <td>Occupied</td>
+                <td>Rahul Kumar</td>
+                <td>50000.00</td>
+                <td>35000.00</td>
+                <td>15000.00</td>
+              </tr>
+              <tr>
+                <td>101</td>
+                <td>Apartment</td>
+                <td>Occupied</td>
+                <td>Rahul Kumar</td>
+                <td>50000.00</td>
+                <td>35000.00</td>
+                <td>15000.00</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Signature -->
+
+      {% include 'report/signture.html' %}
+    </main>
+{% endblock %}

@@ -19,7 +19,7 @@ urlpatterns = [
     path('delete-entity/<id>', views.delete_entity, name='delete_entity'),
 
     #  Edit Profile
-     path('edit-profile/<str:username>', views.edit_profile, name='edit_profile'),
+    path('edit-profile/<str:username>', views.edit_profile, name='edit_profile'),
 
     # """ Propery Routes """
 
@@ -166,6 +166,16 @@ urlpatterns = [
     # """ TENANT SECTION """
     path('tetant-contract/<str:user>',
          views.add_tetant_contract, name='add_tetant_contract'),
+
+    # """ REPORTS SECTION """
+    path('report/', views.report, name='report'),
+    path('oveview-report/', views.oveview_report, name='oveview_report'),
+    path('tenant-detail-report/', views.tenant_detail_report,
+         name='tenant_detail_report'),
+    path('tenant-payment-report/', views.tenant_payment_report,
+         name='tenant_payment_report'),
+    path('unpaid-tenant-report/', views.unpaid_tenant_report,
+         name='unpaid_tenant_report'),
 
     # path('checklist/', views.checklist, name='checklist'),
 
