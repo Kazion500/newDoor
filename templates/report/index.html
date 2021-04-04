@@ -19,7 +19,7 @@
               margin: 1rem 0 2rem;
             "
           >
-            30
+            {{ entities.count }}
             <span style="font-size: 1.5rem; font-weight: 400 !important"
               >Entities</span
             >
@@ -48,13 +48,13 @@
               margin: 1rem 0 2rem;
             "
           >
-            25
+            {{ properties.count }}
             <span style="font-size: 1.5rem; font-weight: 400 !important"
               >Property</span
             >
           </span>
 
-          <a href="{% url 'oveview_report' %}" class="view btn btn-primary btn-sm btn-block">
+          <a href="{% url 'property_unit_report' %}" class="view btn btn-primary btn-sm btn-block">
             View All Report
           </a>
         </div>
@@ -77,7 +77,7 @@
               margin: 1rem 0 2rem;
             "
           >
-            50
+            {{ units.count }}
             <span style="font-size: 1.5rem; font-weight: 400 !important"
               >Units</span
             >
@@ -106,7 +106,7 @@
               margin: 1rem 0 2rem;
             "
           >
-            10
+            {{ tenants.count }}
             <span style="font-size: 1.5rem; font-weight: 400 !important"
               >Tenants</span
             >
@@ -120,7 +120,7 @@
     </div>
   </div>
 
-  <div class="row">
+  {% comment %} <div class="row">
     <div class="col-md-3">
       <div class="card">
         <div
@@ -208,7 +208,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> {% endcomment %}
 </div>
 
 {% endblock %}

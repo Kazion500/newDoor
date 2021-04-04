@@ -9,6 +9,8 @@ urlpatterns = [
 
     path('', views.dashboard_view, name='dashboard'),
     path('tenant-dashboard/', views.tenant_dashboard, name='tenant_dashboard'),
+    path('export/', views.MyModelDownloadView.as_view(), name='export'),
+    path('export-property/', views.PropertyUnitDownloadView.as_view(), name='export_property'),
 
     # """ Entity Routes """
 
@@ -169,7 +171,8 @@ urlpatterns = [
 
     # """ REPORTS SECTION """
     path('report/', views.report, name='report'),
-    path('oveview-report/', views.oveview_report, name='oveview_report'),
+    path('oveview-report/', views.entity_report, name='oveview_report'),
+    path('property-unit-report/', views.property_unit_report, name='property_unit_report'),
     path('tenant-detail-report/', views.tenant_detail_report,
          name='tenant_detail_report'),
     path('tenant-payment-report/', views.tenant_payment_report,

@@ -1,5 +1,8 @@
 {% extends 'base.html' %} {% load static %} {% block title %} Reports {% endblock title%} 
 
+{% block reports %} 
+  <link rel="stylesheet" type="text/css" href="{% static 'css/reports.css' %}">
+{% endblock reports %}
 
 {% block body %}
 {% include 'report/links.html' %}

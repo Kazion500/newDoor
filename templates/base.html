@@ -4,27 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!--   CSS Files start from here   -->
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{% static 'css/fontface.css' %}"
-    />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/newdoor.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/fontface.css' %}"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{% static 'css/newdoor.css' %}"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{% static 'css/reports.css' %}"
-    />
-    <link href="{% static 'demo/demo.css" rel="stylesheet' %}" />
-    <link href="{% static 'css/signin.css' %} " rel="stylesheet">
     <link  href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.css" rel="stylesheet">
-    
     {% block gallerycss %}{% endblock %}
+    {% block reports %}{% endblock %}
       
     <title>New Door | {% block title %}{% endblock title %}</title>
   </head>
@@ -382,45 +367,6 @@
         https://www.facebook.com/tr?id=111649226022273&amp;ev=PageView&amp;noscript=1 "
       />
     </noscript>
-    <!-- <script>
-      $(document).ready(function () {
-        // Javascript method's body can be found in assets/js/demos.js
-        md.initDashboardPageCharts();
-
-        md.initVectorMap();
-      });
-    </script> -->
-    <!-- <script>
-      $(document).ready(function () {
-        $("#datatables").DataTable({
-          " pagingType": "full_numbers",
-          lengthMenu: [
-            [10, 25, 50, -1],
-            [10, 25, 50, "All"],
-          ],
-          responsive: true,
-          language: { search: "_INPUT_", searchPlaceholder: "Search records" },
-        });
-        var table = $("#datatable").DataTable();
-        // Edit record table.on('click', '.edit' , function() { $tr=$(this).closest('tr'); var data=table.row($tr).data();
-        alert(
-          "You press on Row: " +
-            data[0] +
-            " " +
-            data[1] +
-            " " +
-            data[2] +
-            " 's row."
-        );
-      }); // Delete a record
-      table.on("click", ".remove", function (e) {
-        $tr = $(this).closest("tr");
-        table.row($tr).remove().draw();
-        e.preventDefault();
-      }); //Like record table.on('click', '.like' , function() { alert('You clicked on Like button');
-    </script> -->
-
-    {% comment %}This script is for form componant validation {% endcomment %}
     <script>
       function setFormValidation(id) {
         $(id).validate({
@@ -458,7 +404,6 @@
       });
     </script>
 
-    {% comment %} Core JS Files END from here {% endcomment %}
     <!-- Custom javaScript -->
 
     <script src="{% static 'js/global.js' %}" type="module"></script>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/reports.css' %}">
+  <style>
+  </style>
+  <title>Document</title>
+</head>
+<body>
+{% block report_url %}{% url 'export' property.pk %}{% endblock report_url %}
+  <header>
+    <div class="container1">
+      <div class="content">
+        <h1>Property Unit Report</h1>
+      </div>
+    </div>
+  </header>
+  <main>
+    <div class="top container1">
+      <div class="top__section_first">
+        <div class="top__section__left">
+          <!-- Date -->
+          <strong>Date - <span id="date"></span></strong>
+        </div>
+        <div class="top__section__right"><strong>Currency - AED</strong></div>
+      </div>
+    
+      
+    </div>
+    <div class="line"></div>
+
+      <!-- Property Details -->
+    <div class="container1 top__section_second">
+      <div class="propert_detail_left">
+        <div class="propert_details">
+          <div class="detail_row">
+            <span class="detail__heading">Property</span>
+            <span class="colon">:</span>
+            <span class="detail__value">{{ property.property_name }}</span>
+          </div>
+        </div>
+        <div class="propert_details">
+          <div class="detail_row">
+            <span class="detail__heading">Address</span>
+            <span class="colon">:</span>
+            <span class="detail__value">{{ property.address1 }}</span>
+          </div>
+        </div>
+        <div class="propert_details">
+          <div class="detail_row">
+            <span class="detail__heading">Owner</span>
+            <span class="colon">:</span>
+            <span class="detail__value">{{ property.owner_name.get_full_name }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="propert_detail_right">
+        <div class="propert_details">
+          <div class="detail_row">
+            <span class="detail__heading">Total Amount</span>
+            <span class="colon">:</span>
+            <span class="detail__value">500434.00</span>
+          </div>
+        </div>
+        <div class="propert_details">
+          <div class="detail_row">
+            <span class="detail__heading">Total Collected</span>
+            <span class="colon">:</span>
+            <span class="detail__value">175000.00</span>
+          </div>
+        </div>
+        <div class="propert_details">
+          <div class="detail_row">
+            <span class="detail__heading">Total Due</span>
+            <span class="colon">:</span>
+            <span class="detail__value">75000.00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table with details -->
+    <div class="top__section_third">
+      <div class="container1 table__custom">
+        <table class="table__custom_style">
+          <thead style="margin-bottom: 20px">
+            <tr>
+              <th>#Flat</th>
+              <th>Type</th>
+              <th>Occupancy</th>
+              <th>Tenant</th>
+              <th>Total Amount</th>
+              <th>Balance Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for unit in  units %}
+            <tr>
+              <td>{{ unit.flat }}</td>
+              <td>{{ unit.property_type.property_type }}</td>
+              <td>{{ unit.occupancy_type.occupancy_type }}</td>
+              <td>{{ unit.tenantcontract.tenant.user.get_full_name }}</td>
+              <td>50000</td>
+              <td>10000</td>
+              {% comment %} <td>{{ entity.entity_name }}</td>
+              <td>{{ entity.address1 }}</td>
+              <td>{{ entity.country }}</td>
+              <td>{{ entity.email }}</td> {% endcomment %}
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- Signature -->
+
+    {% include 'report/signture.html' %}
+  </main>
+
+  <script>
+  
+    const reportDate = document.getElementById('date')
+    reportDate.innerText = new Date().toLocaleDateString()
+  
+  </script>
+</body>
+</html>

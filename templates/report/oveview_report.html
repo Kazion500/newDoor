@@ -2,6 +2,9 @@
 
 {% block body %}
 {% include 'report/links.html' %}
+{% block reports %} 
+  <link rel="stylesheet" type="text/css" href="{% static 'css/reports.css' %}">
+{% endblock reports %}
     <header>
       <div class="container1 d-grid-custom">
         <div class="logo">

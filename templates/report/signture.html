@@ -1,15 +1,28 @@
 {% load static %}
 
-<div class="signature container1 mb-5">
-  <div class="signature_head">
-    <h5>Property Manager</h5>
-    <span>-</span>
-    <h5 style="font-weight: 300">Javed Farooqui</h5>
-  </div>
-  <div class="actual_signature">
-    <h5>Signature</h5>
-    <div class="actual_signature_img">
-      <img src="{% static 'img/logo.png' %}" alt="" />
+{% comment %} <div class="signature container1 mb-5">
+    <div class="signature_head">
+      <span>Property Manager</span>
+      <span style="margin: 0 20px">-</span>
+      <span>Javed Farooqui</span>
     </div>
-  </div>
+    <div class="actual_signature">
+      <span>Signature</span>
+      <div class="actual_signature_img">
+        <img src="{% static 'img/logo.png' %}" alt="" />
+      </div>
+    </div>
+</div> {% endcomment %}
+<div class='signature'>
+    <div style="width:215px">
+      <span style="font-weight:bold;">Property Manager</span>
+      <span style="margin: 0 10px">-</span>
+      <span>Javed Farooqui</span>
+    </div>
+    <div class="actual_signature">
+      <span style="font-weight:bold">Signature</span>
+      <div style="height: 50px; width: 50px;">
+        <img src="{% static 'img/logo.png' %}" style="height: 100%;max-width: 100%;" alt="" />
+      </div>
+    </div>
 </div>

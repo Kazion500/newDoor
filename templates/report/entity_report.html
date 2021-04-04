@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/reports.css' %}">
+  <style>
+  </style>
+  <title>Entity Report</title>
+</head>
+<body>
+  <header>
+    <div class="container1">
+      <div class="content">
+        <h1>Entity Report</h1>
+      </div>
+    </div>
+  </header>
+  <main>
+    <div class="top container1">
+      <div class="top__section_first">
+        <div class="top__section__left">
+          <!-- Date -->
+          <strong>Date - <span id="date"></span></strong>
+        </div>
+        <div class="top__section__right"><strong>Currency - AED</strong></div>
+      </div>
+      
+    </div>
+
+    <!-- Table with details -->
+    <div class="top__section_third">
+      <div class="container1 table__custom">
+        <table class="table__custom_style">
+          <thead style="margin-bottom: 20px">
+            <tr>
+              <th>Entity</th>
+              <th>Address</th>
+              <th>Contact</th>
+              <th>E-mail Address</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for entity in entities %}
+            <tr>
+              <td>{{ entity.entity_name }}</td>
+              <td>{{ entity.address1 }}, {{ entity.city }}, {{ entity.get_country_display }}</td>
+              <td>{{ entity.contact_no  }}</td>
+              <td>{{ entity.email }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- Signature -->
+
+    {% include 'report/signture.html' %}
+  </main>
+
+  <script>
+  
+    const reportDate = document.getElementById('date')
+    reportDate.innerText = new Date().toLocaleDateString()
+  
+  </script>
+</body>
+</html>

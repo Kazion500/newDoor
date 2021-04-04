@@ -20,6 +20,10 @@ import stripe
 import random
 import datetime
 
+from django.views.generic import ListView,DetailView
+from django.conf import settings
+from django_weasyprint import WeasyTemplateResponseMixin
+from django_weasyprint.views import CONTENT_TYPE_PNG, WeasyTemplateResponse
 
 from .models import (
     Entity, Property,
@@ -49,6 +53,67 @@ from .forms import (
     ProfileRegistrationForm,
     UploadDocumentModelForm,
 )
+
+# Generate Entity PDF
+class EntityListView(ListView):
+    model = Entity
+    template_name = 'report/entity_report.html'
+    context_object_name='entities'
+
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data(**kwargs)
+        user = self.request.user
+        context['entities'] = Entity.objects.filter(
+            Q(property__owner_name__is_manager=True) & 
+            Q(property__owner_name__pk=user.pk)
+        )
+        return context
+
+class MyModelPrintView(WeasyTemplateResponseMixin, EntityListView):
+
+    pdf_stylesheets = [
+        settings.STATIC_URL + 'css/report.css',
+    ]
+
+    pdf_attachment = True
+
+class MyModelDownloadView(WeasyTemplateResponseMixin, EntityListView):
+    
+    pdf_filename = 'Entity Report.pdf'
+
+
+
+# Generate Entity PDF
+class PropertyListView(ListView):
+    model = Property
+    template_name = 'report/property_report.html'
+    context_object_name='properties'
+
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data(**kwargs)
+        user = self.request.user
+        context['properties'] = Property.objects.filter(
+            Q(owner_name__is_manager=True) & 
+            Q(owner_name__pk=user.pk)
+        )
+        context['units'] = Unit.objects.filter(
+            Q(property_id__owner_name__is_manager=True) & 
+            Q(property_id__owner_name__pk=user.pk)
+        )
+        return context
+
+class PropertyUnitPrintView(WeasyTemplateResponseMixin, PropertyListView):
+
+    pdf_stylesheets = [
+        settings.STATIC_URL + 'css/report.css',
+    ]
+
+    pdf_attachment = True
+
+class PropertyUnitDownloadView(WeasyTemplateResponseMixin, PropertyListView):
+    
+    pdf_filename = 'Property Unit Report.pdf'
+
 
 
 # stripe.api_key = config('STRIPE_SECRET_KEY')
@@ -128,12 +193,44 @@ def tenant_dashboard(request):
 
 @login_required
 def report(request):
-    return render(request, 'report/index.html')
+    entities = Entity.objects.all()
+    units = Unit.objects.all()
+    properties = Property.objects.all()
+    tenants = Profile.objects.filter(is_tenant=True)
+
+    context={
+        "entities":entities,
+        "units":units,
+        "properties":properties,
+        "tenants":tenants,
+    }
+    return render(request, 'report/index.html',context)
 
 
 @login_required
-def oveview_report(request):
-    return render(request, 'report/oveview_report.html')
+def entity_report(request):
+    user = request.user
+    entities = Entity.objects.filter(
+        Q(property__owner_name__is_manager=True) & 
+        Q(property__owner_name__pk=user.pk)
+    )
+    context={
+        "entities":entities
+    }
+    return render(request, 'report/tests.html',context)
+
+def property_unit_report(request):
+    user = request.user
+    properties = Property.objects.filter(
+        Q(owner_name__is_manager=True) & 
+        Q(owner_name__pk=user.pk)
+    )
+    context={
+        "properties":properties
+    }
+    return render(request, 'report/views/property_report_view.html',context)
+
+
 
 
 @login_required
