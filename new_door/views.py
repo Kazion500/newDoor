@@ -20,10 +20,10 @@ import stripe
 import random
 import datetime
 
-from django.views.generic import ListView,DetailView
+from django.views.generic import ListView, DetailView
 from django.conf import settings
-from django_weasyprint import WeasyTemplateResponseMixin
-from django_weasyprint.views import CONTENT_TYPE_PNG, WeasyTemplateResponse
+# from django_weasyprint import WeasyTemplateResponseMixin
+# from django_weasyprint.views import CONTENT_TYPE_PNG, WeasyTemplateResponse
 
 from .models import (
     Entity, Property,
@@ -55,65 +55,63 @@ from .forms import (
 )
 
 # Generate Entity PDF
-class EntityListView(ListView):
-    model = Entity
-    template_name = 'report/entity_report.html'
-    context_object_name='entities'
+# class EntityListView(ListView):
+#     model = Entity
+#     template_name = 'report/entity_report.html'
+#     context_object_name='entities'
 
-    def get_context_data(self, **kwargs):
-        context =  super().get_context_data(**kwargs)
-        user = self.request.user
-        context['entities'] = Entity.objects.filter(
-            Q(property__owner_name__is_manager=True) & 
-            Q(property__owner_name__pk=user.pk)
-        )
-        return context
+#     def get_context_data(self, **kwargs):
+#         context =  super().get_context_data(**kwargs)
+#         user = self.request.user
+#         context['entities'] = Entity.objects.filter(
+#             Q(property__owner_name__is_manager=True) &
+#             Q(property__owner_name__pk=user.pk)
+#         )
+#         return context
 
-class MyModelPrintView(WeasyTemplateResponseMixin, EntityListView):
+# class MyModelPrintView(WeasyTemplateResponseMixin, EntityListView):
 
-    pdf_stylesheets = [
-        settings.STATIC_URL + 'css/report.css',
-    ]
+#     pdf_stylesheets = [
+#         settings.STATIC_URL + 'css/report.css',
+#     ]
 
-    pdf_attachment = True
+#     pdf_attachment = True
 
-class MyModelDownloadView(WeasyTemplateResponseMixin, EntityListView):
-    
-    pdf_filename = 'Entity Report.pdf'
+# class MyModelDownloadView(WeasyTemplateResponseMixin, EntityListView):
+
+#     pdf_filename = 'Entity Report.pdf'
 
 
+# # Generate Entity PDF
+# class PropertyListView(ListView):
+#     model = Property
+#     template_name = 'report/property_report.html'
+#     context_object_name='properties'
 
-# Generate Entity PDF
-class PropertyListView(ListView):
-    model = Property
-    template_name = 'report/property_report.html'
-    context_object_name='properties'
+#     def get_context_data(self, **kwargs):
+#         context =  super().get_context_data(**kwargs)
+#         user = self.request.user
+#         context['properties'] = Property.objects.filter(
+#             Q(owner_name__is_manager=True) &
+#             Q(owner_name__pk=user.pk)
+#         )
+#         context['units'] = Unit.objects.filter(
+#             Q(property_id__owner_name__is_manager=True) &
+#             Q(property_id__owner_name__pk=user.pk)
+#         )
+#         return context
 
-    def get_context_data(self, **kwargs):
-        context =  super().get_context_data(**kwargs)
-        user = self.request.user
-        context['properties'] = Property.objects.filter(
-            Q(owner_name__is_manager=True) & 
-            Q(owner_name__pk=user.pk)
-        )
-        context['units'] = Unit.objects.filter(
-            Q(property_id__owner_name__is_manager=True) & 
-            Q(property_id__owner_name__pk=user.pk)
-        )
-        return context
+# class PropertyUnitPrintView(WeasyTemplateResponseMixin, PropertyListView):
 
-class PropertyUnitPrintView(WeasyTemplateResponseMixin, PropertyListView):
+#     pdf_stylesheets = [
+#         settings.STATIC_URL + 'css/report.css',
+#     ]
 
-    pdf_stylesheets = [
-        settings.STATIC_URL + 'css/report.css',
-    ]
+#     pdf_attachment = True
 
-    pdf_attachment = True
+# class PropertyUnitDownloadView(WeasyTemplateResponseMixin, PropertyListView):
 
-class PropertyUnitDownloadView(WeasyTemplateResponseMixin, PropertyListView):
-    
-    pdf_filename = 'Property Unit Report.pdf'
-
+#     pdf_filename = 'Property Unit Report.pdf'
 
 
 # stripe.api_key = config('STRIPE_SECRET_KEY')
@@ -121,6 +119,15 @@ stripe.api_key = 'sk_test_51I0mEFGz8qAcurV0PCi7DH9LM4fx9QghxgAxnV9eWAP1gmllKeSzm
 
 
 # Dashboard Rendering
+
+@login_required
+def profile_view(request, username):
+    user = request.user.username
+    profile = get_object_or_404(Profile, user__username=username)
+    context = {
+        "profile": profile
+    }
+    return render(request, 'new_door/my_profile.html', context)
 
 
 @login_required
@@ -198,39 +205,38 @@ def report(request):
     properties = Property.objects.all()
     tenants = Profile.objects.filter(is_tenant=True)
 
-    context={
-        "entities":entities,
-        "units":units,
-        "properties":properties,
-        "tenants":tenants,
+    context = {
+        "entities": entities,
+        "units": units,
+        "properties": properties,
+        "tenants": tenants,
     }
-    return render(request, 'report/index.html',context)
+    return render(request, 'report/index.html', context)
 
 
 @login_required
 def entity_report(request):
     user = request.user
     entities = Entity.objects.filter(
-        Q(property__owner_name__is_manager=True) & 
+        Q(property__owner_name__is_manager=True) &
         Q(property__owner_name__pk=user.pk)
     )
-    context={
-        "entities":entities
+    context = {
+        "entities": entities
     }
-    return render(request, 'report/tests.html',context)
+    return render(request, 'report/tests.html', context)
+
 
 def property_unit_report(request):
     user = request.user
     properties = Property.objects.filter(
-        Q(owner_name__is_manager=True) & 
+        Q(owner_name__is_manager=True) &
         Q(owner_name__pk=user.pk)
     )
-    context={
-        "properties":properties
+    context = {
+        "properties": properties
     }
-    return render(request, 'report/views/property_report_view.html',context)
-
-
+    return render(request, 'report/views/property_report_view.html', context)
 
 
 @login_required

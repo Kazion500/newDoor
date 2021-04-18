@@ -3,7 +3,7 @@
   class="sidebar ps"
   data-color="rose"
   data-background-color="black"
-  data-image="{% static 'img/faces/avatar.png' %}"
+  data-image=""
 >
   <!--
     Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
@@ -45,15 +45,9 @@
         <div class="collapse" id="collapseExample">
           <ul class="nav">
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="{% url 'my_profile' request.user.username %}">
                 <span class="sidebar-mini"> MP </span>
                 <span class="sidebar-normal"> My Profile </span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <span class="sidebar-mini"> EP </span>
-                <span class="sidebar-normal"> Edit Profile </span>
               </a>
             </li>
             <li class="nav-item">
@@ -198,32 +192,6 @@
         </a>
       </li>
 
-      <!-- <li class="nav-item">
-        <a class="nav-link" data-toggle="collapse" href="#tablesExamples">
-          <i class="material-icons">grid_on</i>
-          <p>
-            Tenant
-            <b class="caret"></b>
-          </p>
-        </a>
-        <div class="collapse" id="tablesExamples">
-          <ul class="nav">
-            <li class="nav-item">
-              <a class="nav-link" href="-url 'add_tetant_contract' request.user.username-">
-                <span class="sidebar-mini"> TC </span>
-                <span class="sidebar-normal"> Tenant Contract </span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="">
-                <span class="sidebar-mini"> TC </span>
-                <span class="sidebar-normal"> Review Documents </span>
-              </a>
-            </li>
-  
-          </ul>
-        </div>
-      </li> -->
       {% endif %} {% if request.user.profile.is_tenant %}
       <li class="nav-item">
         <a class="nav-link" href="{% url 'upload_documents' request.user.username %}">
@@ -277,16 +245,6 @@
         </div>
       </li>
       {% endif %}
-
-      
-      <!-- <ul class="nav">
-        <li class="nav-item active">
-          <a class="nav-link" href="/Check_List">
-            <i class="material-icons">CL</i>
-            <p>Check List</p>
-          </a>
-        </li>
-      </ul> -->
     </ul>
 
     <div class="ps__rail-x" style="left: 0px; top: 0px">
@@ -308,6 +266,5 @@
   </div>
   <div
     class="sidebar-background"
-    style="background-image: url('static/img/faces/avatar.png')"
   ></div>
 </div>
