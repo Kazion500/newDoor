@@ -66,17 +66,17 @@
                                             <td>{{ownership_type.desc}}</td>
                                             <td class="text-right">
 
-                                                <a href=" {% url 'view_ownership_type' ownership_type.id %} " class="d-inline ">
+                                                <a href=" {% url 'view_ownership_type' ownership_type.id %} " rel="tooltip" title="View" class="d-inline ">
                                                     <i class="material-icons " style="margin-right: 10px; margin-top: 10px; margin-bottom: 20px; color: #ff9800;" >dvr</i>
                                                 </a>
                                               
 
-                                                <a href=" {% url 'update_ownership_type' ownership_type.pk %}" class="d-inline ">{% csrf_token %}
+                                                <a href=" {% url 'update_ownership_type' ownership_type.pk %}" rel="tooltip" title="Edit"  class="d-inline ">
                                                     <i class="material-icons "  style="margin-right: 5px; margin-top: 10px; margin-bottom: 20px; color: #4caf50; ">create</i>
                                                 </a>
                                                
 
-                                                <a href="#" class="d-inline btn-delete"  title="Delete ownership type" data-pk="{{ownership_type.pk}}" data-name="{{ ownership_type.ownership_type }}" data-target="#deleteToggle"
+                                                <a href="#" class="d-inline btn-delete"  title="Delete" rel="tooltip" data-pk="{{ownership_type.pk}}" data-name="{{ ownership_type.ownership_type }}" data-target="#deleteToggle"
                                                     data-toggle="modal" >
                                                     <i class="material-icons " style="margin-right: 5px; margin-top: 10px; margin-bottom: 20px; color: #f44336; " >delete</i>
                                                 </a>

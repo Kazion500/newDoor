@@ -24,7 +24,6 @@
           style="
             padding: 0.5em 0;
             font-size: 1rem;
-
           "
         >
           <a
@@ -70,6 +69,7 @@
                     href=" {% url 'property_overview' entity.entity_name %} "
                     class="d-inline"
                     title="View properties"
+                    rel="tooltip"
                   >
                     <div class="ripple-container success"></div>
                     <i
@@ -107,6 +107,7 @@
                     href="{% url 'update_entity' entity.pk %}"
                     class="d-inline"
                     title="Update entity"
+                    rel="tooltip"
                   >
                     <div class="ripple-container success"></div>
                     <i
@@ -125,6 +126,7 @@
                     href="#"
                     class="d-inline delete-item btn-delete"
                     title="Delete unit"
+                    rel="tooltip"
                     data-target="#deleteToggle"
                     data-toggle="modal"
                     data-pk="{{entity.pk}}" data-name="{{ entity.entity_name }}"

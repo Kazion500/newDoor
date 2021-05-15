@@ -182,7 +182,7 @@
                 <td class="text-right">
                   <a
                     href=" {% url 'property_unit_overview' property.pk %} "
-                    class="d-inline" title="View units"
+                    class="d-inline" title="View units" rel="tooltip"
                     >
                     <div class="ripple-container success"></div>
                     <i
@@ -197,7 +197,7 @@
                     >
                   </a>
 
-                  <a href="" class="d-inline" title="View location">
+                  <a href="" class="d-inline" rel="tooltip" title="View location">
                     
                     <i
                       class="material-icons"
@@ -236,6 +236,7 @@
                     href="{% url 'update_property' property.pk  %}"
                    title="Update property"
                     class="d-inline"
+                    rel="tooltip"
                     >
                     <div class="ripple-container success"></div>
                     <i
@@ -256,6 +257,7 @@
                       href="#"
                       class="d-inline delete-item btn-delete"
                       title="Delete unit"
+                      rel="tooltip"
                       data-target="#deleteToggle"
                       data-toggle="modal"
                       data-toggle="modal"

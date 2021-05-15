@@ -66,16 +66,16 @@
                                             <td>{{occupancy_type.desc}}</td>
                                             <td class="text-right">
 
-                                                <a href="{% url 'view_occupancy_type' occupancy_type.pk %}" class="d-inline ">
+                                                <a href="{% url 'view_occupancy_type' occupancy_type.pk %}" rel="tooltip" title="View" class="d-inline ">
                                                     <i class="material-icons " style="margin-right: 10px; margin-top: 10px; margin-bottom: 20px; color: #ff9800;" >dvr</i>
                                                 </a>
 
-                                                <a href="{% url 'update_occupancy_type' occupancy_type.pk %}" class="d-inline ">
+                                                <a href="{% url 'update_occupancy_type' occupancy_type.pk %}" class="d-inline " rel="tooltip" title="Edit">
                                                     <i class="material-icons "  style="margin-right: 5px; margin-top: 10px; margin-bottom: 20px; color: #4caf50; ">create</i>
                                                 </a>
                                                
 
-                                                <a href="#" class="d-inline btn-delete" data-pk="{{occupancy_type.pk}}" data-name="{{ occupancy_type.occupancy_type }}" data-target="#deleteToggle"
+                                                <a href="#" class="d-inline btn-delete" title="Delete" rel="tooltip" data-pk="{{occupancy_type.pk}}" data-name="{{ occupancy_type.occupancy_type }}" data-target="#deleteToggle"
                                                 data-toggle="modal" >
                                                     <i class="material-icons " style="margin-right: 5px; margin-top: 10px; margin-bottom: 20px; color: #f44336; " >delete</i>
                                                 </a>

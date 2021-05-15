@@ -215,7 +215,7 @@
               </td>
 
               <td class="text-right">
-                <a href="#" class="d-inline" title="Renewal">
+                <a href="#" class="d-inline" rel="tooltip" title="Renewal">
                   <i
                     class="material-icons"
                     style="
@@ -229,7 +229,7 @@
                   <div class="ripple-container"></div>
                 </a>
 
-                <a href="#" class="d-inline" title="Maintenance">
+                <a href="#" class="d-inline" rel="tooltip" title="Maintenance">
                   <i
                     class="material-icons"
                     style="
@@ -267,6 +267,7 @@
                   href="{% url 'update_unit' unit.pk %}"
                   class="d-inline"
                   title="Update unit"
+                  rel="tooltip"
                 >
                   <div class="ripple-container success"></div>
                   <i
@@ -285,6 +286,7 @@
                 href="{% url 'review_documents' unit.tenantcontract.tenant.user.username %} "
                 class="d-inline delete-item"
                 title="View contract"
+                rel="tooltip"
               >
                 <i
                   class="material-icons"
@@ -305,6 +307,7 @@
                   href="#"
                   class="d-inline delete-item btn-delete"
                   title="Delete unit"
+                  rel="tooltip"
                   data-target="#deleteToggle"
                   data-toggle="modal"
                   data-pk="{{unit.pk}}" data-name="{{ unit.flat }}"

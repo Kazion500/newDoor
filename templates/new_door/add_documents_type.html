@@ -74,13 +74,13 @@
                                                 </a>
                                               
 
-                                                <a href=" {% url 'update_doc_type' doc.pk %} " class="d-inline" title="Update document type">
+                                                <a href=" {% url 'update_doc_type' doc.pk %} " class="d-inline" title="Update document type" rel="tooltip">
                                                     
                                                     <i class="material-icons "  style="margin-right: 5px; margin-top: 10px; margin-bottom: 20px; color: #4caf50; ">create</i>
                                                 </a>
                                                
 
-                                                <a href="#" class="d-inline btn-delete"  title="Delete document type" data-pk="{{doc.pk}}" data-name="{{ doc.docs_type }}" data-target="#deleteToggle"
+                                                <a href="#" class="d-inline btn-delete" rel="tooltip" title="Delete document type" data-pk="{{doc.pk}}" data-name="{{ doc.docs_type }}" data-target="#deleteToggle"
                                                 data-toggle="modal" >
                                                     <i class="material-icons " style="margin-right: 5px; margin-top: 10px; margin-bottom: 20px; color: #f44336; " >delete</i>
                                                 </a>

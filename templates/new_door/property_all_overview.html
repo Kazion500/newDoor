@@ -182,6 +182,7 @@ Property Overview {% endblock title %} {% block body %}
                     href=" {% url 'property_unit_overview' property.pk %} "
                     class="d-inline"
                     title="View units"
+                    rel="tooltip"
                   >
                     <i
                       class="material-icons"
@@ -195,7 +196,7 @@ Property Overview {% endblock title %} {% block body %}
                     >
                   </a>
 
-                  <a href="" class="d-inline" title="View location">
+                  <a href="" class="d-inline" title="View location" rel="tooltip">
                     <i
                       class="material-icons"
                       style="
@@ -212,6 +213,7 @@ Property Overview {% endblock title %} {% block body %}
                     href="{% url 'view_property' property.pk %}"
                     class="d-inline"
                     title="View property"
+                    rel="tooltip"
                   >
                     <div class="ripple-container success"></div>
                     <i
@@ -230,6 +232,7 @@ Property Overview {% endblock title %} {% block body %}
                     href="{% url 'update_property' property.pk  %}"
                     title="Update property"
                     class="d-inline"
+                    rel="tooltip"
                   >
                     <i
                       class="material-icons"
@@ -247,6 +250,7 @@ Property Overview {% endblock title %} {% block body %}
                     href="#"
                     class="d-inline delete-item btn-delete"
                     title="Delete unit"
+                    rel="tooltip"
                     data-toggle="modal"
                     data-target="#deleteToggle"
                     data-pk="{{property.pk}}"

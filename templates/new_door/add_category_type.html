@@ -109,7 +109,7 @@
                           >
                         </a>
 
-                        <a href=" {% url 'update_category_type' category.pk %} " class="d-inline"
+                        <a href=" {% url 'update_category_type' category.pk %} " rel="tooltip" class="d-inline"
                           title="Update category type" >
                           <div class="ripple-container success"></div>
                           <i
@@ -124,7 +124,7 @@
                           >
                         </a>
 
-                        <a href="#" class="d-inline btn-delete" data-pk="{{category.pk}}" data-name="{{ category.cat_type }}" data-target="#deleteToggle"
+                        <a href="#" class="d-inline btn-delete" rel="tooltip" data-pk="{{category.pk}}" data-name="{{ category.cat_type }}" data-target="#deleteToggle"
                           data-toggle="modal" >
                           <i class="material-icons " style="margin-right: 5px; margin-top: 10px; margin-bottom: 20px; color: #f44336; " >delete</i>
                         </a>

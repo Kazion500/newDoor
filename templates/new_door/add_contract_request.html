@@ -112,7 +112,7 @@
 
                       <a
                         href=" {% url 'update_contract_request' contract_request.pk  %} "
-                        class="d-inline" title="Update contract request" >
+                        class="d-inline" title="Update contract request" rel="tooltip">
                         <div class="ripple-container success"></div>
                         <i
                           class="material-icons"
@@ -126,7 +126,7 @@
                         >
                       </a>
 
-                      <a href="#" class="d-inline btn-delete" data-pk="{{contract_request.pk}}" data-name="{{ contract_request.contract_req }}" data-target="#deleteToggle"
+                      <a href="#" class="d-inline btn-delete" rel="tooltip" data-pk="{{contract_request.pk}}" data-name="{{ contract_request.contract_req }}" data-target="#deleteToggle"
                           data-toggle="modal" >
                           <i class="material-icons " style="margin-right: 5px; margin-top: 10px; margin-bottom: 20px; color: #f44336; " >delete</i>
                       </a>

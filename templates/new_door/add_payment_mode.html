@@ -98,7 +98,8 @@
                         <a
                           href=" {% url 'view_payment_mode' payment_mode.pk %}"
                           class="d-inline"
-                          title="View payment mode"
+                          title="View"
+                          rel="tooltip"
                         >
                           <div class="ripple-container success"></div>
                           <i
@@ -116,7 +117,8 @@
                         <a
                           href="{% url 'update_payment_mode' payment_mode.pk %}"
                           class="d-inline"
-                          title="Update payment mode"
+                          title="Update"
+                          rel="tooltip"
                         >
                           <div class="ripple-container success"></div>
                           <i
@@ -131,7 +133,7 @@
                           >
                         </a>
 
-                        <a href="#" class="d-inline btn-delete"  title="Delete payment mode type" data-pk="{{payment_mode.pk}}" data-name="{{ payment_mode.pay_type }}" data-target="#deleteToggle"
+                        <a href="#" class="d-inline btn-delete"   rel="tooltip"  title="Delete payment mode type" data-pk="{{payment_mode.pk}}" data-name="{{ payment_mode.pay_type }}" data-target="#deleteToggle"
                             data-toggle="modal" >
                             <i class="material-icons " style="margin-right: 5px; margin-top: 10px; margin-bottom: 20px; color: #f44336; " >delete</i>
                         </a>

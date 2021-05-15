@@ -1057,7 +1057,7 @@ def add_tenant_to_unit(request, unit_id):
             # user.is_active = False
             user.save()
             occupancy_type = OccupancyType.objects.get(
-                occupancy_type='Verification Pending')
+                occupancy_type='Email Verification')
 
             tenant = Profile.objects.get(user=user)
             if not tenant.is_tenant:
