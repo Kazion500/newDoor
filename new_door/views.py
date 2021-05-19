@@ -55,14 +55,12 @@ stripe.api_key = 'sk_test_51I0mEFGz8qAcurV0PCi7DH9LM4fx9QghxgAxnV9eWAP1gmllKeSzm
 
 today = datetime.date.today()
 
-class TestPDFView(PDFView):
-    """Generate labels for some Shipments.
 
-    A PDFView behaves pretty much like a TemplateView, so you can treat it as such.
-    """
+class EntityPDFView(PDFView):
 
     template_name = 'report/entity_report.html'
-    prompt_download = False
+    prompt_download = True
+    download_name = 'Property Unit Report'
 
     def get_context_data(self, *args, **kwargs):
         """Pass some extra context to the template."""
@@ -74,14 +72,28 @@ class TestPDFView(PDFView):
         context['date'] = today
         return context
 
-class PropertyUnitPDFView(PDFView):
-    """Generate labels for some Shipments.
 
-    A PDFView behaves pretty much like a TemplateView, so you can treat it as such.
-    """
+class PropertyPDFView(PDFView):
+
+    template_name = 'report/property_report.html'
+    # prompt_download = True
+    # download_name = 'Property Report'
+
+    def get_context_data(self, *args, **kwargs):
+        """Pass some extra context to the template."""
+        context = super().get_context_data(*args, **kwargs)
+
+        context['properties'] = Property.objects.filter(
+            Q(owner_name__is_manager=True) & Q(
+                owner_name__user__pk=kwargs['pk'])
+        )
+        context['date'] = today
+        return context
+
+
+class PropertyUnitPDFView(PDFView):
 
     template_name = 'report/test.html'
-    prompt_download = False
 
     def get_context_data(self, *args, **kwargs):
         """Pass some extra context to the template."""
@@ -214,8 +226,6 @@ def property_unit_report(request, property_id):
         pk=property_id
     )
 
-  
-
     context = {
         "property": property
     }
@@ -239,7 +249,7 @@ def unpaid_tenant_report(request):
 
 @login_required
 def entity_overview(request):
-    entities = Entity.objects.all()
+    entities = Entity.objects.filter(manager__pk=request.user.pk)
     context = {
         'entities': entities
     }
@@ -252,7 +262,7 @@ def property_overview(request, entity):
     all_units_amount = 0
 
     entity = get_object_or_404(Entity, entity_name=entity)
-    properties = Property.objects.filter(entity__entity_name=entity)
+    properties = Property.objects.filter(entity__entity_name=entity,owner_name__user__pk=request.user.pk)
 
     number_of_units = Unit.objects.filter(
         property_id__entity__entity_name=entity).count()
@@ -300,7 +310,7 @@ def property_all_overview(request):
 
     # TODO: // add user roles
 
-    properties = Property.objects.all()
+    properties = Property.objects.filter(owner_name__user__pk=request.user.pk)
     number_of_units = Unit.objects.all().count()
 
     number_of_vacant_units = Unit.objects.exclude(
