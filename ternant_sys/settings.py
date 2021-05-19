@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'new_door.apps.NewDoorConfig',
     'accounts.apps.AccountsConfig',
     'django_countries',
+    'csv_export'
 ]
 
 MIDDLEWARE = [
