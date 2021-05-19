@@ -311,6 +311,8 @@ def property_all_overview(request):
     # TODO: // add user roles
 
     properties = Property.objects.filter(owner_name__user__pk=request.user.pk)
+    print(f'{properties}')
+    print(f'{request.user.pk}')
     number_of_units = Unit.objects.all().count()
 
     number_of_vacant_units = Unit.objects.exclude(
