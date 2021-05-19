@@ -56,6 +56,8 @@ stripe.api_key = 'sk_test_51I0mEFGz8qAcurV0PCi7DH9LM4fx9QghxgAxnV9eWAP1gmllKeSzm
 
 today = datetime.date.today()
 
+# REPORTS
+
 
 class EntityPDFView(PDFView):
 
@@ -143,11 +145,12 @@ def profile_view(request, username):
 
 @login_required
 def dashboard_view(request):
+    manager_id= request.user.pk
     if request.user.profile.is_tenant:
         return redirect('tenant_dashboard')
-    properties = Property.objects.all().order_by('-property_name')[:4]
+    properties = Property.objects.filter(owner_name__user__pk=manager_id).order_by('-property_name')[:4]
     payments = Payment.objects.all().order_by('-paid_date')[:4]
-    total_num_units = Unit.objects.all().count()
+    total_num_units = Unit.objects.filter(property_id__owner_name__user__pk=manager_id).count()
     units = Unit.objects.filter(
         Q(property_id__owner_name=request.user.profile),
         Q(tenantcontract__gte=1)
@@ -211,9 +214,10 @@ def tenant_dashboard(request):
 
 @login_required
 def report(request):
-    entities = Entity.objects.all()
-    units = Unit.objects.all()
-    properties = Property.objects.all()
+    manager_id = request.user.pk
+    entities = Entity.objects.filter(manager__pk=manager_id)
+    units = Unit.objects.filter(property_id_id__owner_name__user__pk=manager_id)
+    properties = Property.objects.filter(owner_name__user__pk=manager_id)
     tenants = Profile.objects.filter(is_tenant=True)
 
     context = {

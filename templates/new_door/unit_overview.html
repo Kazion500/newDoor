@@ -90,23 +90,30 @@
   </div>
 
   <div class="card mt-5">
-    <div class="card-header card-header-primary card-header-icon">
-      <div class="card-icon" style="padding-left: 1px">
-        <a
-          href=" {% url 'unit_overview' %} "
-          class="card-header card-header-rose card-header-text"
-          style="font-size: 20px"
-        >
-          <i class="material-icons">house</i> Unit Overview
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="card-header card-header-rose">
+        <a href="{% url 'unit_overview' %}" class="text-white" style="font-size: 20px">
+          <i class="material-icons">person</i> Unit Overview
         </a>
       </div>
-      <div
-        class="card-icon float-right"
-        style="padding: 0.5em 0; font-size: 1rem"
-      >
+      <div style="font-size: 0.7rem; margin-top: -35px">
         <a
-          href=" {% url 'add_unit' %} "
-          class="card-header card-header-rose card-header-text"
+          href="{% url 'export' request.user.pk %} "
+          class="card-header card-header-warning p-2"
+        >
+          <i class="material-icons">add</i>Export PDF
+        </a>
+
+        <a
+          href=" {% url 'export_csv' request.user.pk %} "
+          class="card-header card-header-rose p-2"
+        >
+          <i class="material-icons">add</i>Export CSV
+        </a>
+
+        <a
+          href="{% url 'add_unit' %} "
+          class="card-header card-header-success p-2"
         >
           <i class="material-icons">add</i>Add Unit
         </a>
@@ -146,7 +153,7 @@
                 {% if unit.occupancy_type.occupancy_type.lower == 'vacant' %}
                 <a
                   href="{% url 'add_tenant_to_unit' unit.pk %}"
-                  class="btn btn-primary btn-round occupancy_type"
+                  class="btn btn-sm btn-primary btn-round occupancy_type"
                 >
                   {{ unit.occupancy_type.occupancy_type }}
                 </a>
@@ -155,13 +162,13 @@
                 {% if unit.tenantcontract.tenant.uploaddocument_set.all.count == num_of_docs.docs %}
                 <a
                   href="{% url 'verify_documents' unit.tenantcontract.tenant.user.username %}"
-                  class="btn btn-primary btn-round occupancy_type"
+                  class="btn btn-sm btn-primary btn-round occupancy_type"
                 >
                   {{ unit.occupancy_type.occupancy_type }}
                 </a>
                 {% else %}
                 <button
-                  class="btn btn-primary btn-round occupancy_type"
+                  class="btn btn-sm btn-primary btn-round occupancy_type"
                   disabled
                 >
                   {{ unit.occupancy_type.occupancy_type }}
@@ -172,13 +179,13 @@
                 {% if unit.tenantcontract.tenant.uploaddocument_set.all.count == num_of_docs.docs %}
                   <a
                     href="{% url 'add_tetant_contract' unit.tenantcontract.tenant.user.username %}"
-                    class="btn btn-primary btn-round occupancy_type"
+                    class="btn btn-sm btn-primary btn-round occupancy_type"
                   >
                     {{ unit.occupancy_type.occupancy_type }}
                   </a>
                 {% else %}
                   <button
-                      class="btn btn-primary btn-round occupancy_type"
+                      class="btn btn-sm btn-primary btn-round occupancy_type"
                       disabled
                   >
                     {{ unit.occupancy_type.occupancy_type }}
@@ -187,7 +194,7 @@
 
                 {% else %}
                 <button
-                  class="btn btn-primary btn-round occupancy_type"
+                  class="btn btn-sm btn-primary btn-round occupancy_type"
                   disabled
                 >
                   {{ unit.occupancy_type.occupancy_type }}
@@ -218,12 +225,7 @@
                 <a href="#" class="d-inline" rel="tooltip" title="Renewal">
                   <i
                     class="material-icons"
-                    style="
-                      margin-right: 5px;
-                      margin-top: 10px;
-                      margin-bottom: 20px;
-                      color: #f44336;
-                    "
+                    style="color: #f44336;"
                     >autorenew</i
                   >
                   <div class="ripple-container"></div>
@@ -232,12 +234,7 @@
                 <a href="#" class="d-inline" rel="tooltip" title="Maintenance">
                   <i
                     class="material-icons"
-                    style="
-                      margin-right: 5px;
-                      margin-top: 10px;
-                      margin-bottom: 20px;
-                      color: #6663ff;
-                    "
+                    style="color: #6663ff;"
                     >construction</i
                   >
                   <div class="ripple-container"></div>
@@ -246,19 +243,14 @@
                 <a
                   href="{% url 'view_unit' unit.pk  %}"
                   class="d-inline"
-                  rel="tooltip "
+                  rel="tooltip"
                   title="View unit"
-                  data-original-title="Remove "
+
                 >
                   <div class="ripple-container success"></div>
                   <i
                     class="material-icons"
-                    style="
-                      margin-right: 10px;
-                      margin-top: 10px;
-                      margin-bottom: 20px;
-                      color: #ff9800;
-                    "
+                    style="color: #ff9800;"
                     >dvr</i
                   >
                 </a>
@@ -272,12 +264,7 @@
                   <div class="ripple-container success"></div>
                   <i
                     class="material-icons"
-                    style="
-                      margin-right: 5px;
-                      margin-top: 10px;
-                      margin-bottom: 20px;
-                      color: #4caf50;
-                    "
+                    style="color: #4caf50; "
                     >create</i
                   >
                 </a>            
@@ -290,12 +277,7 @@
               >
                 <i
                   class="material-icons"
-                  style="
-                    margin-right: 5px;
-                    margin-top: 10px;
-                    margin-bottom: 20px;
-                    color: #0e352b;
-                  "
+                  style="color: #0e352b;"
                   >description</i
                 >
                 <div class="ripple-container"></div>
@@ -314,12 +296,7 @@
                 >
                   <i
                     class="material-icons"
-                    style="
-                      margin-right: 5px;
-                      margin-top: 10px;
-                      margin-bottom: 20px;
-                      color: #c55d55;
-                    "
+                    style="color: #c55d55;"
                     >delete</i
                   >
                   <div class="ripple-container"></div>
