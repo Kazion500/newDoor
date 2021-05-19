@@ -49,7 +49,7 @@
               <tr>
                 <td>{{ entity.entity_name }}</td>
                 <td>
-                  {{ entity.address1 }}, {{ entity.city }}, {{ entity.get_country_display }}
+                  {{ entity.address1 }}
                 </td>
                 <td>{{ entity.contact_no }}</td>
                 <td>{{ entity.email }}</td>
@@ -60,6 +60,7 @@
         </div>
       </div>
       <!-- Signature -->
+      {% include 'report/signture.html' %}
     </main>
 
   </body>
