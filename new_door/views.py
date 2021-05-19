@@ -106,7 +106,7 @@ class PropertyPDFView(PDFView):
 class PropertyCSVView(CSVExportView):
     model = Property
     fields = '__all__'
-    header = False
+    specify_separator= False
     filename = 'Property.csv'
 
     def get_queryset(self):
