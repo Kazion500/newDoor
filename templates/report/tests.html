@@ -6,7 +6,7 @@
 {% endblock reports %}
 
   <div class="report-links">
-      <a href="{% url 'export' %}" target="_blank" class="btn btn-primary-2 btn-sm">Export PDF</a>
+      <a href="{% url 'export' request.user.pk %}" target="_blank" class="btn btn-primary-2 btn-sm">Export PDF</a>
   </div>
   <header>
     <div class="container1">
@@ -20,7 +20,7 @@
       <div class="top__section_first">
         <div class="top__section__left">
           <!-- Date -->
-          <strong>Date - <span id="date"></span></strong>
+          <strong>Date - </strong>
         </div>
         <div class="top__section__right"><strong>Currency - AED</strong></div>
       </div>

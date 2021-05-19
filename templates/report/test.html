@@ -11,7 +11,6 @@
   <title>Document</title>
 </head>
 <body>
-{% block report_url %}{% url 'export' property.pk %}{% endblock report_url %}
   <header>
     <div class="container1">
       <div class="content">
@@ -24,7 +23,7 @@
       <div class="top__section_first">
         <div class="top__section__left">
           <!-- Date -->
-          <strong>Date - <span id="date"></span></strong>
+          <strong>Date - <span>{{ date }}</span></strong>
         </div>
         <div class="top__section__right"><strong>Currency - AED</strong></div>
       </div>
@@ -54,7 +53,7 @@
           <div class="detail_row">
             <span class="detail__heading">Owner</span>
             <span class="colon">:</span>
-            <span class="detail__value">{{ property.owner_name.get_full_name }}</span>
+            <span class="detail__value">{{ property.owner_name.user.get_full_name }}</span>
           </div>
         </div>
       </div>
@@ -98,18 +97,22 @@
             </tr>
           </thead>
           <tbody>
-          {% for unit in  units %}
+          {% for unit in  property.unit_set.all %}
             <tr>
               <td>{{ unit.flat }}</td>
               <td>{{ unit.property_type.property_type }}</td>
               <td>{{ unit.occupancy_type.occupancy_type }}</td>
-              <td>{{ unit.tenantcontract.tenant.user.get_full_name }}</td>
+              {% if unit.tenantcontract.tenant != '' %}
+              <td>
+                {{ unit.tenantcontract.tenant.user.get_full_name }}
+              </td>
+              {% else %}
+              <td class="center">
+                -
+              </td>
+              {% endif %}
               <td>50000</td>
               <td>10000</td>
-              {% comment %} <td>{{ entity.entity_name }}</td>
-              <td>{{ entity.address1 }}</td>
-              <td>{{ entity.country }}</td>
-              <td>{{ entity.email }}</td> {% endcomment %}
             </tr>
           {% endfor %}
           </tbody>

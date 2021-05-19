@@ -25,6 +25,8 @@ class Profile(models.Model):
 
 
 class Entity(models.Model):
+    manager = models.OneToOneField(
+        User, on_delete=models.CASCADE, null=True, blank=True)
     entity_name = models.CharField(max_length=50, unique=True)
     contact_no = models.CharField(max_length=20, unique=True)
     address1 = models.CharField(max_length=250, )
@@ -197,7 +199,8 @@ class UploadDocument(models.Model):
 
 class Payment(models.Model):
     contract = models.ForeignKey(TenantContract, on_delete=models.CASCADE)
-    unit = models.ForeignKey(Unit, on_delete=models.CASCADE,null=True, blank=True)
+    unit = models.ForeignKey(
+        Unit, on_delete=models.CASCADE, null=True, blank=True)
     pay_mode = models.ForeignKey(
         PayModeType, on_delete=models.CASCADE, null=True, blank=True)
     paid_date = models.DateTimeField(auto_now_add=True)

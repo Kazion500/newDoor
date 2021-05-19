@@ -6,12 +6,16 @@
 }
 
 body {
-  font-family: "TRAvalon";
+  font-family: "TRAvalon" !important;
 }
 h1 {
   font-size: 1.5rem;
   margin-bottom: 0.7rem;
   font-weight: bold;
+}
+
+.center {
+  padding: 0 20px;
 }
 
 h5,
@@ -30,46 +34,48 @@ p {
   font-size: 13px !important;
 }
 
-strong,b,span{
+strong,
+b,
+span {
   font-size: 13px !important;
 }
 
 /* BTN */
-.btn-primary-2{
+.btn-primary-2 {
   display: inline-block;
   border: 1px solid;
   padding: 7px 12px;
   text-decoration: none;
-  background: var(--primary-clr) ;
+  background: var(--primary-clr);
   color: #fff;
   border-radius: 5px;
 }
 
 /* New Styles */
 
-.detail_row{
+.detail_row {
   display: flex;
   justify-content: space-between;
   width: 100%;
 }
-.detail__heading{
+.detail__heading {
   font-weight: bold;
 }
 
-.colon{
+.colon {
   font-weight: bold;
 }
 
-.report-links{
+.report-links {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 1rem;
 }
 
-.propert_detail_left,.propert_detail_right{
+.propert_detail_left,
+.propert_detail_right {
   width: 30%;
 }
-
 
 .top__section_first strong,
 .top__section_first b {
@@ -96,10 +102,10 @@ header {
 th {
   font-family: "Bitter";
 }
-th{
+th {
   font-size: 13px !important;
 }
-td{
+td {
   font-size: 11px !important;
 }
 
@@ -170,26 +176,26 @@ th {
   font-size: 1.1rem;
 }
 
-.signature{
-  margin-top: 15px; 
-  display: flex; 
-  flex-direction:column; 
-  align-items:flex-end;
-  justify-content:space-between
+.signature {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
 }
 
-.signature span{
+.signature span {
   font-size: 11px !important;
 }
 
-.signature_head{
+.signature_head {
   display: flex;
 }
-.signature_head > span:first-child{
+.signature_head > span:first-child {
   font-weight: bold;
 }
 
-.actual_signature{
+.actual_signature {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -197,10 +203,10 @@ th {
   margin: 1rem 0;
 }
 
-.actual_signature >span {
- font-weight: bold;
+.actual_signature > span {
+  font-weight: bold;
 }
-.actual_signature_img { 
+.actual_signature_img {
   height: 50px;
   width: 50px;
 }

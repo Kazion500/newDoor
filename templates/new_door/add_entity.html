@@ -25,7 +25,11 @@
         <div class="row">
           <label class="col-sm-2 col-form-label">Entity Name*</label>
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.entity_name }}</div>
+            <div class="form-group bmd-form-group">{{ form.entity_name }}
+              {% for error in form.entity_name.errors %}
+                <small style="color: red">{{ error }}</small>
+              {% endfor %}
+            </div>
           </div>
           <label class="col-sm-2 col-form-label">Contact No.*</label>
           <div class="col-sm-4">
@@ -33,29 +37,49 @@
               {{ form.contact_no }}
               <small style="color: #b6b6b6">
                 {{ form.contact_no.help_text }}
+                {% for error in form.contact_no.errors %}
+                <p style="color: red" class="m-0 p-0">{{ error }}</p>
+              {% endfor %}
               </small>
+
             </div>
           </div>
         </div>
         <div class="row">
           <label class="col-sm-2 col-form-label">Address1*</label>
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.address1 }}</div>
+            <div class="form-group bmd-form-group">{{ form.address1 }}
+              {% for error in form.address1.errors %}
+                <small style="color: red">{{ error }}</small>
+              {% endfor %}
+            </div>
           </div>
           <label class="col-sm-2 col-form-label">Address2*</label>
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.address2 }}</div>
+            <div class="form-group bmd-form-group">{{ form.address2 }}
+              {% for error in form.address2.errors %}
+              <small style="color: red">{{ error }}</small>
+              {% endfor %}
+            </div>
           </div>
         </div>
 
         <div class="row">
           <label class="col-sm-2 col-form-label">City*</label>
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.city }}</div>
+            <div class="form-group bmd-form-group">{{ form.city }}
+              {% for error in form.city.errors %}
+              <small style="color: red">{{ error }}</small>
+              {% endfor %}
+            </div>
           </div>
           <label class="col-sm-2 col-form-label">Zip or Postal*</label>
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.pobox }}</div>
+            <div class="form-group bmd-form-group">{{ form.pobox }}
+              {% for error in form.pobox.errors %}
+              <small style="color: red">{{ error }}</small>
+              {% endfor %}
+            </div>
           </div>
         </div>
 
@@ -73,7 +97,11 @@
         <div class="row">
           <label class="col-sm-2 col-form-label">Email*</label>
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.email }}</div>
+            <div class="form-group bmd-form-group">{{ form.email }}
+              {% for error in form.email.errors %}
+              <small style="color: red">{{ error }}</small>
+              {% endfor %}
+            </div>
           </div>
           <label class="col-sm-2 col-form-label">Description</label>
           <div class="col-sm-4">

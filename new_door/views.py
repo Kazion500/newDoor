@@ -1,4 +1,3 @@
-from django.db.models.aggregates import Count
 from django.db.models.query_utils import Q
 from django.http.response import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -13,17 +12,13 @@ from django.utils.encoding import force_bytes, force_text
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.template.loader import render_to_string
-from stripe import multipart_data_generator
 from .utils import account_activation_token
 from django.urls import reverse
 import stripe
 import random
 import datetime
+from django_renderpdf.views import PDFView
 
-from django.views.generic import ListView, DetailView
-from django.conf import settings
-# from django_weasyprint import WeasyTemplateResponseMixin
-# from django_weasyprint.views import CONTENT_TYPE_PNG, WeasyTemplateResponse
 
 from .models import (
     Entity, Property,
@@ -54,71 +49,52 @@ from .forms import (
     UploadDocumentModelForm,
 )
 
-# Generate Entity PDF
-# class EntityListView(ListView):
-#     model = Entity
-#     template_name = 'report/entity_report.html'
-#     context_object_name='entities'
-
-#     def get_context_data(self, **kwargs):
-#         context =  super().get_context_data(**kwargs)
-#         user = self.request.user
-#         context['entities'] = Entity.objects.filter(
-#             Q(property__owner_name__is_manager=True) &
-#             Q(property__owner_name__pk=user.pk)
-#         )
-#         return context
-
-# class MyModelPrintView(WeasyTemplateResponseMixin, EntityListView):
-
-#     pdf_stylesheets = [
-#         settings.STATIC_URL + 'css/report.css',
-#     ]
-
-#     pdf_attachment = True
-
-# class MyModelDownloadView(WeasyTemplateResponseMixin, EntityListView):
-
-#     pdf_filename = 'Entity Report.pdf'
-
-
-# # Generate Entity PDF
-# class PropertyListView(ListView):
-#     model = Property
-#     template_name = 'report/property_report.html'
-#     context_object_name='properties'
-
-#     def get_context_data(self, **kwargs):
-#         context =  super().get_context_data(**kwargs)
-#         user = self.request.user
-#         context['properties'] = Property.objects.filter(
-#             Q(owner_name__is_manager=True) &
-#             Q(owner_name__pk=user.pk)
-#         )
-#         context['units'] = Unit.objects.filter(
-#             Q(property_id__owner_name__is_manager=True) &
-#             Q(property_id__owner_name__pk=user.pk)
-#         )
-#         return context
-
-# class PropertyUnitPrintView(WeasyTemplateResponseMixin, PropertyListView):
-
-#     pdf_stylesheets = [
-#         settings.STATIC_URL + 'css/report.css',
-#     ]
-
-#     pdf_attachment = True
-
-# class PropertyUnitDownloadView(WeasyTemplateResponseMixin, PropertyListView):
-
-#     pdf_filename = 'Property Unit Report.pdf'
-
 
 # stripe.api_key = config('STRIPE_SECRET_KEY')
 stripe.api_key = 'sk_test_51I0mEFGz8qAcurV0PCi7DH9LM4fx9QghxgAxnV9eWAP1gmllKeSzmSIbDvU0THz6i0HzP7EdXHxBTVtbo1HHYd8u00lnHS3VYg'
 
+today = datetime.date.today()
+
+class TestPDFView(PDFView):
+    """Generate labels for some Shipments.
+
+    A PDFView behaves pretty much like a TemplateView, so you can treat it as such.
+    """
+
+    template_name = 'report/entity_report.html'
+    prompt_download = False
+
+    def get_context_data(self, *args, **kwargs):
+        """Pass some extra context to the template."""
+        context = super().get_context_data(*args, **kwargs)
+
+        context['entities'] = Entity.objects.filter(
+            manager=kwargs["user_id"]
+        )
+        context['date'] = today
+        return context
+
+class PropertyUnitPDFView(PDFView):
+    """Generate labels for some Shipments.
+
+    A PDFView behaves pretty much like a TemplateView, so you can treat it as such.
+    """
+
+    template_name = 'report/test.html'
+    prompt_download = False
+
+    def get_context_data(self, *args, **kwargs):
+        """Pass some extra context to the template."""
+        context = super().get_context_data(*args, **kwargs)
+
+        context['property'] = Property.objects.get(
+            pk=kwargs["property_id"]
+        )
+        context['date'] = today
+        return context
 
 # Dashboard Rendering
+
 
 @login_required
 def profile_view(request, username):
@@ -218,25 +194,32 @@ def report(request):
 def entity_report(request):
     user = request.user
     entities = Entity.objects.filter(
-        Q(property__owner_name__is_manager=True) &
-        Q(property__owner_name__pk=user.pk)
+        Q(manager__pk=user.pk) & Q(manager__profile__is_manager=True)
     )
+
+    if len(entities) == 0:
+        return redirect('dashboard')
     context = {
         "entities": entities
     }
     return render(request, 'report/tests.html', context)
 
 
-def property_unit_report(request):
+def property_unit_report(request, property_id):
     user = request.user
-    properties = Property.objects.filter(
-        Q(owner_name__is_manager=True) &
-        Q(owner_name__pk=user.pk)
+    manager_profile = get_object_or_404(Profile, pk=user.pk)
+    if not manager_profile.is_manager:
+        print(len(property))
+    property = Property.objects.get(
+        pk=property_id
     )
+
+  
+
     context = {
-        "properties": properties
+        "property": property
     }
-    return render(request, 'report/views/property_report_view.html', context)
+    return render(request, 'report/test.html', context)
 
 
 @login_required
@@ -823,17 +806,17 @@ def payment(request, user):
 
 @login_required
 def add_entity(request):
+    manager = request.user
     entities = Entity.objects.all()
 
     if request.method == 'POST':
         form = EntityModelForm(request.POST)
         if form.is_valid():
-            form.save()
+            entity = form.save(commit=False)
+            entity.manager = manager
+            entity.save()
             messages.success(
                 request, 'Congratulations...! Entity successfully added.')
-            return redirect('add_entity')
-        else:
-            messages.info(request, 'Entity already exits')
             return redirect('add_entity')
     else:
         form = EntityModelForm()
@@ -998,7 +981,7 @@ def email_verification(request, uidb64, token):
         user = User.objects.get(pk=id)
 
         if not account_activation_token.check_token(user, token):
-            return redirect('login'+'?message='+'User already activated')
+            return redirect(f'login?message=User already activated')
 
         if user.is_active:
             return redirect('login')

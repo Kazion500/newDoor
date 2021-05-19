@@ -91,24 +91,27 @@ Property Overview {% endblock title %} {% block body %}
       </div>
     </div>
     <div class="card">
-      <div class="card-header card-header-primary card-header-icon">
-        <div class="card-icon" style="padding-left: 1px">
-          <a
-            href="  "
-            class="card-header card-header-rose card-header-text"
-            style="font-size: 20px"
-          >
-            <i class="material-icons">roofing</i> Property Overview
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="card-header card-header-rose">
+          <a href=" {% url 'entity_overview'%} " class="text-white" style="font-size: 20px">
+            <i class="material-icons">person</i> Property Overview
           </a>
         </div>
-        <div
-          class="card-icon float-right"
-          style="
-            padding: 0.5em 0;
-            font-size: 1rem;
-            background: rgb(224, 79, 115);
-          "
-        ></div>
+        <div style="font-size: 0.7rem; margin-top: -35px">
+          <a
+            href="{% url 'export' request.user.pk %} "
+            class="card-header card-header-warning p-2"
+          >
+            <i class="material-icons">add</i>Export PDF
+          </a>
+
+          <a
+            href=" {% url 'add_entity'%} "
+            class="card-header card-header-rose p-2"
+          >
+            <i class="material-icons">add</i>Export CSV
+          </a>
+        </div>
       </div>
       <div class="card-body">
         <div class="toolbar">
@@ -177,7 +180,7 @@ Property Overview {% endblock title %} {% block body %}
                     </div>
                   </div>
                 </td>
-                <td class="text-right">
+                <td class="text-right m-5">
                   <a
                     href=" {% url 'property_unit_overview' property.pk %} "
                     class="d-inline"
@@ -186,12 +189,7 @@ Property Overview {% endblock title %} {% block body %}
                   >
                     <i
                       class="material-icons"
-                      style="
-                        margin-right: 08px;
-                        margin-top: 10px;
-                        margin-bottom: 20px;
-                        color: #5b93f6;
-                      "
+                      style="color: #5b93f6;"
                       >location_city</i
                     >
                   </a>
@@ -199,12 +197,7 @@ Property Overview {% endblock title %} {% block body %}
                   <a href="" class="d-inline" title="View location" rel="tooltip">
                     <i
                       class="material-icons"
-                      style="
-                        margin-right: 10px;
-                        margin-top: 10px;
-                        margin-bottom: 20px;
-                        color: #f44336;
-                      "
+                      style="color: #f44336;"
                       >location_on</i
                     >
                   </a>
@@ -219,9 +212,7 @@ Property Overview {% endblock title %} {% block body %}
                     <i
                       class="material-icons"
                       style="
-                        margin-right: 10px;
-                        margin-top: 10px;
-                        margin-bottom: 20px;
+       
                         color: #ff9800;
                       "
                       >dvr</i
@@ -236,14 +227,21 @@ Property Overview {% endblock title %} {% block body %}
                   >
                     <i
                       class="material-icons"
-                      style="
-                        margin-right: 5px;
-                        margin-top: 10px;
-                        margin-bottom: 20px;
-                        color: #4caf50;
-                      "
+                      style="color: #4caf50;"
+                      
                       >create</i
                     >
+                  </a>
+
+                  <a
+                    href="{% url 'property_unit_report' property.pk  %}"
+                    title="Export Report"
+                    class="d-inline"
+                    rel="tooltip"
+                  >
+                    <span class="material-icons"  style="color: #303641;">
+                      assignment_returned
+                    </span>
                   </a>
 
                   <a
@@ -258,12 +256,7 @@ Property Overview {% endblock title %} {% block body %}
                   >
                     <i
                       class="material-icons"
-                      style="
-                        margin-right: 5px;
-                        margin-top: 10px;
-                        margin-bottom: 20px;
-                        color: #f44336;
-                      "
+                   
                       >delete</i
                     >
                   </a>

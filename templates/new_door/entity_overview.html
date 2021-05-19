@@ -1,6 +1,9 @@
-{% extends 'base.html' %} {% load static %} {% block title %} Entity Overview {% endblock title %}
-{% block body %}
-<div class="alert alert-success alert-dismissible fade show" style="display: none;" role="alert">
+{% extends 'base.html' %} {% load static %} {% block title %} Entity Overview {% endblock title %} {% block body %}
+<div
+  class="alert alert-success alert-dismissible fade show"
+  style="display: none"
+  role="alert"
+>
   <span class="message"></span>
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
@@ -9,26 +12,30 @@
 <div class="row">
   <div class="col-md-12">
     <div class="card">
-      <div class="card-header card-header-primary card-header-icon">
-        <div class="card-icon" style="padding-left: 1px">
-          <a
-            href=" {% url 'entity_overview'%} "
-            class="card-header card-header-rose card-header-text"
-            style="font-size: 20px"
-          >
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="card-header card-header-rose">
+          <a href=" {% url 'entity_overview'%} " class="text-white" style="font-size: 20px">
             <i class="material-icons">person</i> Entity Overview
           </a>
         </div>
-        <div
-          class="card-icon float-right"
-          style="
-            padding: 0.5em 0;
-            font-size: 1rem;
-          "
-        >
+        <div style="font-size: 0.7rem; margin-top: -35px">
+          <a
+            href="{% url 'export' request.user.pk %} "
+            class="card-header card-header-warning p-2"
+          >
+            <i class="material-icons">add</i>Export PDF
+          </a>
+
           <a
             href=" {% url 'add_entity'%} "
-            class="card-header card-header-rose card-header-text"
+            class="card-header card-header-rose p-2"
+          >
+            <i class="material-icons">add</i>Export CSV
+          </a>
+
+          <a
+            href=" {% url 'add_entity' %} "
+            class="card-header card-header-success p-2"
           >
             <i class="material-icons">add</i>Add Entity
           </a>
@@ -121,15 +128,16 @@
                       >create</i
                     >
                   </a>
-                {% if request.user.is_superuser %}
-                <a
+                  {% if request.user.is_superuser %}
+                  <a
                     href="#"
                     class="d-inline delete-item btn-delete"
                     title="Delete unit"
                     rel="tooltip"
                     data-target="#deleteToggle"
                     data-toggle="modal"
-                    data-pk="{{entity.pk}}" data-name="{{ entity.entity_name }}"
+                    data-pk="{{entity.pk}}"
+                    data-name="{{ entity.entity_name }}"
                   >
                     <i
                       class="material-icons"
@@ -142,32 +150,54 @@
                       >delete</i
                     >
                     <div class="ripple-container"></div>
-                </a>
-                {% endif %}
-                    
-              </td>
-            </tr>
-              {% endfor %}
-              {% else %} 
-              <tr class="text-center"><td colspan="6">No Entity</td></tr> 
+                  </a>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %} {% else %}
+              <tr class="text-center">
+                <td colspan="6">No Entity</td>
+              </tr>
               {% endif %}
             </tbody>
           </table>
-          <div class="modal fade" id="deleteToggle" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div
+            class="modal fade"
+            id="deleteToggle"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true"
+          >
             <div class="modal-dialog modal-dialog-top" role="document">
               <div class="modal-content">
                 <div class="modal-header">
                   <!-- <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5> -->
-                  <button type="button" class="close p-3" data-dismiss="modal" aria-label="Close">
+                  <button
+                    type="button"
+                    class="close p-3"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                <div class="modal-body">
-                  
-                </div>
+                <div class="modal-body"></div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
-                  <a href="" type="button" class="btn btn-danger confirmation" data-dismiss="modal">Yes</a>
+                  <button
+                    type="button"
+                    class="btn btn-info"
+                    data-dismiss="modal"
+                  >
+                    No
+                  </button>
+                  <a
+                    href=""
+                    type="button"
+                    class="btn btn-danger confirmation"
+                    data-dismiss="modal"
+                    >Yes</a
+                  >
                 </div>
               </div>
             </div>
@@ -183,7 +213,5 @@
 <!-- end row -->
 
 {% block entity_overview %}
-  <script src="{% static 'js/entity_overview.js' %}"></script>
-{% endblock %}
-  
-{% endblock body %}
+<script src="{% static 'js/entity_overview.js' %}"></script>
+{% endblock %} {% endblock body %}

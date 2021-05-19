@@ -23,7 +23,7 @@ class EntityModelForm(forms.ModelForm):
     country = CountryField(blank_label='Select country').formfield(
         widget=CountrySelectWidget(attrs={"class": "form-control"}),
     )
-    contact_no = forms.CharField(max_length=100, help_text="Include country code e.g (+260)", widget=(
+    contact_no = forms.CharField(max_length=14, help_text="Include country code e.g (+260)", widget=(
         forms.NumberInput(attrs={'class': 'form-control'})))
 
     class Meta:
@@ -40,6 +40,13 @@ class EntityModelForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'desc': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+    def clean_contact_no(self):
+        phone_no = 10
+        contact_no = self.cleaned_data['contact_no']
+        if len(str(contact_no)) != phone_no:
+            raise forms.ValidationError(
+                f'Phone number should have {phone_no} numbers only')
 
 
 class PropertyModelForm(forms.ModelForm):
@@ -149,21 +156,19 @@ class ProfileRegistrationForm(UserCreationForm):
     is_owner = forms.CharField(widget=forms.CheckboxInput(
         attrs={"class": "form-check-input", "id": "is_owner"}), required=False)
 
-    # def clean_email(self):
-    #     form_email = self.cleaned_data.get('email')
-    #     try:
-    #         user_obj = User.objects.get(email=form_email)
-
-    #         if form_email == user_obj.email:
-    #             raise forms.ValidationError('E-mail address is already in use')
-    #     except User.DoesNotExist:
-    #         return form_email
-
     def clean_scontact(self):
         scontact_ = self.cleaned_data.get('scontact')
-        try:
-            profile_obj = Profile.objects.get(scontact=scontact_)
+        pcontact_ = self.cleaned_data.get('pcontact')
 
+        try:
+            if scontact_== pcontact_:
+                raise forms.ValidationError(
+                    f'Secondary contact can\'t be the same as Primary contact {pcontact_}')
+
+            if len(str(scontact_)) != 10:
+                raise forms.ValidationError(
+                    f'Phone number should be 10')
+            profile_obj = Profile.objects.get(scontact=scontact_)
             if scontact_ == profile_obj.scontact:
                 raise forms.ValidationError(
                     'Secondary contact is already in use')
@@ -173,6 +178,9 @@ class ProfileRegistrationForm(UserCreationForm):
     def clean_pcontact(self):
         pcontact_ = self.cleaned_data.get('pcontact')
         try:
+            if len(str(pcontact_)) != 10:
+                raise forms.ValidationError(
+                    f'Phone number should be 10')
             profile_obj = Profile.objects.get(pcontact=pcontact_)
 
             if pcontact_ == profile_obj.pcontact:

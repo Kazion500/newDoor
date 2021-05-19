@@ -12,7 +12,7 @@ from .models import (
 
 @admin.register(Entity)
 class EntityModelAdmin(admin.ModelAdmin):
-    list_display = ('id', 'entity_name', 'contact_no', 'address1',
+    list_display = ('id', "manager", 'entity_name', 'contact_no', 'address1',
                     'address2', 'city', 'pobox', 'state', 'country', 'email', 'desc')
 
 
@@ -82,4 +82,4 @@ class UploadDocument(admin.ModelAdmin):
 
 @admin.register(DocumentType)
 class DocumentType(admin.ModelAdmin):
-    list_display = ('docs_type', 'desc','num_of_doc')
+    list_display = ('docs_type', 'desc', 'num_of_doc')

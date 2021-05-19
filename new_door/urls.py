@@ -1,7 +1,7 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from . import views
+from new_door import views
 from accounts import views as auth_views
 
 
@@ -10,8 +10,11 @@ urlpatterns = [
     path('', views.dashboard_view, name='dashboard'),
     path('profile/<str:username>', views.profile_view, name='my_profile'),
     path('tenant-dashboard/', views.tenant_dashboard, name='tenant_dashboard'),
-    #     path('export/', views.MyModelDownloadView.as_view(), name='export'),
-    #     path('export-property/', views.PropertyUnitDownloadView.as_view(), name='export_property'),
+    path('export/<str:user_id>', views.TestPDFView.as_view(), name='export'),
+    path('export-property/', views.TestPDFView.as_view(),
+         name='export_property'),
+    path('property-unit-report/<str:property_id>', views.PropertyUnitPDFView.as_view(),
+         name='property_unit_report'),
 
     # """ Entity Routes """
 
