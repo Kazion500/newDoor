@@ -77,7 +77,7 @@ class EntityPDFView(PDFView):
 class EntityCSVView(CSVExportView):
     model = Entity
     fields = '__all__'
-    header = False
+    specify_separator = False
     filename = 'Entity Report.csv'
 
     def get_queryset(self):
@@ -106,7 +106,7 @@ class PropertyPDFView(PDFView):
 class PropertyCSVView(CSVExportView):
     model = Property
     fields = '__all__'
-    specify_separator= False
+    specify_separator = False
     filename = 'Property.csv'
 
     def get_queryset(self):
