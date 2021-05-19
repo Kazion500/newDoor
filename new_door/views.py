@@ -18,6 +18,7 @@ import stripe
 import random
 import datetime
 from django_renderpdf.views import PDFView
+from csv_export.views import CSVExportView
 
 
 from .models import (
@@ -73,6 +74,17 @@ class EntityPDFView(PDFView):
         return context
 
 
+class EntityCSVView(CSVExportView):
+    model = Entity
+    fields = '__all__'
+    header = False
+    filename = 'Entity Report.csv'
+
+    def get_queryset(self):
+        queryset = super(EntityCSVView, self).get_queryset()
+        return queryset.filter(manager__id=self.request.user.pk)
+
+
 class PropertyPDFView(PDFView):
 
     template_name = 'report/property_report.html'
@@ -89,6 +101,17 @@ class PropertyPDFView(PDFView):
         )
         context['date'] = today
         return context
+
+
+class PropertyCSVView(CSVExportView):
+    model = Property
+    fields = '__all__'
+    header = False
+    filename = 'Property.csv'
+
+    def get_queryset(self):
+        queryset = super(PropertyCSVView, self).get_queryset()
+        return queryset.filter(owner_name__user__pk=self.request.user.pk)
 
 
 class PropertyUnitPDFView(PDFView):
@@ -262,7 +285,8 @@ def property_overview(request, entity):
     all_units_amount = 0
 
     entity = get_object_or_404(Entity, entity_name=entity)
-    properties = Property.objects.filter(entity__entity_name=entity,owner_name__user__pk=request.user.pk)
+    properties = Property.objects.filter(
+        entity__entity_name=entity, owner_name__user__pk=request.user.pk)
 
     number_of_units = Unit.objects.filter(
         property_id__entity__entity_name=entity).count()
@@ -311,8 +335,6 @@ def property_all_overview(request):
     # TODO: // add user roles
 
     properties = Property.objects.filter(owner_name__user__pk=request.user.pk)
-    print(f'{properties}')
-    print(f'{request.user.pk}')
     number_of_units = Unit.objects.all().count()
 
     number_of_vacant_units = Unit.objects.exclude(

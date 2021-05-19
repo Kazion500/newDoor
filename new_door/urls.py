@@ -11,8 +11,12 @@ urlpatterns = [
     path('profile/<str:username>', views.profile_view, name='my_profile'),
     path('tenant-dashboard/', views.tenant_dashboard, name='tenant_dashboard'),
     path('export/<str:user_id>', views.EntityPDFView.as_view(), name='export'),
+    path('export-csv/<str:user_id>',
+         views.EntityCSVView.as_view(), name='export_csv'),
     path('export-property/<str:pk>', views.PropertyPDFView.as_view(),
          name='export_property'),
+    path('export-csv-property/<str:pk>', views.PropertyCSVView.as_view(),
+         name='export_property_csv'),
     path('property-unit-report/<str:property_id>', views.PropertyUnitPDFView.as_view(),
          name='property_unit_report'),
 
