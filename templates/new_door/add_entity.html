@@ -38,8 +38,8 @@
               <small style="color: #b6b6b6">
                 {{ form.contact_no.help_text }}
                 {% for error in form.contact_no.errors %}
-                <p style="color: red" class="m-0 p-0">{{ error }}</p>
-              {% endfor %}
+                  <p style="color: red" class="m-0 p-0">{{ error }}</p>
+                {% endfor %}
               </small>
 
             </div>
@@ -75,8 +75,8 @@
           </div>
           <label class="col-sm-2 col-form-label">Zip or Postal*</label>
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.pobox }}
-              {% for error in form.pobox.errors %}
+            <div class="form-group bmd-form-group">{{ form.po_box }}
+              {% for error in form.po_box.errors %}
               <small style="color: red">{{ error }}</small>
               {% endfor %}
             </div>

@@ -1,0 +1,38 @@
+{% extends 'email_temp/email_base.html' %} 
+{% load static %}
+
+{% block email_subject %} Account Activation {% endblock email_subject %} 
+
+{% block email_content %}
+    <header>
+      <div class="email-logo">
+        <img src="{% static 'img/newdoor.jpeg' %}" alt="" />
+      </div>
+      <div class="subject container">
+        <p>Account Activation!</p>
+      </div>
+    </header>
+    <main class="body-content container">
+      <p>Hi {{ username }} !!</p>
+      <p>
+        You recently added this email address to NewDoor. Javed Farooqui with
+        NewDoor has invited you to use NewDoor Rental Management Application to
+        collaborate with them. Use the button and credentials below to login
+        your account and get started.
+      </p>
+
+      <div class="wrapper">
+        <h3>Username : {{ username }}</h3>
+        <h3>Password : {{ password }}</h3>
+        <a href="">Login</a>
+      </div>
+
+      <div class="lead-red">
+        <p>You'll be joining us right after the verification!</p>
+        <p>This is auto generated e-mail. Please do not reply to this mail</p>
+      </div>
+    </main>
+    <footer class="container">
+      <p>--The NewDoor Team</p>
+    </footer>
+{% endblock email_content %}

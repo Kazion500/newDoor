@@ -1,0 +1,76 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,300;0,400;0,800;1,600&display=swap");
+
+:root {
+  --primary-clr: #5f497aff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Poppins";
+  font-size: 12px;
+}
+
+img {
+  max-width: 100%;
+}
+
+.container {
+  width: 100%;
+  max-width: 40%;
+  margin: auto;
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 0;
+  text-align: center;
+  color: white;
+}
+
+.subject {
+  background: var(--primary-clr);
+  width: 100%;
+  font-size: 26px;
+  padding: 0.7rem 0;
+}
+.subject p {
+  margin: 0;
+}
+
+.email-logo {
+  width: 200px;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1.2rem;
+}
+
+.wrapper a {
+  padding: 0.5rem 3rem;
+  display: block;
+  cursor: pointer;
+  background: var(--primary-clr);
+  border: none;
+  border-radius: 0.2rem;
+  color: white;
+  text-decoration: none;
+  margin: 1rem;
+}
+
+.wrapper h3 {
+  margin: 0.4rem;
+}
+
+.lead-red {
+  color: red;
+}

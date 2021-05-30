@@ -1,0 +1,42 @@
+{% extends 'email_temp/email_base.html' %} 
+
+{% load static %}
+
+{% block email_subject %} Document Upload {% endblock email_subject %} 
+
+{% block email_content %}
+  <header>
+    <div class="email-logo">
+      <img src="{% static 'img/newdoor.jpeg' %}" alt="" />
+    </div>
+    <div class="subject container">
+      <p>Document Upload!</p>
+    </div>
+  </header>
+  <main class="body-content container">
+    <p>Hi <strong>{{ username }}</strong> !!</p>
+
+    <p>
+      You received this e-mail because your documents are pending for contract
+      generation for unit number <strong>{{ unit }}</strong> with address
+      <strong>{{ address }}</strong>.
+    </p>
+
+    <p>
+      Please upload your required documents asap as we can generate your contract.
+    </p>
+
+    <div class="wrapper">
+      <a href="">Upload Document</a>
+    </div>
+
+    <p>
+      We’ll be here to help you with any step along the way. You can find answers
+      to most questions and get in touch with us on our support e-mail
+      <a href="">info@njfdigital.com</a>
+    </p>
+  </main>
+  <footer class="container">
+    <p>--The NewDoor Team</p>
+  </footer>
+{% endblock email_content %}

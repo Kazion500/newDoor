@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'zyj^8_&xxatsg-yc(fsg0w5iwe95^3a-5n8j%q2r733awf=qbk'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'newdoor.herokuapp.com']
 
@@ -30,6 +30,12 @@ INSTALLED_APPS = [
     'cloudinary',
     'django.contrib.humanize',
     'new_door.apps.NewDoorConfig',
+    'profiles.apps.ProfilesConfig',
+    'app_config.apps.AppConfigConfig',
+    'maintenance.apps.MaintenanceConfig',
+    'tenant.apps.TenantConfig',
+    'payment.apps.PaymentConfig',
+    'reports.apps.ReportsConfig',
     'accounts.apps.AccountsConfig',
     'django_countries',
 ]
@@ -119,6 +125,9 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LOGIN_URL = 'login'
 LOGOUT_REDIRECT_URL = 'login'
+
+
+AUTH_USER_MODEL = 'profiles.Profile'
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

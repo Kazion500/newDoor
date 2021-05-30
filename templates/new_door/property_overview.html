@@ -43,9 +43,9 @@
             <div class="card-icon">
               <i class="material-icons">account_balance_wallet</i>
             </div>
-            <h3 class="card-title totalDueAmount"></h3>
+            <h3 class="card-title totalDueAmount">{{ due_amount|intcomma }}</h3>
             <span class="totalUnitAmounts" style="display: none"
-              >{{ all_units_amount.annual_rent__sum }}</span
+              >{{ all_units_amount.rent}}</span
             >
             <br /><br />
             <p class="card-category">Total Dues Amount</p>
@@ -110,7 +110,7 @@
           </a>
 
           <a
-            href=" {% url 'add_property' entity %} "
+            href=" {% url 'add_property' entity.entity_name %} "
             class="card-header card-header-success p-2"
           >
             <i class="material-icons">add</i>Add Property
@@ -187,12 +187,7 @@
                     <div class="ripple-container success"></div>
                     <i
                       class="material-icons"
-                      style="
-                        margin-right: 08px;
-                        margin-top: 10px;
-                        margin-bottom: 20px;
-                        color: #5b93f6;
-                      "
+                      style="color: #5b93f6;"
                       >location_city</i
                     >
                   </a>
@@ -201,12 +196,7 @@
                     
                     <i
                       class="material-icons"
-                      style="
-                        margin-right: 10px;
-                        margin-top: 10px;
-                        margin-bottom: 20px;
-                        color: #f44336;
-                      "
+                      style="color: #f44336;"
                       >location_on</i
                     >
                     <div class="ripple-container"></div>
@@ -222,12 +212,7 @@
                     <div class="ripple-container success"></div>
                     <i
                       class="material-icons"
-                      style="
-                        margin-right: 10px;
-                        margin-top: 10px;
-                        margin-bottom: 20px;
-                        color: #ff9800;
-                      "
+                      style="color: #ff9800;"
                       >dvr</i
                     >
                   </a>
@@ -241,12 +226,7 @@
                     <div class="ripple-container success"></div>
                     <i
                       class="material-icons"
-                      style="
-                        margin-right: 5px;
-                        margin-top: 10px;
-                        margin-bottom: 20px;
-                        color: #4caf50;
-                      "
+                      style="color: #4caf50;"
                       >create</i
                     >
                   </a>
@@ -265,12 +245,7 @@
                     >
                       <i
                         class="material-icons"
-                        style="
-                          margin-right: 5px;
-                          margin-top: 10px;
-                          margin-bottom: 20px;
-                          color: #c55d55;
-                        "
+                        style="color: #c55d55;"
                         >delete</i
                       >
                       <div class="ripple-container"></div>

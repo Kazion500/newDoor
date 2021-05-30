@@ -1,0 +1,45 @@
+{% extends 'email_temp/email_base.html' %} 
+{% load static %}
+
+{% block email_subject %} Payment Pending {% endblock email_subject %} 
+
+{% block email_content %}
+    <header style="flex-direction: column;">
+      <div class="email-logo">
+        <img src="{% static 'img/newdoor.jpeg' %}" alt="" />
+      </div>
+      <div class="subject container">
+        <p>Welcome!</p>
+      </div>
+    </header>
+    <main class="body-content container">
+      <p>Hi {{ username }} !!</p>
+      <p>
+        Thanks for successful login to your account. You're now ready to track
+        your unit record with NewDoor Rental Management Application!.
+      </p>
+      <p>
+        You can view your payments and a variety of other information about your
+        account right from your dashboard.
+      </p>
+      <div class="wrapper" style="padding: 0.5rem 3rem; text-align: center;
+      display: block;
+      cursor: pointer;
+      background: #5f497aff;
+      border: none;
+      border-radius: 0.2rem;
+      color: white;
+      text-decoration: none;
+      margin: 1rem;">
+        <a href="{{ link }}">Login</a>
+      </div>
+      <p>
+        We’ll be here to help you with any step along the way. You can find
+        answers to most questions and get in touch with us on our support e-mail
+        <a href="">info@njfdigital.com</a>
+      </p>
+    </main>
+    <footer class="container">
+      <p>--The NewDoor Team</p>
+    </footer>
+{% endblock %}

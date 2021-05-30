@@ -28,12 +28,22 @@
           <div class="col-sm-4">
             <div class="form-group bmd-form-group">
               {{ form.owner_name }}
+              {% if form.owner_name.errors %}
+              {% for error in form.owner_name.errors %}
+                <small style="color: red">{{ error }}</small>
+              {% endfor %}
+              {% endif %}
             </div>
           </div>
           <label class="col-sm-2 col-form-label">Property Name*</label>
           <div class="col-sm-4">
             <div class="form-group bmd-form-group">
               {{ form.property_name }}
+              {% if form.property_name.errors  %}
+              {% for error in form.property_name.errors %}
+                <small style="color: red">{{ error }}</small>
+              {% endfor %}
+              {% endif %}
             </div>
           </div>
         </div>
@@ -44,46 +54,74 @@
           >
           <div class="col-sm-4">
             <div class="form-group bmd-form-group">
-              <select
-                input
-                class="form-control"
-                type="text"
-                id="EntityID"
-                name="entity"
-                required="true"
-                aria-required="true"
-              >
-                <option selected value="{{entity.id}}">
-                  {{entity.entity_name}}
-                </option>
-              </select>
+              {{form.entity}}
+              {% if form.entity.errors  %}
+              {% for error in form.entity.errors %}
+              <small style="color: red">{{ error }}</small>
+            {% endfor %}
+            {% endif %}
             </div>
           </div>
           <label class="col-sm-2 col-form-label">Address1*</label>
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.address1 }}</div>
+            <div class="form-group bmd-form-group">
+              {{ form.address1 }}
+              {% if form.address1.errors  %}
+              {% for error in form.address1.errors %}
+              <small style="color: red">{{ error }}</small>
+            {% endfor %}
+            {% endif %}
+            </div>
           </div>
         </div>
 
         <div class="row">
           <label class="col-sm-2 col-form-label">Address2*</label>
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.address2 }}</div>
+            <div class="form-group bmd-form-group">
+              {{ form.address2 }}
+              {% if form.address2.errors  %}
+              {% for error in form.address2.errors %}
+                <small style="color: red">{{ error }}</small>
+              {% endfor %}
+              {% endif %}
+            </div>
           </div>
           <label class="col-sm-2 col-form-label">City*</label>
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.city }}</div>
+            <div class="form-group bmd-form-group">
+              {{ form.city }}
+              {% if form.city.errors  %}
+              {% for error in form.city.errors %}
+                <small style="color: red">{{ error }}</small>
+              {% endfor %}
+              {% endif %}
+            </div>
           </div>
         </div>
 
         <div class="row">
           <label class="col-sm-2 col-form-label">Zip or Postal*</label>
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.pobox }}</div>
+            <div class="form-group bmd-form-group">
+              {{ form.po_box }}
+              {% if form.po_box.errors  %}
+              {% for error in form.po_box.errors %}
+                <small style="color: red">{{ error }}</small>
+              {% endfor %}
+              {% endif %}
+            </div>
           </div>
           <label class="col-sm-2 col-form-label">State*</label>
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.state }}</div>
+            <div class="form-group bmd-form-group">
+              {{ form.state }}
+              {% if form.state.errors  %}
+              {% for error in form.state.errors %}
+                <small style="color: red">{{ error }}</small>
+              {% endfor %}
+              {% endif %}
+            </div>
           </div>
         </div>
 
@@ -91,20 +129,28 @@
         <div class="row">
           <label class="col-sm-2 col-form-label">Country*</label>
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.country }}</div>
+            <div class="form-group bmd-form-group">
+              {{ form.country }}
+              {% if form.country.errors  %}
+              {% for error in form.country.errors %}
+                <small style="color: red">{{ error }}</small>
+              {% endfor %}
+              {% endif %}
+            </div>
           </div>
           <label class="col-sm-2 col-form-label">Email*</label>
           <div class="col-sm-4">
             <div class="form-group bmd-form-group">
               {{ form.email }}
+              {% if form.email.errors  %}
               {% for error in form.email.errors %}
-                <small style="color: red;">{{ error }}</small>
-              {% endfor %} 
+              <small style="color: red">{{ error }}</small>
+            {% endfor %}
+            {% endif %}
             </div>
           </div>
         </div>
 
-        {% comment %} Row6 {% endcomment %}
         <div class="row">
           <label class="col-sm-2 col-form-label">Contact No.*</label>
           <div class="col-sm-4">
@@ -113,19 +159,27 @@
               <small style="color: #b6b6b6">
                 {{ form.contact_no.help_text }}
               </small>
-              <br>
-                {% for error in form.contact_no.errors %}
-                <small style="color: red;">{{ error }}</small>
-                {% endfor %} 
+              {% if form.contact_no.errors  %}
+              {% for error in form.contact_no.errors %}
+                <small style="color: red">{{ error }}</small>
+              {% endfor %}
+              {% endif %}
               
             </div>
           </div>
           <label class="col-sm-2 col-form-label">Location*</label>
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.location }}</div>
+            <div class="form-group bmd-form-group">
+              {{ form.location }}
+              {% if form.location.errors.count >= 0  %}
+              {% for error in form.location.errors %}
+                <small style="color: red">{{ error }}</small>
+              {% endfor %}
+              {% endif %}
+            
+            </div>
           </div>
         </div>
-        {% comment %} Row6 end {% endcomment %}
 
         <br />
         <button class="btn btn-rose btn-round float-right" type="Submit">

@@ -46,9 +46,9 @@ Property Overview {% endblock title %} {% block body %}
             <div class="card-icon">
               <i class="material-icons">account_balance_wallet</i>
             </div>
-            <h3 class="card-title totalDueAmount"></h3>
+            <h3 class="card-title totalDueAmount">{{ due_amount|intcomma }}</h3>
             <span class="totalUnitAmounts" style="display: none"
-              >{{ all_units_amount.annual_rent__sum }}</span
+              >{{ all_units_amount.rent }}</span
             >
             <br /><br />
             <p class="card-category">Total Dues Amount</p>

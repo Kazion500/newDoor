@@ -41,12 +41,9 @@
                 required="true"
                 aria-required="true"
               >
-                <option selected>Select Property</option>
-                {% for property in properties %}
-                <option value="{{property.id}}">
+                <option selected value="{{property.id}}">
                   {{ property.property_name }}
                 </option>
-                {% endfor %}
               </select>
             </div>
           </div>
@@ -55,22 +52,13 @@
           >
           <div class="col-sm-4">
             <div class="form-group bmd-form-group">
-              <select
-                input
-                class="form-control"
-                type="text"
-                id="property_type"
-                name="property_type"
-                required="true"
-                aria-required="true"
-              >
-                <option selected>Select Property Type</option>
-                {% for property_type in property_types %}
-                <option value="{{property_type.id}}">
-                  {{property_type.property_type}}
-                </option>
-                {% endfor %}
-              </select>
+              {{ form.property_type }}
+              {% if form.property_type.errors  %}
+              {% for error in form.property_type.errors %}
+                <small style="color: red">{{ error }}</small>
+              {% endfor %}
+              {% endif %}
+            
             </div>
           </div>
         </div>
@@ -78,29 +66,27 @@
         <div class="row">
           <label class="col-sm-2 col-form-label">Flat No.*</label>
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.flat }}</div>
+            <div class="form-group bmd-form-group">
+              {{ form.flat }}
+              {% if form.flat.errors  %}
+                {% for error in form.flat.errors %}
+                 <small style="color: red">{{ error }}</small>
+                {% endfor %}
+              {% endif %}
+            </div>
           </div>
           <label class="col-sm-2 col-form-label" for="OwnerTypeID"
             >Ownership Type*</label
           >
           <div class="col-sm-4">
             <div class="form-group bmd-form-group">
-              <select
-                input
-                class="form-control"
-                type="text"
-                id="ownership_type"
-                name="ownership_type"
-                required="true"
-                aria-required="true"
-              >
-                <option selected>Select Ownership Type</option>
-                {% for ownership_type in ownership_types %}
-                <option value="{{ownership_type.id}}">
-                  {{ownership_type.ownership_type}}
-                </option>
-                {% endfor %}
-              </select>
+              {{ form.ownership_type }}
+              {% if form.ownership_type.errors  %}
+              {% for error in form.ownership_type.errors %}
+              <small style="color: red">{{ error }}</small>
+            {% endfor %}
+            {% endif %}
+            
             </div>
           </div>
         </div>
@@ -109,11 +95,25 @@
         <div class="row">
           <label class="col-sm-2 col-form-label">Rental Amount*</label>
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.rent_amount }}</div>
+            <div class="form-group bmd-form-group">
+              {{ form.rent_amount }}
+              {% if form.rent_amount.errors  %}
+              {% for error in form.rent_amount.errors %}
+              <small style="color: red">{{ error }}</small>
+            {% endfor %}
+            {% endif %}
+            </div>
           </div>
           <label class="col-sm-2 col-form-label">Size (SqFt)*</label>
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.size }}</div>
+            <div class="form-group bmd-form-group">
+              {{ form.size }}
+              {% if form.size.errors  %}
+              {% for error in form.size.errors %}
+              <small style="color: red">{{ error }}</small>
+            {% endfor %}
+            {% endif %}
+            </div>
           </div>
         </div>
         {% comment %} Row4 {% endcomment %}
@@ -140,11 +140,24 @@
                 {% endfor %}
               </select>
             </div>
+            {% if form.occupancy_type.errors  %}
+            {% for error in form.occupancy_type.errors %}
+            <small style="color: red">{{ error }}</small>
+          {% endfor %}
+          {% endif %}
           </div>
 
           <label class="col-sm-2 col-form-label">No. of Bedrooms*</label>
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.bedrooms }}</div>
+            <div class="form-group bmd-form-group">
+              {{ form.bedrooms }}
+              {% if form.bedrooms.errors  %}
+              {% for error in form.bedrooms.errors %}
+                <small style="color: red">{{ error }}</small>
+              {% endfor %}
+              {% endif %}
+            
+            </div>
           </div>
         </div>
 
@@ -152,11 +165,25 @@
         <div class="row">
           <label class="col-sm-2 col-form-label">No. of Bathrooms*</label>
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.bathrooms }}</div>
+            <div class="form-group bmd-form-group">
+              {{ form.bathrooms }}
+              {% if form.bedrooms.errors  %}
+              {% for error in form.bathrooms.errors %}
+                <small style="color: red">{{ error }}</small>
+              {% endfor %}
+              {% endif %}
+            </div>
           </div>
           <label class="col-sm-2 col-form-label">Parking*</label>
           <div class="col-sm-4">
-            <div class="form-group bmd-form-group">{{ form.parking }}</div>
+            <div class="form-group bmd-form-group">
+              {{ form.parking }}
+              {% if form.parking.errors  %}
+              {% for error in form.parking.errors %}
+                <small style="color: red">{{ error }}</small>
+              {% endfor %}
+              {% endif %}
+            </div>
           </div>
         </div>
 
@@ -164,24 +191,23 @@
         <div class="row">
           <label class="col-sm-2 col-form-label">Description*</label>
           <div class="col-sm-10">
-            <div class="form-group bmd-form-group">{{ form.desc }}</div>
+            <div class="form-group bmd-form-group">
+              {{ form.desc }}
+              {% if form.desc.errors  %}
+              {% for error in form.desc.errors %}
+              <small style="color: red">{{ error }}</small>
+            {% endfor %}
+            {% endif %}
+            </div>
           </div>
         </div>
         <br />
         <hr />
 
-        <a
-          href="{% url 'unit_overview' %}"
-          class="btn btn-info btn-round ml-4 float-right"
-        >
-          Back
-          <div class="ripple-container"></div>
-        </a>
-
         <button class="btn btn-rose btn-round float-right" type="Submit">
           <i class="material-icons">near_me </i> Submit
+          <div class="ripple-container"></div>
         </button>
-
         <br />
       </div>
     </div>
